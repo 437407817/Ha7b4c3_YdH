@@ -14,7 +14,8 @@
 #include "stdio.h"
 #include "stdarg.h"
 #include "shell_ext.h"
-
+#include "FreeRTOS.h"
+#include "task.h"
 
 #if SHELL_USING_CMD_EXPORT == 1
 /**
@@ -1870,7 +1871,10 @@ void shellWriteEndLine(Shell *shell, char *buffer, int len)
 }
 #endif /** SHELL_SUPPORT_END_LINE == 1 */
 
+// #include "./shell_port.h"
 
+#include "shell.h"
+#include "./rtosprintf/frtos_printf.h"
 /**
  * @brief shell 任务
  * 
@@ -1882,13 +1886,21 @@ void shellTask(void *param)
     Shell *shell = (Shell *)param;
     char data;
 #if SHELL_TASK_WHILE == 1
+	#if (USE_OS)
+	SYSTEM_set_rtosShell_running();
+	#endif
     while(1)
     {
 #endif
+#if (!USE_OS)
         if (shell->read && shell->read(&data, 1) == 1)
         {
             shellHandler(shell, data);
         }
+#else			
+			vTaskDelay(pdMS_TO_TICKS(100)); // 关键：释放 CPU 给同级或低优先级任务
+#endif
+
 #if SHELL_TASK_WHILE == 1
     }
 #endif

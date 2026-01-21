@@ -4,23 +4,18 @@
 
 
 
-
-
-
 #include "lvgl/lvgl.h"
 #include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
 
 /*************************************************************************
- * 1. »ù´¡ÅäÖÃ
+ * 1. åŸºç¡€é…ç½®
  *************************************************************************/
 #define SCREEN_WIDTH  800
 #define SCREEN_HEIGHT 600
 #define BAT_GROUPS    4
 #define BATS_PER_GRP  12
 
-// ÑÕÉ«¶¨Òå
+// é¢œè‰²å®šä¹‰
 #define COLOR_BG           lv_color_hex(0xF2F2F7)
 #define COLOR_WHITE        lv_color_hex(0xFFFFFF)
 #define COLOR_TEXT_MAIN    lv_color_hex(0x1C1C1E)
@@ -28,16 +23,16 @@
 #define COLOR_SHADOW       lv_color_hex(0xA0A0A5)
 #define COLOR_METAL        lv_color_hex(0x8E8E93)
 
-// ×´Ì¬É«
+// çŠ¶æ€è‰²
 #define COLOR_ST_IDLE      lv_color_hex(0x9E9EA5)
 #define COLOR_ST_CHG       lv_color_hex(0x34C759)
 #define COLOR_ST_DSG       lv_color_hex(0xFF9500)
 #define COLOR_ST_FULL      lv_color_hex(0x007AFF)
-#define COLOR_ST_ERR       lv_color_hex(0xFF3B30) // ÏÊÑŞµÄºì
+#define COLOR_ST_ERR       lv_color_hex(0xFF3B30) // é²œè‰³çš„çº¢
 #define COLOR_ST_WARN      lv_color_hex(0xFFCC00)
 
 /*************************************************************************
- * 2. Êı¾İ½á¹¹
+ * 2. æ•°æ®ç»“æ„
  *************************************************************************/
 
 typedef enum {
@@ -45,12 +40,12 @@ typedef enum {
     CELL_CHG,
     CELL_DSG,
     CELL_FULL,
-    CELL_ERR_GEN, // Í¨ÓÃ¹ÊÕÏ
-    CELL_ERR_OV,  // ¹ıÑ¹¹ÊÕÏ
-    CELL_ERR_UV   // Ç·Ñ¹¹ÊÕÏ
+    CELL_ERR_GEN, // é€šç”¨æ•…éšœ
+    CELL_ERR_OV,  // è¿‡å‹æ•…éšœ
+    CELL_ERR_UV   // æ¬ å‹æ•…éšœ
 } cell_status_t;
 
-// ×é×´Ì¬
+// ç»„çŠ¶æ€
 typedef enum {
     GRP_ST_STANDBY = 0,
     GRP_ST_CHARGING,
@@ -72,7 +67,7 @@ static cell_data_t all_cells[BAT_GROUPS][BATS_PER_GRP];
 static group_state_t group_states[BAT_GROUPS];
 static int current_view_group = 0;
 
-// UI ¾ä±ú
+// UI å¥æŸ„
 static lv_obj_t * grid_container;
 static lv_obj_t * label_sys_time;
 static lv_obj_t * lbl_stat_max;
@@ -82,18 +77,18 @@ static lv_obj_t * lbl_stat_diff;
 static lv_obj_t * lbl_stat_state;
 static lv_obj_t * group_indicators[BAT_GROUPS];
 
-// ÑùÊ½
+// æ ·å¼
 static lv_style_t style_card;
 static lv_style_t style_cell_bg;
 static lv_style_t style_cell_liquid;
 static lv_style_t style_btn_base;
-static lv_style_t style_err_badge; // ĞÂÔö£º¹ÊÕÏ»ÕÕÂÑùÊ½
+static lv_style_t style_err_badge; // æ–°å¢ï¼šæ•…éšœå¾½ç« æ ·å¼
 
 /*************************************************************************
- * 3. Ä£ÄâÊı¾İ (¹ÊÒâÖÆÔìÒ»Ğ©¹ÊÕÏ)
+ * 3. æ¨¡æ‹Ÿæ•°æ® (æ•…æ„åˆ¶é€ ä¸€äº›æ•…éšœ)
  *************************************************************************/
 void init_bms_data(void) {
-    // G1: ³äµç
+    // G1: å……ç”µ
     group_states[0] = GRP_ST_CHARGING;
     for(int i=0; i<BATS_PER_GRP; i++) {
         all_cells[0][i].id = i + 1;
@@ -102,7 +97,7 @@ void init_bms_data(void) {
         all_cells[0][i].percent = 70;
     }
 
-    // G2: ·Åµç
+    // G2: æ”¾ç”µ
     group_states[1] = GRP_ST_DISCHARGING;
     for(int i=0; i<BATS_PER_GRP; i++) {
         all_cells[1][i].id = 13 + i;
@@ -111,7 +106,7 @@ void init_bms_data(void) {
         all_cells[1][i].percent = 40;
     }
 
-    // G3: ÏµÍ³¹ÊÕÏ - ¶à½Úµç³Ø³öÎÊÌâ
+    // G3: ç³»ç»Ÿæ•…éšœ - å¤šèŠ‚ç”µæ± å‡ºé—®é¢˜
     group_states[2] = GRP_ST_FAULT;
     for(int i=0; i<BATS_PER_GRP; i++) {
         all_cells[2][i].id = 25 + i;
@@ -119,14 +114,14 @@ void init_bms_data(void) {
         all_cells[2][i].voltage = 4.15;
         all_cells[2][i].percent = 90;
     }
-    // #26: ¹ıÑ¹¹ÊÕÏ
+    // #26: è¿‡å‹æ•…éšœ
     all_cells[2][1].status = CELL_ERR_OV; all_cells[2][1].voltage = 4.55;
-    // #29: ¶ÏÏß/Í¨ÓÃ¹ÊÕÏ
+    // #29: æ–­çº¿/é€šç”¨æ•…éšœ
     all_cells[2][4].status = CELL_ERR_GEN; all_cells[2][4].voltage = 0.00; all_cells[2][4].percent = 0;
-    // #36: Ç·Ñ¹¹ÊÕÏ
+    // #36: æ¬ å‹æ•…éšœ
     all_cells[2][11].status = CELL_ERR_UV; all_cells[2][11].voltage = 2.10; all_cells[2][11].percent = 0;
 
-    // G4: Âúµç
+    // G4: æ»¡ç”µ
     group_states[3] = GRP_ST_CHG_DONE;
     for(int i=0; i<BATS_PER_GRP; i++) {
         all_cells[3][i].id = 37 + i;
@@ -137,7 +132,7 @@ void init_bms_data(void) {
 }
 
 /*************************************************************************
- * 4. ¸¨Öúº¯Êı
+ * 4. è¾…åŠ©å‡½æ•°
  *************************************************************************/
 lv_color_t get_cell_color(cell_status_t st) {
     switch(st) {
@@ -146,7 +141,7 @@ lv_color_t get_cell_color(cell_status_t st) {
         case CELL_FULL: return COLOR_ST_FULL;
         case CELL_ERR_GEN:
         case CELL_ERR_OV:
-        case CELL_ERR_UV: return COLOR_ST_ERR; // ¹ÊÕÏÍ³Ò»ºìÉ«ÒºÌå»ùµ÷£¬¿¿Í¼±êÇø·Ö
+        case CELL_ERR_UV: return COLOR_ST_ERR; // æ•…éšœç»Ÿä¸€çº¢è‰²æ¶²ä½“åŸºè°ƒï¼Œé å›¾æ ‡åŒºåˆ†
         default: return COLOR_ST_IDLE;
     }
 }
@@ -172,7 +167,7 @@ bool is_cell_fault(cell_status_t st) {
 }
 
 /*************************************************************************
- * 5. ÑùÊ½³õÊ¼»¯
+ * 5. æ ·å¼åˆå§‹åŒ–
  *************************************************************************/
 void init_styles_v9(void) {
     lv_style_init(&style_card);
@@ -188,13 +183,13 @@ void init_styles_v9(void) {
     lv_style_set_shadow_width(&style_cell_bg, 15);
     lv_style_set_shadow_color(&style_cell_bg, COLOR_SHADOW);
     lv_style_set_shadow_opa(&style_cell_bg, LV_OPA_30);
-//    lv_style_set_shadow_offset_y(&style_cell_bg, 5);
-lv_obj_set_style_shadow_ofs_y(style_cell_bg, 5, LV_STATE_DEFAULT);
+    lv_style_set_shadow_offset_y(&style_cell_bg, 5);
+
     lv_style_init(&style_cell_liquid);
     lv_style_set_radius(&style_cell_liquid, 10);
     lv_style_set_bg_grad_dir(&style_cell_liquid, LV_GRAD_DIR_HOR);
 
-    // ĞÂÔö£º¹ÊÕÏ»ÕÕÂÑùÊ½ (Ô²ĞÎ£¬ºìÉ«±³¾°£¬°×É«±ß¿ò)
+    // æ–°å¢ï¼šæ•…éšœå¾½ç« æ ·å¼ (åœ†å½¢ï¼Œçº¢è‰²èƒŒæ™¯ï¼Œç™½è‰²è¾¹æ¡†)
     lv_style_init(&style_err_badge);
     lv_style_set_radius(&style_err_badge, LV_RADIUS_CIRCLE);
     lv_style_set_bg_color(&style_err_badge, COLOR_ST_ERR);
@@ -213,10 +208,10 @@ lv_obj_set_style_shadow_ofs_y(style_cell_bg, 5, LV_STATE_DEFAULT);
 }
 
 /*************************************************************************
- * 6. ºËĞÄ»æÖÆÂß¼­ (º¬¹ÊÕÏÍ¼±ê)
+ * 6. æ ¸å¿ƒç»˜åˆ¶é€»è¾‘ (å«æ•…éšœå›¾æ ‡)
  *************************************************************************/
 void create_battery_cell(lv_obj_t * parent, int cell_idx) {
-    // ±äÁ¿ÉùÃ÷ (C89)
+    // å˜é‡å£°æ˜ (C89)
     cell_data_t * data;
     lv_color_t color;
     bool is_fault;
@@ -226,21 +221,21 @@ void create_battery_cell(lv_obj_t * parent, int cell_idx) {
     lv_obj_t * fluid;
     lv_obj_t * lbl_id;
     lv_obj_t * lbl_v;
-    lv_obj_t * lbl_info; // ÓÃÓÚÏÔÊ¾×´Ì¬»òµçÁ÷
+    lv_obj_t * lbl_info; // ç”¨äºæ˜¾ç¤ºçŠ¶æ€æˆ–ç”µæµ
     lv_obj_t * lbl_p;
 
-    // Êı¾İ»ñÈ¡
+    // æ•°æ®è·å–
     data = &all_cells[current_view_group][cell_idx];
     color = get_cell_color(data->status);
     is_fault = is_cell_fault(data->status);
 
-    // ÈİÆ÷
+    // å®¹å™¨
     cont = lv_obj_create(parent);
     lv_obj_remove_style_all(cont);
     lv_obj_set_size(cont, 110, 190);
     lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
 
-    // Õı¼«Í·
+    // æ­£æå¤´
     tip = lv_obj_create(cont);
     lv_obj_set_size(tip, 40, 15);
     lv_obj_align(tip, LV_ALIGN_TOP_MID, 0, 0);
@@ -248,28 +243,28 @@ void create_battery_cell(lv_obj_t * parent, int cell_idx) {
     lv_obj_set_style_bg_opa(tip, LV_OPA_COVER, 0);
     lv_obj_set_style_radius(tip, 4, 0);
 
-    // Íâ¿Ç
+    // å¤–å£³
     shell = lv_obj_create(cont);
     lv_obj_add_style(shell, &style_cell_bg, 0);
     lv_obj_set_size(shell, 110, 175);
     lv_obj_align(shell, LV_ALIGN_TOP_MID, 0, 15);
 
-    // Èç¹ûÊÇ¹ÊÕÏ£¬¸øÍâ¿ÇÔö¼Ó´Öºì¿ò£¬½øÒ»²½Ç¿µ÷
+    // å¦‚æœæ˜¯æ•…éšœï¼Œç»™å¤–å£³å¢åŠ ç²—çº¢æ¡†ï¼Œè¿›ä¸€æ­¥å¼ºè°ƒ
     if(is_fault) {
         lv_obj_set_style_border_width(shell, 3, 0);
         lv_obj_set_style_border_color(shell, COLOR_ST_ERR, 0);
     }
 
-    // ÒºÌåÌõ
+    // æ¶²ä½“æ¡
     fluid = lv_bar_create(shell);
     lv_obj_add_style(fluid, &style_cell_liquid, LV_PART_INDICATOR);
 
-    // Èç¹ûÊÇ¹ÊÕÏ£¬ÒºÌåÓÃ´¿É«»òµ­ºìÉ«£»Õı³£ÓÃÁÁÉ«½¥±ä
+    // å¦‚æœæ˜¯æ•…éšœï¼Œæ¶²ä½“ç”¨çº¯è‰²æˆ–æ·¡çº¢è‰²ï¼›æ­£å¸¸ç”¨äº®è‰²æ¸å˜
     lv_obj_set_style_bg_color(fluid, color, LV_PART_INDICATOR);
     if(is_fault) {
-        lv_obj_set_style_bg_grad_color(fluid, lv_color_mix(lv_color_black(), color, 20), LV_PART_INDICATOR); // °µµ­Ò»µã
+        lv_obj_set_style_bg_grad_color(fluid, lv_color_mix(lv_color_black(), color, 20), LV_PART_INDICATOR); // æš—æ·¡ä¸€ç‚¹
     } else {
-        lv_obj_set_style_bg_grad_color(fluid, lv_color_mix(COLOR_WHITE, color, 80), LV_PART_INDICATOR); // ÁÁÔó
+        lv_obj_set_style_bg_grad_color(fluid, lv_color_mix(COLOR_WHITE, color, 80), LV_PART_INDICATOR); // äº®æ³½
     }
 
     lv_obj_set_style_bg_opa(fluid, LV_OPA_TRANSP, LV_PART_MAIN);
@@ -278,50 +273,50 @@ void create_battery_cell(lv_obj_t * parent, int cell_idx) {
     lv_bar_set_range(fluid, 0, 100);
     lv_bar_set_value(fluid, data->percent, LV_ANIM_OFF);
 
-    // ============= ĞÅÏ¢²ã =============
+    // ============= ä¿¡æ¯å±‚ =============
 
-    // ±àºÅ #01
+    // ç¼–å· #01
     lbl_id = lv_label_create(shell);
     lv_label_set_text_fmt(lbl_id, "#%02d", data->id);
-    lv_obj_set_style_text_font(lbl_id, &lv_font_montserrat_12, 0);
+    lv_obj_set_style_text_font(lbl_id, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(lbl_id, COLOR_TEXT_SUB, 0);
     lv_obj_align(lbl_id, LV_ALIGN_TOP_LEFT, 5, 5);
 
-    // µçÑ¹ (Èç¹û¶ÏÏß/Generic FaultÏÔÊ¾ 0.00V)
+    // ç”µå‹ (å¦‚æœæ–­çº¿/Generic Faultæ˜¾ç¤º 0.00V)
     lbl_v = lv_label_create(shell);
     lv_label_set_text_fmt(lbl_v, "%.2fV", data->voltage);
     lv_obj_set_style_text_font(lbl_v, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_color(lbl_v, COLOR_TEXT_MAIN, 0);
     lv_obj_align(lbl_v, LV_ALIGN_TOP_MID, 0, 30);
 
-    // ÖĞ²¿Í¼±ê»òĞÅÏ¢
-    // Âß¼­£ºÈç¹ûÊÇ¹ÊÕÏ£¬ÏÔÊ¾´óµÄºìÉ«Í¼±ê£»Èç¹ûÕı³££¬ÏÔÊ¾×´Ì¬ÎÄ±¾»òµçÁ÷
+    // ä¸­éƒ¨å›¾æ ‡æˆ–ä¿¡æ¯
+    // é€»è¾‘ï¼šå¦‚æœæ˜¯æ•…éšœï¼Œæ˜¾ç¤ºå¤§çš„çº¢è‰²å›¾æ ‡ï¼›å¦‚æœæ­£å¸¸ï¼Œæ˜¾ç¤ºçŠ¶æ€æ–‡æœ¬æˆ–ç”µæµ
     if(is_fault) {
-        // --- »æÖÆ¹ÊÕÏ»ÕÕÂ ---
+        // --- ç»˜åˆ¶æ•…éšœå¾½ç«  ---
         lv_obj_t * badge = lv_obj_create(shell);
         lv_obj_add_style(badge, &style_err_badge, 0);
         lv_obj_set_size(badge, 40, 40);
-        lv_obj_align(badge, LV_ALIGN_CENTER, 0, -5); // ¾ÓÖĞÎ¢ÉÏ
+        lv_obj_align(badge, LV_ALIGN_CENTER, 0, -5); // å±…ä¸­å¾®ä¸Š
 
         lv_obj_t * icon = lv_label_create(badge);
-        // Ê¹ÓÃ "X" ·ûºÅ (LV_SYMBOL_CLOSE) »òÕß "!" (LV_SYMBOL_WARNING)
+        // ä½¿ç”¨ "X" ç¬¦å· (LV_SYMBOL_CLOSE) æˆ–è€… "!" (LV_SYMBOL_WARNING)
         lv_label_set_text(icon, LV_SYMBOL_CLOSE);
         lv_obj_set_style_text_color(icon, COLOR_WHITE, 0);
-        lv_obj_set_style_text_font(icon, &lv_font_montserrat_20, 0); // ·ûºÅ´óĞ¡
+        lv_obj_set_style_text_font(icon, &lv_font_montserrat_20, 0); // ç¬¦å·å¤§å°
         lv_obj_center(icon);
 
-        // ¹ÊÕÏÃèÊö (·Åµ½ÏÂÃæÈ¥£¬´úÌæµçÁ÷)
+        // æ•…éšœæè¿° (æ”¾åˆ°ä¸‹é¢å»ï¼Œä»£æ›¿ç”µæµ)
         lbl_info = lv_label_create(shell);
         if(data->status == CELL_ERR_OV) lv_label_set_text(lbl_info, "OVER-V");
         else if(data->status == CELL_ERR_UV) lv_label_set_text(lbl_info, "UNDER-V");
         else lv_label_set_text(lbl_info, "ERROR");
 
         lv_obj_set_style_text_color(lbl_info, COLOR_ST_ERR, 0);
-        lv_obj_set_style_text_font(lbl_info, &lv_font_montserrat_14, 0); // ¼Ó´Ö»ò´óµã
-        lv_obj_align(lbl_info, LV_ALIGN_BOTTOM_MID, 0, -35); // ·ÅÏÂÃæ
+        lv_obj_set_style_text_font(lbl_info, &lv_font_montserrat_14, 0); // åŠ ç²—æˆ–å¤§ç‚¹
+        lv_obj_align(lbl_info, LV_ALIGN_BOTTOM_MID, 0, -35); // æ”¾ä¸‹é¢
 
     } else {
-        // --- Õı³£ÏÔÊ¾µçÁ÷/×´Ì¬ ---
+        // --- æ­£å¸¸æ˜¾ç¤ºç”µæµ/çŠ¶æ€ ---
         lbl_info = lv_label_create(shell);
         if(data->status == CELL_CHG) {
              lv_label_set_text(lbl_info, "Chg...");
@@ -333,11 +328,11 @@ void create_battery_cell(lv_obj_t * parent, int cell_idx) {
              lv_label_set_text(lbl_info, "Idle");
              lv_obj_set_style_text_color(lbl_info, COLOR_TEXT_SUB, 0);
         }
-        lv_obj_set_style_text_font(lbl_info, &lv_font_montserrat_12, 0);
+        lv_obj_set_style_text_font(lbl_info, &lv_font_montserrat_14, 0);
         lv_obj_align(lbl_info, LV_ALIGN_CENTER, 0, 5);
     }
 
-    // °Ù·Ö±È (Bottom)
+    // ç™¾åˆ†æ¯” (Bottom)
     lbl_p = lv_label_create(shell);
     lv_label_set_text_fmt(lbl_p, "%d%%", data->percent);
     lv_obj_set_style_text_font(lbl_p, &lv_font_montserrat_20, 0);
@@ -346,7 +341,7 @@ void create_battery_cell(lv_obj_t * parent, int cell_idx) {
 }
 
 /*************************************************************************
- * 7. ¸üĞÂÂß¼­
+ * 7. æ›´æ–°é€»è¾‘
  *************************************************************************/
 void update_header_leds(void) {
     int i;
@@ -354,7 +349,7 @@ void update_header_leds(void) {
         lv_color_t color = get_group_color(group_states[i]);
         lv_obj_set_style_bg_color(group_indicators[i], color, 0);
 
-        // Ñ¡ÖĞ×é¸ßÁÁ±ß¿ò
+        // é€‰ä¸­ç»„é«˜äº®è¾¹æ¡†
         if(i == current_view_group) {
             lv_obj_set_style_border_width(group_indicators[i], 3, 0);
             lv_obj_set_style_border_color(group_indicators[i], COLOR_TEXT_MAIN, 0);
@@ -413,7 +408,7 @@ static void prev_next_cb(lv_event_t * e) {
     current_view_group = next;
     refresh_view();
 }
-
+#include <time.h>  
 static void timer_update_cb(lv_timer_t * t) {
     time_t now;
     struct tm * ti;
@@ -426,10 +421,10 @@ static void timer_update_cb(lv_timer_t * t) {
 }
 
 /*************************************************************************
- * 8. UI ³õÊ¼»¯
+ * 8. UI åˆå§‹åŒ–
  *************************************************************************/
 void ui_create(void) {
-    // ±äÁ¿ÉùÃ÷
+    // å˜é‡å£°æ˜
     lv_obj_t * scr = lv_scr_act();
     lv_obj_t * header;
     lv_obj_t * lbl_main;
@@ -463,7 +458,7 @@ void ui_create(void) {
     lv_obj_set_style_text_font(label_sys_time, &lv_font_montserrat_16, 0);
     lv_obj_align(label_sys_time, LV_ALIGN_CENTER, -30, 0);
 
-    // G1-G4 µÆÇøÓò
+    // G1-G4 ç¯åŒºåŸŸ
     leds_area = lv_obj_create(header);
     lv_obj_remove_style_all(leds_area);
     lv_obj_set_size(leds_area, 260, 60);
@@ -543,34 +538,8 @@ void ui_create(void) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// Ö÷Èë¿Ú
-void ui_init(void) {
-ui_create();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//// ä¸»å…¥å£
+//void ui_create(void) {
+//ui_battery_2x6_create();
+//}
 

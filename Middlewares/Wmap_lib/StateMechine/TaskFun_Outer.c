@@ -83,7 +83,7 @@ TaskComps_t g_taskComps[] =
 
 }
 
-static void Handle_test3(unsigned int num);
+//static void Handle_test3(unsigned int num);
 /**
 * @brief  50ms
   * @param  
@@ -106,7 +106,7 @@ stack_check_usage();
 
 }
 
-static void Handle_test2(void){
+ void Handle_test2(void){
 static uint16_t i=0;
 	uint64_t ii=0;
 	ii=(uint64_t)GetSysRunTime();

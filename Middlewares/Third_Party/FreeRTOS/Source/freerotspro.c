@@ -42,7 +42,10 @@
 //#include "lv_port_indev_template.h"
 //#include "lv_demo_stress.h"
 #include "./sys/sysio.h"
-
+#include "./TaskTest/Task_mockheap_stack.h"
+ #include "./shell_port.h"
+#include "./hook/hook_mem.h"
+#include "./rtosprintf/frtos_printf.h"
 /******************************* 宏定义 ************************************/
 /*
  * 当我们在写应用程序的时候，可能需要用到一些宏定义。
@@ -97,7 +100,7 @@ static void T_2_Task(void* pvParameters);/* KEY_Task任务实现 */
 //QueueHandle_t Test_Queue =NULL;
 
 
-void lv_demo_task(void *pvParameters);  /* 任务函数 */
+void vLvglTask(void *pvParameters);  /* 任务函数 */
 /*****************************************************************
   * @brief  主函数
   * @param  无
@@ -113,16 +116,18 @@ uint8_t FreerTosProBegin(void)
   /* 开发板硬件初始化 */
 
 //  lv_init_all();
-
+//vStartStackOverflowTest();
   //printf("按下KEY1挂起任务，按下KEY2恢复任务\n");
   
    /* 创建AppTaskCreate任务 */
   xReturn = xTaskCreate((TaskFunction_t )AppTaskCreate,  /* 任务入口函数 */
                         (const char*    )"AppTaskCreate",/* 任务名字 */
-                        (uint16_t       )512,  /* 任务栈大小 */
+                        (uint16_t       )1024,  /* 任务栈大小 */
                         (void*          )NULL,/* 任务入口函数参数 */
                         (UBaseType_t    )20, /* 任务的优先级 */
                         (TaskHandle_t*  )&tmp_handle);/* 任务控制块指针 */ 
+	 xReturn = pdPASS;
+	
   /* 启动任务调度 */           
   if(pdPASS == xReturn)
 		
@@ -153,9 +158,16 @@ static void AppTaskCreate(void)
   taskENTER_CRITICAL();           //进入临界区
     /* 创建Test_Queue */
 
+
 //  if(NULL != Test_Queue)
 //    printf("创建Test_Queue消息队列成功!\r\n");
+	 vPrintHeapState("Before Creation");
+#if USE_OS&&USE_LETTER_SHELL
+LetterShell_OS_Init();
 	
+vPrintStack_TaskCreationResult("shell", xReturn, 256);
+#endif
+
 	#if 1
   /* 创建LED_Task任务 */
   xReturn = xTaskCreate((TaskFunction_t )T_1_Task, /* 任务入口函数 */
@@ -164,8 +176,8 @@ static void AppTaskCreate(void)
                         (void*          )NULL,	/* 任务入口函数参数 */
                         (UBaseType_t    )13,	    /* 任务的优先级 */
                         (TaskHandle_t*  )&tmp_handle);/* 任务控制块指针 */
-  if(pdPASS == xReturn)
-    printf("creat T_1_Task success!\r\n");
+   vPrintStack_TaskCreationResult("T_1_Task", xReturn, 128);
+//		vPrintHeapState("After T_1_Task Creation");										
   /* 创建KEY_Task任务 *///后创建先调用
   xReturn = xTaskCreate((TaskFunction_t )T_2_Task,  /* 任务入口函数 */
                         (const char*    )"T_2_Task",/* 任务名字 */
@@ -173,22 +185,21 @@ static void AppTaskCreate(void)
                         (void*          )NULL,/* 任务入口函数参数 */
                         (UBaseType_t    )12, /* 任务的优先级 */
                         (TaskHandle_t*  )&tmp_handle);/* 任务控制块指针 */ 
- if(pdPASS == xReturn)
-    printf("creat T_2_Task success!\r\n");
-												
+ vPrintStack_TaskCreationResult("T_2_Task", xReturn, 128);
+//		 vPrintHeapState("After T_2_Task Creation");											
 												/* 创建LVGL任务 */
-    xTaskCreate((TaskFunction_t )lv_demo_task,
-                (const char*    )"lv_demo_task",
-                (uint16_t       )1024, 
+    xTaskCreate((TaskFunction_t )vLvglTask,
+                (const char*    )"vLvglTask",
+                (uint16_t       )8192, 
                 (void*          )NULL,
-                (UBaseType_t    )11,
+                (UBaseType_t    )tskIDLE_PRIORITY+5,
                 (TaskHandle_t*  )&tmp_handle);
 			 if(pdPASS == xReturn)
-    printf("creat lv_demo_task success!\r\n");									
-												
+    vPrintStack_TaskCreationResult("vLvglTask", xReturn, 8192);								
+//			 vPrintHeapState("After vLvglTask Creation");									
 	#endif
- 
-	
+// CreateMemTestTasks();
+	vPrintHeapState("After Creation");
 //	    xTaskCreate((TaskFunction_t )thread_shell,     
 //                (const char*    )"thread_shell",   
 //                (uint16_t       )128*4,
@@ -210,48 +221,63 @@ static void AppTaskCreate(void)
  * @param       pvParameters : 传入参数(未用到)
  * @retval      无
  */
-void lv_demo_task(void *pvParameters)
+void vLvglTask(void *pvParameters)
 {
-    pvParameters = pvParameters;
-    
 
+		lv_init_all();
 		lv_test();
     
     while(1)
     {
         lv_timer_handler(); /* LVGL计时器 */
-        vTaskDelay(pdMS_TO_TICKS(5));
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
 
 
 
+#include "log.h"
 
+
+
+
+#include "stdarg.h"
 
 static void T_1_Task(void* parameter)
 {	
 //	BaseType_t xReturn = pdTRUE;/* 定义一个创建信息返回值，默认为pdTRUE */
 //	 uint32_t r_queue;	/* 定义一个接收消息的变量 */
+	int count = 0;
   while (1)
   {
 //LED1_TOGGLE;
-		Handle_DWT();
-//		 printf(" T_1_Task !\r\n");
-    vTaskDelay(1200/portTICK_PERIOD_MS);   /* 延时1000个ms */
+		Handle_test3();
+				logInfo("T_2_Task:-----\n");
+		SYSTEM_I_PRINT("Task is running, count: %d", count++);
+		taskYIELD();
+		SYSTEM_D_PRINT("Task is running, count: %d", count++);
+//		printf("xxxxxx\r\n");
+		 SYSTEM_DEBUG(" T_1_Task !\r\n");
+    vTaskDelay(8000/portTICK_PERIOD_MS);   /* 延时1000个ms */
   }
 }
 
+#include <elog.h>
 
+extern Shell shell;
 static void T_2_Task(void* parameter)
 {	
 //	BaseType_t xReturn = pdTRUE;/* 定义一个创建信息返回值，默认为pdTRUE */
 //	 uint32_t r_queue;	/* 定义一个接收消息的变量 */
+	
   while (1)
   {
 //LED2_TOGGLE;
 //		printf(" T_2_Task !\r\n");
-	SYSTEM_DEBUG(" T_2_Task !\r\n");
-    vTaskDelay(pdMS_TO_TICKS(1000));   /* 延时1000个ms */
+
+//		shellPrint(&shell, "T_2_Task");
+//	log_a(" T_2_Task !\r\n");
+    vTaskDelay(pdMS_TO_TICKS(10000));   /* 延时1000个ms */
   }
 }
 

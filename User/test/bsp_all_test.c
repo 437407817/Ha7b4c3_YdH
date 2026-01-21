@@ -82,7 +82,7 @@ SDRAM_DMA_Test();
 	Flash_Test();
 #endif
 
-#if (USE_LVGL)
+#if ((!USE_OS)&&USE_LVGL)
 lv_test();//使用裸机调用LVGL
 #endif
 //	Segger_Test();

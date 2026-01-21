@@ -77,7 +77,8 @@ void lv_test(void){
 #if 0		
 	lv_demo_stress();
 #endif
-	
+	//ui_create();
+	//lv_switch_label_demo();
 #if 1	
 //	lv_obj_t * scr = lv_scr_act(); // »ñÈ¡Ä¬ÈÏÆÁÄ»
 	  lv_obj_t * label;

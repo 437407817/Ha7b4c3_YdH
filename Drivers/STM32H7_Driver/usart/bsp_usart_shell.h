@@ -3,7 +3,7 @@
 
 #include "./stm32_FH_xxx_hal.h"
 #include <stdio.h>
-
+#include "./user_config.h"
 
 /* COM define */
 #define USE_COM_LOG                         0U
@@ -113,9 +113,11 @@ extern UART_HandleTypeDef huart_shell_Handle;
 //void USART_Config_SHELL(void);
 void USART_Shell_ComDrvInit(void);
 
-
+#if TEST_SHELL_UART
+ #if !(USE_LETTER_SHELL)
 void HAL_UART_Shell_RxCpltCallback(void);
-
+#endif
+#endif
 
 void USART_Shell_SendChar(uint8_t ch);
 uint8_t USART_Shell_ReceiveChar(void);

@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H743xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress</IncludePath>
+              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1753,6 +1753,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>TASK</GroupName>
+          <Files>
+            <File>
+              <FileName>Task_mockheap_stack.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Wmap_lib\TaskTest\Task_mockheap_stack.c</FilePath>
+            </File>
+            <File>
+              <FileName>hook_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party_user\freertosutil\hook\hook_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>frtos_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party_user\freertosutil\rtosprintf\frtos_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>TEST</GroupName>
           <Files>
             <File>
@@ -1859,6 +1879,11 @@
               <FileName>log.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\letter-shell\extensions\log\log.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_print.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\letter-shell\src\shell_print.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2482,57 +2507,6 @@
               <FileName>lv_font_montserrat_16.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src\font\lv_font_montserrat_16.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>lv_font_montserrat_18.c</FileName>
@@ -2594,57 +2568,6 @@
               <FileName>lv_font_montserrat_20.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src\font\lv_font_montserrat_20.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>lv_font_montserrat_22.c</FileName>
@@ -4968,6 +4891,21 @@
               <FileName>lv_example_get_started_4.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\get_started\lv_example_get_started_4.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LVGL/GUI_APP</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_app_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\lv_wmap_app\lv_app_base\lv_app_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_w_demo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\lv_wmap_app\lv_app_base\lv_w_demo.c</FilePath>
             </File>
           </Files>
         </Group>

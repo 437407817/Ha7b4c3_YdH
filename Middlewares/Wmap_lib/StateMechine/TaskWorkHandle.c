@@ -26,6 +26,19 @@ void Handle_letter_Shell_NoOsWhile(void){
 	
 }
 
+ void Handle_test3(void){
+static uint16_t i=0;
+	uint64_t ii=0;
+	ii=(uint64_t)GetSysRunTime();
+//	SYSTEM_DEBUG("Handle_test2 is i=%d---%llu",i++,ii);
+//	 SYSTEM_DEBUG("Handle_test2 is i=%d---0x%08X%08X", i++, (uint32_t)(ii >> 32), (uint32_t)ii);
+//	
+//	SYSTEM_BIGNUM_HEX(ii,"");
+	SYSTEM_DEBUG("");
+  SYSTEM_BIGNUM_DEC(1,ii,"Handle_test2 is i=%d  ",i++);
+//	printf("Handle_test2 is i=%d---%llu",i++,ii);
+//printf("xxxxxxxxxxxxxxxxx------------- ");
+}
 
 
 void Handle_IIC_TOUCH(void){

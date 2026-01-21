@@ -34,9 +34,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	if(huart == &huart_shell_Handle){
 	HAL_UART_Shell_RxCpltCallback();
 	}
-#endif
+	
 #endif
 	
+#endif
+		if(huart == &huart_shell_Handle){
+	HAL_UART_Shell_RxCpltCallback();
+	}
 #if USE_UARTx_DMA&&USE_UART_DMA_RX
 if (huart == &huart_DMA_Handle) {
 HAL_USARTx_DMA_RxCpltCallback();

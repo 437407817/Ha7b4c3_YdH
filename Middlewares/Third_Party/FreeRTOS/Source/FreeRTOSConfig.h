@@ -157,7 +157,7 @@
 //支持静态内存
 #define configSUPPORT_STATIC_ALLOCATION					0					
 //系统所有总的堆大小
-#define configTOTAL_HEAP_SIZE					((size_t)(36*1024))   //堆如果不够大，创建任务不成功 
+#define configTOTAL_HEAP_SIZE					((size_t)(128*1024))   //堆如果不够大，创建任务不成功 
 
 
 
@@ -191,14 +191,14 @@
 #define configUSE_TICK_HOOK						1           
 
 //使用内存申请失败钩子函数
-#define configUSE_MALLOC_FAILED_HOOK			0 
+#define configUSE_MALLOC_FAILED_HOOK			1 
 
 /*
  * 大于0时启用堆栈溢出检测功能，如果使用此功能 
  * 用户必须提供一个栈溢出钩子函数，如果使用的话
  * 此值可以为1或者2，因为有两种栈溢出检测方法 */
-#define configCHECK_FOR_STACK_OVERFLOW			0   
-
+#define configCHECK_FOR_STACK_OVERFLOW			2   
+#define configRECORD_STACK_HIGH_ADDRESS     1 // 记录栈高地址（可选，辅助调试）
 
 /********************************************************************
           FreeRTOS与运行时间和任务状态收集有关的配置选项   
@@ -249,9 +249,9 @@
 #define INCLUDE_vTaskDelay				           1
 #define INCLUDE_eTaskGetState			           1
 #define INCLUDE_xTimerPendFunctionCall	     0
-//#define INCLUDE_xTaskGetCurrentTaskHandle       1
-//#define INCLUDE_uxTaskGetStackHighWaterMark     1
-//#define INCLUDE_xTaskGetIdleTaskHandle          0
+#define INCLUDE_xTaskGetCurrentTaskHandle       1
+#define INCLUDE_uxTaskGetStackHighWaterMark     1
+#define INCLUDE_xTaskGetIdleTaskHandle          0
 #define INCLUDE_xTaskGetHandle               1   //*获取任务
 
 /******************************************************************

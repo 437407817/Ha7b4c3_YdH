@@ -153,7 +153,7 @@ SDRAM_DMA_Init();
 QSPI_FLASH_Init();
 
 
-#if (USE_LVGL)
+#if (!USE_OS)&&USE_LVGL
 lv_init_all();
 #endif
 
@@ -165,65 +165,16 @@ TouchDrvInit();//裸机时才用
 
 
 
-//lv_init_all();
-//MX_DMA2D_Init();
-//MX_FATFS_Init();
-//BSP_usbd_init();
-
-//	
-	//ADCx_Init();
-//I2C_EE_Init();
-//	BASIC_TIM_Init();
-//IIC_ConfigInit();	
-//	i2c_Soft_CfgGpio();
-//SPI_A_Init();	
-	
-//	Delay(200);
-//RelayALL_GPIO_Config();	
-//	IN_Io_ALL_GPIO_Config();
-//ADC_CC6902_Init();
-//	LCD_Init();
-//IWDG_Config_nms(EM_iwd_4000ms);
-
-//AppTaskScheduleInit();
-//	ADS7822_Init();
-//	OLED_Init();
-//Delay(1000);
-
 easylogger_init();SYSTEM_INFO("easylogger_init over------------- \n");
 //USE_FREERTOS 
-#if USE_OS&&USE_LETTER_SHELL
 
-
-
-//zn_shell_init();
-LetterShell_OS_Init();
-//nr_os_shell_init();SYSTEM_INFO("nr_os_shell_init over------------- \n");
-#else
-
-
-#endif
 
 
 #if USE_LETTER_SHELL&&!USE_OS
 letterShell_no_os_WhileInit();SYSTEM_INFO("letterShell_no_os_noWhile_Init over------------- \n");
 #endif
 
-//SYSTEM_INFO("is_faultmask_active %d \n",is_faultmask_active());
-////__enable_irq();
-//__set_FAULTMASK(0);
-//SYSTEM_INFO("is_faultmask_active %d \n",is_faultmask_active());
 
-//BatteryInit();
-
-//    SysTick_Config(SystemCoreClock / 1000); 
-
-//    // 配置 SysTick 中断优先级，例如设置为最低优先级
-//    NVIC_SetPriority(SysTick_IRQn, 0x0F);
-
-
-//shell_init();SYSTEM_INFO("shell_init over------------- ");
-//CAN_Config_Init();	
 
 
 

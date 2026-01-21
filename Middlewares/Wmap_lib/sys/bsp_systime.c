@@ -311,7 +311,27 @@ void TimingDelay_Decrement(void)
 
 
 
+// sys_time.c 文件（新建）
+#include <time.h>  // 必须包含
 
+// 全局时间变量（供外部修改，比如RTC/定时器中断）
+time_t g_sys_time = 0;
+
+// 标准time()函数实现（无static，全局可见）
+time_t time(time_t *t)
+{
+    // 核心逻辑：返回当前系统时间
+    if (t != NULL) {
+        *t = g_sys_time;
+    }
+    return g_sys_time;
+}
+
+// 可选：提供时间更新接口（供定时器/RTC调用）
+void sys_time_inc(void)
+{
+    g_sys_time++;  // 每秒+1，模拟时间流逝
+}
 
 
 

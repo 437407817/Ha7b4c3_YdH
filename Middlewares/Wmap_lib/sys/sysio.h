@@ -44,7 +44,7 @@ EM_SERIAL_PRINT=0x02,
 EM_EASYLOG_PRINT=0x04,
 };
 
-
+//#define  SYSTEM_print(fmt,arg...)  do{printf}while(0)
 
 
 //SEGGER¥Ú”°

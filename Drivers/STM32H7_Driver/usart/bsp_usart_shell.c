@@ -19,7 +19,7 @@
 #include "./buffer/p_data_queue_outer.h"
 #include "./buffer/que.h"
 #include "./sys/sysio.h"
-#include "./user_config.h"
+
 
 
 
