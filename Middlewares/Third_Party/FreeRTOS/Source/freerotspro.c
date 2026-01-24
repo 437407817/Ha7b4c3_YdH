@@ -46,6 +46,11 @@
  #include "./shell_port.h"
 #include "./hook/hook_mem.h"
 #include "./rtosprintf/frtos_printf.h"
+#include "./TaskTest/Task_check.h"
+//#include "./usart/bsp_usart.h"
+#include "./SEGGER_TOOLKIT.h"
+
+
 /******************************* 宏定义 ************************************/
 /*
  * 当我们在写应用程序的时候，可能需要用到一些宏定义。
@@ -96,7 +101,7 @@ static void AppTaskCreate(void);/* 用于创建任务 */
 
 static void T_1_Task(void* pvParameters);/* LED_Task任务实现 */
 static void T_2_Task(void* pvParameters);/* KEY_Task任务实现 */
-
+void SEGGERTask(void *pvParameters);
 //QueueHandle_t Test_Queue =NULL;
 
 
@@ -194,8 +199,29 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                 (void*          )NULL,
                 (UBaseType_t    )tskIDLE_PRIORITY+5,
                 (TaskHandle_t*  )&tmp_handle);
+								
+								
 			 if(pdPASS == xReturn)
-    vPrintStack_TaskCreationResult("vLvglTask", xReturn, 8192);								
+    vPrintStack_TaskCreationResult("vLvglTask", xReturn, 8192);						
+
+			 
+	    xTaskCreate((TaskFunction_t )SEGGERTask,
+                (const char*    )"SEGGERTask",
+                (uint16_t       )256, 
+                (void*          )NULL,
+                (UBaseType_t    )tskIDLE_PRIORITY+4,
+                (TaskHandle_t*  )&tmp_handle);
+vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);				 
+			 
+//    xTaskCreate((TaskFunction_t )uart_health_check_task,
+//                (const char*    )"uart_health_check_task",
+//                (uint16_t       )256, 
+//                (void*          )NULL,
+//                (UBaseType_t    )tskIDLE_PRIORITY+4,
+//                (TaskHandle_t*  )&tmp_handle);
+//vPrintStack_TaskCreationResult("uart_health_check_task", xReturn, 256);		
+
+			 
 //			 vPrintHeapState("After vLvglTask Creation");									
 	#endif
 // CreateMemTestTasks();
@@ -234,7 +260,16 @@ void vLvglTask(void *pvParameters)
     }
 }
 
+void SEGGERTask(void *pvParameters)
+{
 
+
+    while(1)
+    {
+        SEGGER_HostDataToUsart(); /* LVGL计时器 */
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
 
 #include "log.h"
 
@@ -257,8 +292,8 @@ static void T_1_Task(void* parameter)
 		taskYIELD();
 		SYSTEM_D_PRINT("Task is running, count: %d", count++);
 		
-		Check_Usart1_enable();
-		Check_Usart1_clock_enable();
+//		Check_Usart1_enable();
+//		Check_Usart1_clock_enable();
 		
 //		printf("xxxxxx\r\n");
 		 SYSTEM_DEBUG(" T_1_Task !\r\n");

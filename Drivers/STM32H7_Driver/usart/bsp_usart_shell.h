@@ -121,7 +121,7 @@ void HAL_UART_Shell_RxCpltCallback(void);
 
 void USART_Shell_SendChar(uint8_t ch);
 uint8_t USART_Shell_ReceiveChar(void);
-
+void USART_Shell_UartDeInit(void);
 
 void Usart_SendString(uint8_t *str);
 

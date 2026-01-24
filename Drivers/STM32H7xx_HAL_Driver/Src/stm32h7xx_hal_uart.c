@@ -1347,6 +1347,77 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
   }
 }
 
+
+HAL_StatusTypeDef HAL_UART_Receive_IT_UNLOCK(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
+{
+  /* Check that a Rx process is not already ongoing */
+  if (huart->RxState == HAL_UART_STATE_READY)
+  {
+    if ((pData == NULL) || (Size == 0U))
+    {
+      return HAL_ERROR;
+    }
+
+//    __HAL_LOCK(huart);
+
+    huart->pRxBuffPtr  = pData;
+    huart->RxXferSize  = Size;
+    huart->RxXferCount = Size;
+    huart->RxISR       = NULL;
+
+    /* Computation of UART mask to apply to RDR register */
+    UART_MASK_COMPUTATION(huart);
+
+    huart->ErrorCode = HAL_UART_ERROR_NONE;
+    huart->RxState = HAL_UART_STATE_BUSY_RX;
+
+    /* Enable the UART Error Interrupt: (Frame error, noise error, overrun error) */
+    SET_BIT(huart->Instance->CR3, USART_CR3_EIE);
+
+    /* Configure Rx interrupt processing*/
+    if ((huart->FifoMode == UART_FIFOMODE_ENABLE) && (Size >= huart->NbRxDataToProcess))
+    {
+      /* Set the Rx ISR function pointer according to the data word length */
+      if ((huart->Init.WordLength == UART_WORDLENGTH_9B) && (huart->Init.Parity == UART_PARITY_NONE))
+      {
+        huart->RxISR = UART_RxISR_16BIT_FIFOEN;
+      }
+      else
+      {
+        huart->RxISR = UART_RxISR_8BIT_FIFOEN;
+      }
+
+      __HAL_UNLOCK(huart);
+
+      /* Enable the UART Parity Error interrupt and RX FIFO Threshold interrupt */
+      SET_BIT(huart->Instance->CR1, USART_CR1_PEIE);
+      SET_BIT(huart->Instance->CR3, USART_CR3_RXFTIE);
+    }
+    else
+    {
+      /* Set the Rx ISR function pointer according to the data word length */
+      if ((huart->Init.WordLength == UART_WORDLENGTH_9B) && (huart->Init.Parity == UART_PARITY_NONE))
+      {
+        huart->RxISR = UART_RxISR_16BIT;
+      }
+      else
+      {
+        huart->RxISR = UART_RxISR_8BIT;
+      }
+
+      __HAL_UNLOCK(huart);
+
+      /* Enable the UART Parity Error interrupt and Data Register Not Empty interrupt */
+      SET_BIT(huart->Instance->CR1, USART_CR1_PEIE | USART_CR1_RXNEIE_RXFNEIE);
+    }
+
+    return HAL_OK;
+  }
+  else
+  {
+    return HAL_BUSY;
+  }
+}
 /**
   * @brief Send an amount of data in DMA mode.
   * @note   When UART parity is not enabled (PCE = 0), and Word Length is configured to 9 bits (M1-M0 = 01),

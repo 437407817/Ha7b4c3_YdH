@@ -42,7 +42,7 @@
 //#include "./WindowCmd/Fatfs_cmd.h"   
 //#include "./test/bsp_fatfs_sdram_test.h"
 
-
+#include "./TaskTest/Task_check.h"
 /**
   * @brief  切换采集通道channel for collection
   * @param  *i 当前通道第几个的状态地址  *openstate 1开启轮训转换采集 0 关闭所有通道
@@ -60,13 +60,13 @@ SYSTEM_INFO("implement this function.\r\n");
 	 
 	 		switch(tmp[1]){
 
-//       case 01:GiveSemaTaskHandler("test1",1);SYSTEM_DEBUG("GiveSemaTaskHandler AND start");break;
-// 			case 02:GiveSemaTaskHandler("test1",0);SYSTEM_DEBUG("GiveSemaTaskHandler not start");break;
-// 			case 03:EnableSemaTaskHandler("test1");SYSTEM_DEBUG("EnableSemaTaskHandler");break;
-// 			case 04:DisableSemaTaskHandler("test1");SYSTEM_DEBUG("DisableSemaTaskHandler");break;
+       case 01:uart_unlock_task();SYSTEM_DEBUG("uart_unlock_task ");break;
+ 			case 02:uart_reableIRQ_task();SYSTEM_DEBUG("uart_reableIRQ_task  start");break;
+ 			case 03: USART_Shell_UartDeInit();SYSTEM_DEBUG("void USART_Shell_UartDeInit(void)");break;
+ 			case 04:uart_reable_task();SYSTEM_DEBUG("uart_reable_task");break;
 
-//       case 05:GiveSemaTaskHandler2(HandleSema_test,1);SYSTEM_DEBUG("GiveSemaTaskHandler AND start");break;
-// 			case 06:GiveSemaTaskHandler2(HandleSema_test,0);SYSTEM_DEBUG("GiveSemaTaskHandler not start");break;
+       case 05:uart_debug_error();SYSTEM_DEBUG("uart_debug_error");break;
+ 			case 06:uart_debug_fixerror();SYSTEM_DEBUG("uart_debug_fixerror");break;
 // 			case 07:EnableSemaTaskHandler2(HandleSema_test);SYSTEM_DEBUG("EnableSemaTaskHandler");break;
 // 			case 0x08:DisableSemaTaskHandler2(HandleSema_test);SYSTEM_DEBUG("DisableSemaTaskHandler");break;
 // 			case 0x09:SYSTEM_DEBUG("dwt_delay_ms");dwt_delay_ms(3000);break;

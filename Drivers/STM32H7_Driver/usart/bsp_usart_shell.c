@@ -93,10 +93,12 @@ void USART_Shell_UartInit(void)
 }
 
 
+void USART_Shell_UartDeInit(void)
+{ 
 
-
-
-
+HAL_UART_DeInit(&huart_shell_Handle);
+	HAL_NVIC_DisableIRQ(USART_SHELL_IRQ);
+}
 
 /**
   * @brief UART MSP ≥ı ºªØ 

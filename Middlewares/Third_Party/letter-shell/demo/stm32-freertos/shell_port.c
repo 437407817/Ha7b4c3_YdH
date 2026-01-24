@@ -25,7 +25,7 @@
 
  #include "./sys/sysio.h"
  #include "./buffer/user_buffers.h"
-
+#include "./HAL/hal_ext_uart.h"
 Shell shell;
 char shellBuffer[512];
 
@@ -56,37 +56,97 @@ void userLogWrite(char *buffer, short len) {
     }
 }
 
-uint8_t my_uartshell_redata;
+volatile uint8_t my_uartshell_redata;
 
 extern ShellRingBuffer_t shellRingBuffer;
 HAL_StatusTypeDef RIT_Status;
 
-#if (USE_LETTER_SHELL&&USE_OS)
-
+//#if (USE_LETTER_SHELL&&USE_OS)
+#if (USE_LETTER_SHELL)
 
 void USART_SHELL_IRQHandler(void)
 {
-//SYSTEM_INFO("+");
+SYSTEM_INFO("+");
+	    if(huart_shell_Handle.Instance == USART_SHELL)//判断串口号
+    {
+	    uint32_t isr_flags = huart_shell_Handle.Instance->ISR; // 读取中断状态寄存器
+    uint32_t cr1_flags = huart_shell_Handle.Instance->CR1; // 读取控制寄存器1
+    // 1. 优先处理 ORE 错误（H743 需先清错误，再读数据）
+    if (isr_flags & USART_ISR_ORE)
+    {
+        // 第一步：清除 ORE 错误标志
+        huart_shell_Handle.Instance->ICR = USART_ICR_ORECF;
+        // 第二步：读取 RDR 寄存器（必须读，否则错误会持续）
+        (void)huart_shell_Handle.Instance->RDR;
+        // 第三步：强制恢复 RXNEIE 位
+        huart_shell_Handle.Instance->CR1 |= USART_CR1_RXNEIE;
+        SYSTEM_INFO(" ORE error,recovered\r\n");
+    }
+    // 1. 处理接收非空中断（正常接收逻辑）
+    if ((isr_flags & USART_ISR_RXNE_RXFNE) && (cr1_flags & USART_CR1_RXNEIE))
+    {
+        // 读取接收数据（必须读DR寄存器清除RXNE标志）
+         my_uartshell_redata = huart_shell_Handle.Instance->RDR;
+        // 发送到消息队列（复杂处理放任务中，回调只做最小操作）
+//        xQueueSendFromISR(uart_rx_queue, &recv_data, NULL);
+        RingBuffer_WriteByte(&shellRingBuffer.shell_rx_ring,my_uartshell_redata);
+        // 确保 RXNEIE 位始终开启（关键：防止被静默错误关闭）
+        huart_shell_Handle.Instance->CR1 |= USART_CR1_RXNEIE;
+        return;
+    }
+
+    // 2. 主动处理串口静默错误（FE/ NE/ ORE）
+    if (isr_flags & (USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
+    {
+			uart_debug_dump(&huart_shell_Handle);
+        // 第一步：清除所有错误标志（必须操作，否则错误会一直存在）
+        huart_shell_Handle.Instance->ICR = USART_ICR_FECF | USART_ICR_NECF | USART_ICR_ORECF;
+        
+        // 第二步：强制恢复 RXNEIE 位（核心：避免错误导致中断关闭）
+        huart_shell_Handle.Instance->CR1 |= USART_CR1_RXNEIE;
+        
+        // 可选：记录错误日志，方便排查硬件问题（比如串口电平不稳）
+			SYSTEM_INFO("err :ISR=0x%08X , recocered\r\n", isr_flags);
+        return;
+    }
+	}
+	
 HAL_UART_IRQHandler(&huart_shell_Handle);	
 }
 //CEVENT_EXPORT(EVENT_INIT_STAGE2, LetterShell_OS_Init);
+
+
+
 //串口收到数据回调
 void HAL_UART_Shell_RxCpltCallback(UART_HandleTypeDef *huart){
+	#if 0
     if(huart_shell_Handle.Instance == USART_SHELL)//判断串口号
     {
 
 
-//					SYSTEM_INFO("%c",my_uartshell_redata);
+					SYSTEM_INFO("%c",my_uartshell_redata);
 				RingBuffer_WriteByte(&shellRingBuffer.shell_rx_ring,my_uartshell_redata);
         // 重启接收
-				    while(HAL_UART_Receive_IT(&huart_shell_Handle, (uint8_t *)&my_uartshell_redata, 1)!= HAL_OK){
-      huart_shell_Handle.RxState = HAL_UART_STATE_READY;
-							SYSTEM_INFO(" RIT BUSY = %d \r\n",RIT_Status);
-      __HAL_UNLOCK(&huart_shell_Handle);
-    }
+			taskENTER_CRITICAL(); // 进入临界区（关闭所有可屏蔽中断）
+//				    while((RIT_Status=HAL_UART_Receive_IT_UNLOCK(&huart_shell_Handle, (uint8_t *)&my_uartshell_redata, 1))!= HAL_OK){
+							   while((RIT_Status=HAL_UART_Receive_IT(&huart_shell_Handle, (uint8_t *)&my_uartshell_redata, 1))!= HAL_OK){
+       // 中止当前接收
+//							SYSTEM_INFO(" RIT BUSY = %d State =%x %x err=%x\r\n",RIT_Status,huart_shell_Handle.RxState,HAL_UART_GetState(&huart_shell_Handle),huart->ErrorCode);
+								uart_debug_dump(&huart_shell_Handle);
+								uart_debug_checkerror(&huart_shell_Handle,ENABLE);
 
+//							 HAL_StatusTypeDef status = HAL_UART_AbortReceive(&huart_shell_Handle);
+//							SET_BIT(huart_shell_Handle.Instance->CR1, USART_CR1_RXNEIE);
+//        if (status != HAL_OK) {
+//            SYSTEM_INFO("Failed to abort receive: %d\r\n", status);
+//        }
+//							huart_shell_Handle.RxState = HAL_UART_STATE_READY;
+//      __HAL_UNLOCK(&huart_shell_Handle);
+    }
+taskEXIT_CRITICAL(); // 退出临界区
 
     }
+		#endif
 }
 
 
@@ -96,6 +156,13 @@ void HAL_UART_Shell_RxCpltCallback(UART_HandleTypeDef *huart){
 void HAL_UART_Shell_ErrorCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART_SHELL) {
+			
+			    if(__HAL_UART_GET_FLAG(huart,UART_FLAG_ORE) != RESET){      
+					SYSTEM_INFO("UART_FLAG_ORE Recovered! \r\n");			
+					__HAL_UART_CLEAR_OREFLAG(huart);        
+					HAL_UART_Receive_IT(huart, (uint8_t *)&my_uartshell_redata, 1);
+					}
+			
         // 1. 读取错误类型（可选）
         uint32_t error_code = huart->ErrorCode;
         
@@ -216,9 +283,12 @@ int userShellUnlock(Shell *shell)
  */
 void LetterShell_OS_Init(void)
 {
+
+//	lpuart_disable_fifo_hal(&huart_shell_Handle); // 关闭FIFO
 		// 在 UART 初始化后，添加：
 __HAL_UART_ENABLE_IT(&huart_shell_Handle, UART_IT_ERR);
-	HAL_UART_Receive_IT(&huart_shell_Handle,(uint8_t *)&my_uartshell_redata,1);
+	
+	HAL_UART_Receive_IT_UNLOCK(&huart_shell_Handle,(uint8_t *)&my_uartshell_redata,1);
 
     shellMutex = xSemaphoreCreateMutex();
 

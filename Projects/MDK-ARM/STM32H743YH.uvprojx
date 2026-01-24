@@ -1780,6 +1780,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Wmap_lib\TaskTest\Task_check.c</FilePath>
             </File>
+            <File>
+              <FileName>hal_ext_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Wmap_lib\HAL\hal_ext_uart.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

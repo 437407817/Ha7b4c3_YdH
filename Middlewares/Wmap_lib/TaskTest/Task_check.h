@@ -15,7 +15,12 @@
 
 void Check_Usart1_enable(void);
 void Check_Usart1_clock_enable(void);
-
+void uart_health_check_task(void *arg);
+void uart_unlock_task(void);
+void uart_reableIRQ_task(void);
+void uart_reable_task(void);
+void uart_debug_error(void);
+void uart_debug_fixerror(void);
 
 #endif
 
