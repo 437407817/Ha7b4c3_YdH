@@ -56,6 +56,11 @@ void DWT_Delay_ns(uint32_t ns) {
 }
 
 
+
+
+
+
+
 void DWT_Delay_ms(uint32_t ms) {
     if(ms == 0) return;
     // 1ms = 1000μs，直接调用μs延迟
@@ -76,6 +81,86 @@ void dwt_clearCurrentTick(void)
 {
      DWT->CYCCNT=0;
 }
+
+
+
+///---------------------------------------
+
+
+// 全局变量：DWT计时相关
+volatile uint32_t DWT_Start_Cycle;  // 计时起始周期
+volatile uint32_t DWT_End_Cycle;    // 计时结束周期
+
+
+/**
+ * @brief  开始计时（记录当前CYCCNT值）
+ * @retval 无
+ */
+void DWT_Start_Time(void)
+{
+    // 先重置计数器（可选，也可直接记录当前值）
+    DWT->CYCCNT = 0;
+    DWT_Start_Cycle = DWT->CYCCNT;
+}
+
+/**
+ * @brief  停止计时（记录当前CYCCNT值）
+ * @retval 无
+ */
+void DWT_Stop_Time(void)
+{
+    DWT_End_Cycle = DWT->CYCCNT;
+}
+
+/**
+ * @brief  计算耗时（纯整数运算，无float）
+ * @param  cycles: 输出参数，消耗的CPU周期数
+ * @param  us_int: 输出参数，耗时的整数微秒部分（比如100.501μs → 100）
+ * @param  ns_remain: 输出参数，耗时的剩余纳秒部分（比如100.501μs → 501）
+ * @retval 无
+ */
+void DWT_Calc_Time(uint32_t *cycles, uint32_t *us_int, uint32_t *ns_remain)
+{
+    // 1. 计算周期数（处理溢出，更健壮）
+    if(DWT_End_Cycle >= DWT_Start_Cycle)
+    {
+        *cycles = DWT_End_Cycle - DWT_Start_Cycle;
+    }
+    else
+    {
+        // 处理32位计数器溢出（比如从0xFFFFFFFF到0）
+        *cycles = (0xFFFFFFFF - DWT_Start_Cycle) + DWT_End_Cycle + 1;
+    }
+    
+    // 2. STM32H743主频480MHz = 480000000 Hz
+    const uint32_t SystemCoreClock = 480000000;
+    
+    // 3. 纯整数计算：总纳秒数（四舍五入）
+    uint64_t total_ns = (*cycles * 1000000000ULL + SystemCoreClock / 2) / SystemCoreClock;
+    
+    // 4. 拆分：整数微秒 + 剩余纳秒（无浮点数，精度无损失）
+    *us_int = total_ns / 1000;    // 1μs = 1000ns → 总纳秒数/1000=整数微秒
+    *ns_remain = total_ns % 1000; // 余数=剩余纳秒（0~999）
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

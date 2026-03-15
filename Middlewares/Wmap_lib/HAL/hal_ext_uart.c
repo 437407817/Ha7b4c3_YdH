@@ -2,11 +2,11 @@
 
 
 #include "./HAL/hal_ext_uart.h"
-#include "stm32h7xx_hal.h"
+//#include "stm32h7xx_hal.h"
 #include "./sys/sysio.h"
 
 
-#include "stm32h743xx.h"
+#include "stm32_FH_xxx.h"
 
 
 static uint8_t is_uart_configured(UART_HandleTypeDef *huart)

@@ -347,7 +347,7 @@ static void vTaskCreator(void *pvParameters)
     vTaskDelete(NULL);
 }
 
-// -------------------------- 测试启动入口（main中调用） --------------------------
+// -------------------------- 测试启动入口（main中调用） --------------------------测试栈溢出现象
 void vStartStackOverflowTest(void)
 {
     // 创建任务创建器（自身栈1024字，足够）

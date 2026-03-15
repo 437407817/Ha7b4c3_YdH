@@ -21,7 +21,7 @@
 #include "./usart/bsp_usart_shell.h"
 #include "./usart/bsp_usart.h"
  #include "./shell_port.h"
-
+#include "./user_config.h"
 
 
 // DMA 接收完成回调（循环模式下，缓冲区满后触发）
@@ -31,14 +31,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 //  }else 
 
 //	SYSTEM_INFO("-");
-	#if USE_LETTER_SHELL
+	#if USE_LETTER_SHELL||(TEST_SHELL_UART&&!USE_IT_1)
 	if(huart == &huart_shell_Handle){
 //		SYSTEM_INFO("*");
 	HAL_UART_Shell_RxCpltCallback(huart);
 	}
 	#endif
 	
-#if USE_UARTx_DMA&&USE_UART_DMA_RX
+#if USE_UART_DMA&&USE_UART_DMA_RX
 if (huart == &huart_DMA_Handle) {
 HAL_USARTx_DMA_RxCpltCallback();
 }
@@ -49,7 +49,7 @@ HAL_USARTx_DMA_RxCpltCallback();
 
 //发送0个数据不会调用该函数
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-#if USE_UARTx_DMA
+#if USE_UART_DMA&&USE_UART_DMA_TX
   if (huart == &huart_DMA_Handle) {
 HAL_USARTx_DMA_TxCpltCallback();
   }
@@ -63,7 +63,7 @@ HAL_USARTx_DMA_TxCpltCallback();
 
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
-#if USE_UARTx_DMA&&!USE_LETTER_SHELL&&!USE_OS
+#if USE_UART_DMA&&!USE_LETTER_SHELL&&!USE_OS
 if (huart == &huart_DMA_Handle) {
 	HAL_USARTx_DMA_ErrorCallback();
   }

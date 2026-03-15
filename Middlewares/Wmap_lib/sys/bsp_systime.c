@@ -19,7 +19,7 @@
 
 
 #include "./sys/bsp_systime.h"   
-#include "./core_cm7.h" 
+//#include "./core_cm7.h" 
 #include "./Sys/sys_dwt.h"
 //******************************
 __IO uint32_t NowUse_rtos = 0;

@@ -372,5 +372,6 @@ void LCD_DispString_EN_CH( uint16_t Line, uint16_t Column, const uint8_t * pStr 
 
 void LCD_init_All(void);
 //void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint8_t *color);
-void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t p_address_color);
+void ltdc_color_fill3(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t p_address_color);
+void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t *color);
 #endif /* __BSP_LCD_H */

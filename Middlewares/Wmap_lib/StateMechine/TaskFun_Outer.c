@@ -48,11 +48,11 @@ TaskComps_t g_taskComps[] =
    {0, 1000,   3000, Disable,0 , Handle_usart},
 	 {0, 20000,   20000,  Enable,2,Handle_test },	
 	 {0, 2000,   8000,  Disable,10,Handle_test2},	
-	 	 {0, 1000,   10,  Disable,10,Handle_led},	
+	 	 {0, 1000,   1000,  Disable,10,Handle_led},	
 //		 {0, 2000,   2000,  Disable,10,Handle_DMA_USART_Save},	
 //		  {0, 2000,   200,  Disable,10,Handle_DMA_USART_Send},
 #if !(USE_LVGL_OS)&&(USE_LVGL)
-		{0, 30,   30, Disable,0 , Handle_lv},//使用裸机调用LVGL
+		{0, 30,   LV_DEF_REFR_PERIOD, Disable,0 , Handle_lv},//使用裸机调用LVGL
 #endif
 //	{0, 1000,   1000, Disable,0 , touch_drv_while_test},//使用裸机调用触摸屏测试
 	 //{0, 2000,   3000,  EM_SC_Disable,10,Handle_watchdog_feed},	
@@ -69,8 +69,11 @@ TaskComps_t g_taskComps[] =
 		 #if (!USE_OS)&&USE_TOUCH_IIC
 		  {0, 200,   500,  Disable,10,Handle_IIC_TOUCH},	
 		#endif
-		 	{0, 5000,   10000,  Disable,10,print_heap_status},	
-		 	{0, 5000,   10000,  Disable,10,stack_check_usage},	
+		 #if TEST_SHELL_UART
+		 {0, 1000,   1000, Disable,0 , Test_USART_SHELL_while},
+		 #endif
+//		 	{0, 5000,   10000,  Disable,10,PrintHeapUsageRate},	
+//		 	{0, 5000,   10000,  Disable,10,stack_check_usage},	
 };
 
 
@@ -100,7 +103,7 @@ static void Handle_test(void){
 	i=(uint32_t)GetSysRunTime();
 	
 	SYSTEM_DEBUG_BINARY(i,"BINARY");
-stack_check_usage();
+//stack_check_usage();
 
 	SYSTEM_DEBUG("Handle_test is time:%u ---",i);
 

@@ -25,5 +25,7 @@ void letter_Shell_NoOsHandleTask(void);
 
 
 void HAL_UART_Shell_ErrorCallback(UART_HandleTypeDef *huart);
+#if (USE_LETTER_SHELL)
 void HAL_UART_Shell_RxCpltCallback(UART_HandleTypeDef *huart);
+#endif
 #endif

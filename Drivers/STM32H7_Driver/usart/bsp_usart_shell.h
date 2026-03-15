@@ -115,7 +115,7 @@ void USART_Shell_ComDrvInit(void);
 
 #if TEST_SHELL_UART
  #if !(USE_LETTER_SHELL)
-void HAL_UART_Shell_RxCpltCallback(void);
+void HAL_UART_Shell_RxCpltCallback(UART_HandleTypeDef *huart);
 #endif
 #endif
 

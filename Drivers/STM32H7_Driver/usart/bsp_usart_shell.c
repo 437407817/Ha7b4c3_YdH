@@ -169,7 +169,7 @@ USART_Shell_GpioInit();
 
 
  #if !(USE_LETTER_SHELL)
-void HAL_UART_Shell_RxCpltCallback(void){
+void HAL_UART_Shell_RxCpltCallback(UART_HandleTypeDef *huart){
 	
 uart_rx_buf[index++] = uart_rx_byte;
 //SYSTEM_DEBUG("+++%c",uart_rx_byte);
@@ -248,18 +248,18 @@ if(indexsize!=0){
 	#else
 	HAL_UART_Transmit(&huart_shell_Handle,uart_rx_buf,indexsize,1000);
 	#endif
-	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,uart_rx_buf,indexsize,"-+%d",indexsize);
+	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(1,uart_rx_buf,indexsize,"-+%d",indexsize);
 	indexsize=0;
 	
 }
 }
 
 void Test_USART_SHELL_while(void){
-	while(1){
+//	while(1){
 	Test_USART_SHELL_print();
-		HAL_Delay(1000);
-		printf("*");
-	}
+//		HAL_Delay(1000);
+//		printf("*");
+//	}
 }
 
 

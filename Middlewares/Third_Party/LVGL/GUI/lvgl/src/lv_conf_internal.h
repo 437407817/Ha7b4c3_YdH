@@ -4497,6 +4497,7 @@
     #endif
 #endif
 
+
 /** Build the demos */
 #ifndef LV_BUILD_DEMOS
     #ifdef LV_KCONFIG_PRESENT
@@ -4776,7 +4777,7 @@ LV_EXPORT_CONST_INT(LV_DRAW_BUF_ALIGN);
     #define LV_USE_DEMO_KEYPAD_AND_ENCODER 0
     #define LV_USE_DEMO_BENCHMARK 0
     #define LV_USE_DEMO_RENDER 0
-    #define LV_USE_DEMO_STRESS 0
+    #define LV_USE_DEMO_STRESS 1
     #define LV_USE_DEMO_MUSIC 0
     #define LV_USE_DEMO_VECTOR_GRAPHIC  0
     #define LV_USE_DEMO_FLEX_LAYOUT     0

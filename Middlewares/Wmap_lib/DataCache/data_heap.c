@@ -5,7 +5,7 @@
 
 #include "./sys/sysio.h"
 
-
+#if 1
 // 【MDK环境】获取堆剩余空间（需在启动文件中定义__heap_base/__heap_limit）
 #if defined (__CC_ARM)
 extern uint32_t __heap_base;    // 堆起始地址（启动文件.s中定义）
@@ -49,35 +49,109 @@ uint32_t get_heap_total(void)
 //#endif
 
 // 打印堆内存状态（建议在TouchScan中定期打印）
-void print_heap_status(void)
+void PrintHeapUsageRate(void)
 {
     uint32_t total = get_heap_total();
     uint32_t used = get_heap_used();
     uint32_t free = total - used;
 //    SYSTEM_INFO("Heap Total: %d KB, Used: %d KB, Free: %d KB\n", total/1024, used/1024, free/1024);
-	    SYSTEM_INFO("Heap Total: %d B, Used: %d B, Free: %d B\n", total, used, free);
+	    printf("Heap Total: %d B, Used: %d B, Free: %d B\r\n", total, used, free);
 }
 
+#endif
+
+#include <stdint.h>
+#include <stdio.h>
+
+#include <stdint.h>
+
+//#include "mem_monitor.h"
+#include <stdio.h>
+#include <stdint.h>
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 
-//void touch_drv_while_test(void)
-//{
-//    static uint32_t print_cnt = 0;
-//    TouchScan(&touchInfo2);
+//extern void __heapstats(int (*)(const char *format, ...), void *stream);
 
-//    // 每100次扫描打印一次堆状态（约2秒打印一次）
-//    if(++print_cnt >= 100)
-//    {
-//        print_heap_status();
-//        print_cnt = 0;
-//    }
-
-//    if (touchInfo2.state == DOWN) 
-//    {
-//        SYSTEM_INFO("Touch at (%d, %d), size: %d\n", touchInfo2.point.x, touchInfo2.point.y, touchInfo2.point.size);
-//    }
+//void ShowInternalStats(void) {
+//    printf("\n--- C Library Internal Heap Info --- \n");
+//    __heapstats((int (*)(const char *, ...))printf, NULL);
 //}
 
+
+///* 声明链接器符号 */
+//extern uint32_t Image$$ARM_LIB_HEAP$$Base;
+//extern uint32_t Image$$ARM_LIB_HEAP$$Length;
+
+//static uint32_t s_max_heap_top = 0; // 记录历史最高水位
+
+//void PrintHeapUsageRate(void) {
+//    // 1. 修正：获取真实的 Base 和 Size
+//    uint32_t heap_base  = (uint32_t)&Image$$ARM_LIB_HEAP$$Base;
+//    uint32_t heap_total = (uint32_t)&Image$$ARM_LIB_HEAP$$Length; // 必须加 &
+
+//    // 2. 探测当前地址
+//    void *temp_ptr = malloc(1);
+//    uint32_t current_ptr = (uint32_t)temp_ptr;
+//    
+//    // 3. 更新最高水位线 (真正反映堆危险程度的指标)
+//    if (current_ptr > s_max_heap_top) {
+//        s_max_heap_top = current_ptr;
+//    }
+//    free(temp_ptr);
+
+//    // 4. 计算逻辑
+//    uint32_t current_used = (current_ptr > heap_base) ? (current_ptr - heap_base) : 0;
+//    uint32_t max_used     = (s_max_heap_top > heap_base) ? (s_max_heap_top - heap_base) : 0;
+//    float usage_percent   = ((float)max_used / (float)heap_total) * 100.0f;
+
+//    printf("\r\n--- STM32H7 Heap Monitor ---\r\n");
+//    printf("Heap Range:  0x%08X - 0x%08X\r\n", heap_base, heap_base + heap_total);
+//    printf("Total Size:  %u Bytes\r\n", heap_total);
+//    printf("Current Used: %u Bytes (Instantly)\r\n", current_used);
+//    printf("Peak Used:    %u Bytes (High Watermark)\r\n", max_used);
+//    printf("Usage Rate:   %.2f%% (Based on Peak)\r\n", usage_percent);
+//    printf("----------------------------\r\n");
+//}
+
+
+
+
+void test_heap_change(void)
+{
+    // 1. Initial state: Print the initial heap usage
+    printf("===== Initial Heap Status =====\r\n");
+    PrintHeapUsageRate();
+
+    // 2. Allocate heap memory: Simulate memory allocation in business code
+  volatile   uint8_t *buf1 = (uint8_t*)malloc(10); // Allocate 1KB heap memory
+   volatile  uint8_t *buf2 = (uint8_t*)malloc(20); // Allocate 2KB heap memory
+    printf("\n===== After Allocating 30B Heap Memory =====\r\n");
+    PrintHeapUsageRate(); // Used memory should increase by about 3KB at this point
+
+    // 3. Use the memory (avoid compiler optimizing out unused variables)
+    if(buf1) memset(buf1, 0xAA, 10);
+    if(buf2) memset(buf2, 0x55, 20);
+
+    // 4. Free part of the heap memory: Simulate memory release in business code
+    free(buf1);
+    buf1 = NULL;
+    printf("\n===== After Freeing 1KB Heap Memory =====\r\n");
+    PrintHeapUsageRate(); // Used memory should decrease by about 1KB at this point
+
+    // 5. Free the remaining heap memory
+    free(buf2);
+    buf2 = NULL;
+    printf("\n===== After Freeing All Allocated Heap Memory =====\r\n");
+    PrintHeapUsageRate(); // Used memory should return to near initial state
+}
 
 
 /**************************END OF FILE************************************/

@@ -70,11 +70,11 @@ typedef struct {
 #define QUAD_INOUT_FAST_READ_CMD_4BYTE       0xEC
 
 /* 写操作 */
-#define WRITE_ENABLE_CMD                     0x06
+#define WRITE_ENABLE_CMD                     0x06					 /* 写使能指令,对应手册上的指令为: Write Enable */
 #define WRITE_DISABLE_CMD                    0x04
 
 /* 寄存器操作 */
-#define READ_STATUS_REG1_CMD                  0x05
+#define READ_STATUS_REG1_CMD                  0x05				/* 读取状态命令,对应手册上的指令为: Read Status Register-1 */
 #define READ_STATUS_REG2_CMD                  0x35
 #define READ_STATUS_REG3_CMD                  0x15
 
@@ -82,12 +82,12 @@ typedef struct {
 #define WRITE_STATUS_REG2_CMD                 0x31
 #define WRITE_STATUS_REG3_CMD                 0x11
 /* 编程操作 */
-#define QUAD_INPUT_PAGE_PROG_CMD_4BYTE        0x34
+#define QUAD_INPUT_PAGE_PROG_CMD_4BYTE        0x34		/* 对应手册上的指令是: Quad Input Page Program with 4-Byte Address  */
 #define EXT_QUAD_IN_FAST_PROG_CMD_4BYTE       0x12
 
 /* 擦除操作 */
 #define SECTOR_ERASE_CMD_4BYTE                0x21 
-#define BLOCK64K_ERASE_CMD_4BYTE              0xDC 
+#define BLOCK64K_ERASE_CMD_4BYTE              0xDC 			/* 清除扇区4字节地址，64K扇区,对应手册上的指令为: 64KB Block Erase with 4-Byte Address (64KB) */
 #define CHIP_ERASE_CMD                        0xC7
 
 //#define PROG_ERASE_RESUME_CMD                 0x7A
@@ -100,6 +100,20 @@ typedef struct {
 #define W25Q256JV_FSR_WREN                    ((uint8_t)0x02)    /*!< write enable */
 #define W25Q256JV_FSR_QE                      ((uint8_t)0x02)    /*!< quad enable */
 /*命令定义-结尾*******************************/
+
+/* W25Q256JV相关命令 */
+#define CMD_WRITE_ENABLE	                      WRITE_ENABLE_CMD    /* 写使能指令,对应手册上的指令为: Write Enable */
+#define CMD_GET_REG1		                        READ_STATUS_REG1_CMD    /* 读取状态命令,对应手册上的指令为: Read Status Register-1 */
+
+#define QUAD_INPUT_PAGE_PROG										CMD_WRITE
+#define CMD_WRITE                               0x32    /* 对应手册上的指令是: Quad Input Page Program   */
+
+#define CMD_READ                                0xEB    /* 对应手册上的指令是: Fast Read Quad I/O  */
+#define CMD_ERASE_BLOCK_64K                     0xD8    /* 清除扇区，64K扇区,对应手册上的指令为: Block Erase (64KB) */
+#define CMD_ERASE_CHIP                          CHIP_ERASE_CMD    /* 清除整块芯片，耗时长,对应手册上的指令为: Chip Erase*/
+
+
+
 
 
 /*QSPI接口定义-开头****************************/
@@ -173,8 +187,8 @@ uint8_t BSP_QSPI_FastRead(uint8_t* pData, uint32_t ReadAddr, uint32_t Size);
 uint8_t BSP_QSPI_Write(uint8_t* pData, uint32_t WriteAddr, uint32_t Size);
 
 uint8_t BSP_QSPI_Erase_Chip(void);
-static uint8_t QSPI_WriteEnable          (void);
-static uint8_t QSPI_AutoPollingMemReady  (uint32_t Timeout);
+static uint8_t QSPI_WriteEnable(void);
+static uint8_t QSPI_AutoPollingMemReady(uint32_t Timeout);
 
 uint32_t QSPI_FLASH_ReadDeviceID(void);
 uint32_t QSPI_FLASH_ReadID(void);
@@ -185,5 +199,13 @@ void QSPI_Set_WP_TO_QSPI_IO(void);
 void QSPI_FLASH_Wait_Busy(void);
 uint32_t QSPI_EnableMemoryMappedMode(void); //使能直接映射模式
 uint8_t QSPI_ResetMemory(void);
+
+
+uint8_t QSPI_WriteBuffer(uint8_t *_pBuf, uint32_t _uiWriteAddr, uint16_t _usWriteSize);
+
+uint8_t QSPI_MemoryMapped(void);
+
+uint8_t QSPI_Erase_Bluck_64K(uint32_t address);
+
 #endif /* __SPI_FLASH_H */
 

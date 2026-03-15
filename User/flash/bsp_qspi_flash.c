@@ -640,7 +640,7 @@ static uint8_t QSPI_WriteEnable()
 		return QSPI_ERROR;
 	}
 
-	/* 配置自动轮询模式等待写启用 */  
+	/* 配置自动轮询模式等待写启用 */  //发送写使能指令后，Flash 的状态寄存器更新需要极短的硬件延时，用 QSPI 的自动轮询模式（硬件级轮询）比软件延时更可靠，能精准等待写使能位置 1。
 	s_config.Match           = W25Q256JV_FSR_WREN;
 	s_config.Mask            = W25Q256JV_FSR_WREN;
 	s_config.MatchMode       = QSPI_MATCH_MODE_AND;
@@ -950,5 +950,151 @@ void QSPI_FLASH_Wait_Busy(void)
 {   
 	while((QSPI_FLASH_ReadStatusReg(1)&0x01)==0x01);   // 等待BUSY位清空
 }   
+
+
+
+
+
+
+
+
+/*
+*********************************************************************************************************
+*    函 数 名: QSPI_WriteBuffer
+*    功能说明: 页编程，页大小128字节，任意页都可以写入
+*    形    参: _pBuf : 数据源缓冲区；
+*              _uiWrAddr ：目标区域首地址，即页首地址，比如0， 128, 512等。
+*              _usSize ：数据个数，不能超过页面大小，范围1 - 128。
+*    返 回 值: 0:成功， 1：失败
+*********************************************************************************************************
+*/
+uint8_t QSPI_WriteBuffer(uint8_t *_pBuf, uint32_t _uiWriteAddr, uint16_t _usWriteSize)
+{
+  QSPI_CommandTypeDef           sCommand = {0};
+  /* 写使能 */
+  if(QSPI_WriteEnable()!=HAL_OK)return 1;
+  /* 基本配置 */
+  sCommand.InstructionMode      = QSPI_INSTRUCTION_1_LINE;       	   /* 1线方式发送指令 */
+  sCommand.AddressSize          = QSPI_ADDRESS_24_BITS;          	   /* 24位地址 */
+  sCommand.AlternateByteMode    = QSPI_ALTERNATE_BYTES_NONE;     	   /* 无交替字节 */
+  sCommand.DdrMode              = QSPI_DDR_MODE_DISABLE;         	   /* W25Q64JV不支持DDR */
+  sCommand.DdrHoldHalfCycle     = QSPI_DDR_HHC_ANALOG_DELAY;     	   /* DDR模式，数据输出延迟 */
+  sCommand.SIOOMode             = QSPI_SIOO_INST_ONLY_FIRST_CMD; 	   /* 仅发送一次命令 */
+  /* 写序列配置 */
+  sCommand.Instruction          = CMD_WRITE;                         /* 32bit地址的4线快速写入命令,对应手册上的指令是: Quad Input Page Program */
+  sCommand.DummyCycles          = 0;                                 /* 不需要空周期 */
+  sCommand.AddressMode          = QSPI_ADDRESS_1_LINE;               /* 4线地址方式 */
+  sCommand.DataMode             = QSPI_DATA_4_LINES;                 /* 4线数据方式 */
+  sCommand.NbData               = _usWriteSize;                      /* 写数据大小 */
+  sCommand.Address              = _uiWriteAddr;                      /* 写入地址 */
+  if (HAL_QSPI_Command(&QSPIHandle, &sCommand, HAL_MAX_DELAY) != HAL_OK) return 1;
+                                                                      /* 启动传输 */
+  if (HAL_QSPI_Transmit(&QSPIHandle, _pBuf, HAL_MAX_DELAY)!= HAL_OK)     return 1;
+                                                                      /* 等待Flash页编程完毕 */
+  	/* 自动轮询模式等待存储器就绪 */  
+	if (QSPI_AutoPollingMemReady(W25Q256JV_SUBSECTOR_ERASE_MAX_TIME) != QSPI_OK)
+	{
+		return QSPI_ERROR;
+	}
+
+	return QSPI_OK;
+}
+
+
+
+
+
+
+
+
+
+/*
+*********************************************************************************************************
+*    函 数 名: QSPI_MemoryMapped
+*    功能说明: QSPI内存映射，地址 0x90000000
+*    形    参: 无
+*    返 回 值: 无
+*********************************************************************************************************
+*/
+uint8_t QSPI_MemoryMapped(void)
+{
+  QSPI_CommandTypeDef 			  	  	 s_command        = {0};
+  QSPI_MemoryMappedTypeDef 		  		 s_mem_mapped_cfg = {0};
+  
+
+  /* 基本配置 */
+  s_command.InstructionMode 	  		 = QSPI_INSTRUCTION_1_LINE;     /* 1线方式发送指令 */ 
+  s_command.AddressSize 			  		 = QSPI_ADDRESS_24_BITS;        /* 24位地址 */
+  s_command.AlternateByteMode    	   = QSPI_ALTERNATE_BYTES_NONE;   /* 无交替字节 */
+  s_command.DdrMode 				  		   = QSPI_DDR_MODE_DISABLE;       /* W25Q64JV不支持DDR */
+  s_command.DdrHoldHalfCycle 	  		 = QSPI_DDR_HHC_ANALOG_DELAY;   /* DDR模式，数据输出延迟 */
+  s_command.SIOOMode 				  	  	 = QSPI_SIOO_INST_EVERY_CMD;    /* 每次传输都发指令 */
+  
+  s_command.Instruction 			  		 = CMD_READ;                    //对应手册上的指令是: Fast Read Quad I/O
+  s_command.AddressMode 			  		 = QSPI_ADDRESS_4_LINES;        /* 4个地址线 */
+  s_command.DataMode 				  	  	 = QSPI_DATA_4_LINES;           /* 4个数据线 */
+  s_command.DummyCycles 			  		 = 6;                           /* 空周期 */
+  /* 关闭溢出计数 */
+  s_mem_mapped_cfg.TimeOutActivation = QSPI_TIMEOUT_COUNTER_DISABLE;
+  s_mem_mapped_cfg.TimeOutPeriod 		 = 0;
+
+  
+  if (HAL_QSPI_MemoryMapped(&QSPIHandle, &s_command, &s_mem_mapped_cfg) != HAL_OK) return 1;
+
+  return 0;
+}
+
+
+/*
+*********************************************************************************************************
+*    函 数 名: QSPI_Erase_Bluck_64K
+*    功能说明: 擦除指定的扇区，扇区大小64KB
+*    形    参: _uiSectorAddr : 扇区地址，以64KB为单位的地址
+*    返 回 值: 无
+*********************************************************************************************************
+*/
+uint8_t QSPI_Erase_Bluck_64K(uint32_t address)
+{
+  QSPI_CommandTypeDef          sCommand = {0};
+  /* 写使能 */
+  if(QSPI_WriteEnable()!=HAL_OK)return 1;//无法写使能，返回1
+  /* 基本配置 */
+  sCommand.InstructionMode     = QSPI_INSTRUCTION_1_LINE;         /* 1线方式发送指令 */
+  sCommand.AddressSize         = QSPI_ADDRESS_24_BITS;            /* 24位地址 */
+  sCommand.AlternateByteMode   = QSPI_ALTERNATE_BYTES_NONE;       /* 无交替字节 */
+  sCommand.DdrMode             = QSPI_DDR_MODE_DISABLE;           /* W25Q64JV不支持DDR */
+  sCommand.DdrHoldHalfCycle    = QSPI_DDR_HHC_ANALOG_DELAY;       /* DDR模式，数据输出延迟 */
+  sCommand.SIOOMode            = QSPI_SIOO_INST_EVERY_CMD;        /* 每次传输都发指令 */
+  /* 擦除配置 */
+  sCommand.Instruction         = CMD_ERASE_BLOCK_64K;             //对应手册上的指令为: Block Erase (64KB)
+  sCommand.DummyCycles         = 0;                               /* 无需空周期 */
+  sCommand.AddressMode         = QSPI_ADDRESS_1_LINE;
+  sCommand.DataMode            = QSPI_DATA_NONE;                  /* 无需发送数据 */
+  sCommand.NbData 					   = 0; 	                            /* 地址发送是1线方式 */
+  sCommand.Address             = address;                         /* 扇区首地址，保证是4KB整数倍 */
+
+  
+  if (HAL_QSPI_Command(&QSPIHandle, &sCommand, HAL_MAX_DELAY)!= HAL_OK)return 1;
+  /* 等待编程结束 */
+
+   	/* 自动轮询模式等待存储器就绪 */  
+	if (QSPI_AutoPollingMemReady(W25Q256JV_SUBSECTOR_ERASE_MAX_TIME) != QSPI_OK)
+	{
+		return QSPI_ERROR;
+	}
+
+	return QSPI_OK;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /*********************************************END OF FILE**********************/

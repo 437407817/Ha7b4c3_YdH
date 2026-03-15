@@ -1803,9 +1803,9 @@ void LCD_init_All(void){
 //	LCD_SetTransparency(1, 0);
 
 }
-
-#define LCD_WIDTH  800  // 屏幕宽度
-#define LCD_HEIGHT 600   // 屏幕高度
+#if 1
+#define LCD_WIDTH  LCD_MAX_PIXEL_WIDTH  // 屏幕宽度
+#define LCD_HEIGHT LCD_MAX_PIXEL_HEIGHT   // 屏幕高度
 #define PIXEL_BYTES 4    // ARGB8888格式，4字节/像素
  /* 定义颜色像素格式,一般用RGB565 */
 #define LCD_PIXFORMAT       ARGB8888
@@ -1838,7 +1838,7 @@ void LCD_FillRect_Color2(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t
 }
 
 
-void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t p_address_color)
+void ltdc_color_fill3(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t p_address_color)
 {
     HAL_StatusTypeDef status = HAL_OK;
     uint32_t dst_addr;
@@ -1927,4 +1927,86 @@ void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_
     return ;
 }
 
+#endif
+
+/**
+  * @brief  直接操作DMA2D寄存器实现指定区域颜色填充
+  * @param  sx: 填充区域起始X坐标
+  * @param  sy: 填充区域起始Y坐标
+  * @param  ex: 填充区域结束X坐标
+  * @param  ey: 填充区域结束Y坐标
+  * @param  color: 填充颜色指针（对应像素格式的颜色值）
+  * @retval 无
+  */
+void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t *color)
+{
+    uint32_t psx, psy, pex, pey;   /* 以LCD面板为基准的坐标系,不随横竖屏变化而变化 */
+    uint32_t timeout = 0; 
+    uint16_t offline;
+    uint32_t addr;
+    uint32_t pixsize = PIXEL_BPP[Ltdc_Handler.LayerCfg[ActiveLayer].PixelFormat]; // 获取当前像素格式的字节数
+  
+    /* 坐标有效性检查 */
+    if (sx > ex || sy > ey || ex >= LCD_GetXSize() || ey >= LCD_GetYSize())
+    {
+        return; // 无效坐标直接返回
+    }
+    
+    /* 坐标边界修正 */
+    psx = (sx < 0) ? 0 : sx;
+    psy = (sy < 0) ? 0 : sy;
+    pex = (ex >= LCD_GetXSize()) ? (LCD_GetXSize() - 1) : ex;
+    pey = (ey >= LCD_GetYSize()) ? (LCD_GetYSize() - 1) : ey;
+  
+    /* 计算行偏移和目标地址 */
+    offline = LCD_GetXSize() - (pex - psx + 1);
+    addr = Ltdc_Handler.LayerCfg[ActiveLayer].FBStartAdress + pixsize * (LCD_GetXSize() * psy + psx);
+
+    __HAL_RCC_DMA2D_CLK_ENABLE();                             /* 使能DMA2D时钟 */
+
+    DMA2D->CR &= ~(DMA2D_CR_START);                           /* 先停止DMA2D */
+    DMA2D->CR = DMA2D_M2M;                                    /* 存储器到存储器模式 */
+    
+    /* 根据当前层像素格式设置颜色格式 */
+    switch(Ltdc_Handler.LayerCfg[ActiveLayer].PixelFormat)
+    {
+        case LTDC_PIXEL_FORMAT_RGB565:
+            DMA2D->FGPFCCR = DMA2D_INPUT_RGB565;
+            break;
+        case LTDC_PIXEL_FORMAT_ARGB8888:
+            DMA2D->FGPFCCR = DMA2D_INPUT_ARGB8888;
+            break;
+        case LTDC_PIXEL_FORMAT_RGB888:
+            DMA2D->FGPFCCR = DMA2D_INPUT_RGB888;
+            break;
+        case LTDC_PIXEL_FORMAT_ARGB4444:
+            DMA2D->FGPFCCR = DMA2D_INPUT_ARGB4444;
+            break;
+        case LTDC_PIXEL_FORMAT_ARGB1555:
+            DMA2D->FGPFCCR = DMA2D_INPUT_ARGB1555;
+            break;
+        default:
+            DMA2D->FGPFCCR = DMA2D_INPUT_RGB565; // 默认RGB565
+            break;
+    }
+    
+    DMA2D->FGOR = 0;                                          /* 前景层行偏移为0 */
+    DMA2D->OOR = offline;                                     /* 设置输出行偏移 */
+
+    DMA2D->FGMAR = (uint32_t)color;                           /* 源颜色地址 */
+    DMA2D->OMAR = addr;                                       /* 输出显存地址 */
+    DMA2D->NLR = (pey - psy + 1) | ((pex - psx + 1) << 16);   /* 设置行数和列数 */
+    DMA2D->CR |= DMA2D_CR_START;                              /* 启动DMA2D传输 */
+
+    /* 等待传输完成或超时 */
+    while((DMA2D->ISR & DMA2D_FLAG_TC) == 0)                  
+    {
+        timeout++;
+        if (timeout > 0X1FFFFF)                               /* 超时保护 */
+        {
+            break;
+        }
+    } 
+    DMA2D->IFCR |= DMA2D_FLAG_TC;                             /* 清除传输完成标志 */
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -64,7 +64,7 @@ void Handle_lv(void){
 }
 
 
-
+#include "ui.h"
 #include "lv_demo_stress.h"
 //#include "lv_demo_music.h"
 #include "../lv_examples.h"
@@ -73,13 +73,13 @@ void lv_test(void){
 //    lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
 //    lv_obj_set_size(switch_obj, 120, 60);
 //    lv_obj_align(switch_obj, LV_ALIGN_CENTER, 0, 0);
-	
+	ui_init();
 #if 0		
 	lv_demo_stress();
 #endif
 	//ui_create();
 	//lv_switch_label_demo();
-#if 1	
+#if 0	
 //	lv_obj_t * scr = lv_scr_act(); // »ñÈ¡Ä¬ÈÏÆÁÄ»
 	  lv_obj_t * label;
     lv_obj_t * btn1 = lv_btn_create(lv_scr_act());
@@ -99,6 +99,7 @@ void lv_test(void){
 #if 1	
 //lv_demo_music();
 //lv_example_get_started_2();
+//lv_demo_stress();
 #endif
 }
 

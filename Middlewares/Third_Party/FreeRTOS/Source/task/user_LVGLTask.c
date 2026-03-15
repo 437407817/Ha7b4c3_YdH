@@ -58,11 +58,20 @@ void vLvglTask(void *pvParameters)
     while(1)
     {
         lv_timer_handler(); /* LVGL计时器 */
-        vTaskDelay(pdMS_TO_TICKS(50));
+        vTaskDelay(pdMS_TO_TICKS(LV_DEF_REFR_PERIOD));//影响刷新率FPS
     }
 }
 
 
+/**
+ * @brief      FreeRTOS Tick 钩子函数
+ * @note       在系统Tick中断中调用，用于精确计时
+ * @retval     无
+ */
+void vApplicationTickHook(void)
+{
+    lv_tick_inc(1);  
+}
 
 
 

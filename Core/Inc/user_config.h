@@ -29,7 +29,7 @@
 
 
 
-#define USE_FREERTOS                    1 //¿ªÆôfreertos
+#define USE_FREERTOS                    0 //¿ªÆôfreertos
 
 
 /* Exported types ------------------------------------------------------------*/

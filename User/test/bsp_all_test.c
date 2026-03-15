@@ -25,7 +25,7 @@
 #include "./test/bsp_lcd_test.h"
 #include "./test/bsp_qspi_flash_test.h"
 #include "./lvgl_port.h"
-
+#include "./TaskTest/Task_StressTest.h"
 //#include "usbd_init.h"
 /* USER CODE BEGIN 0 */
 
@@ -93,6 +93,11 @@ lv_test();//使用裸机调用LVGL
 #ifdef TEST_LCD_MODULE_ENABLED	
 	
 #endif
+
+#if TEST_STRESS_CALCULATE
+	Test_All_StressTest();
+#endif
+
 // USART_DMA_Test();
 //	BSP_usbd_test();
 	

@@ -30,6 +30,9 @@ uint32_t dwt_getCurrentTick(void);
 
 void dwt_clearCurrentTick(void);
 
+void DWT_Start_Time(void);
+void DWT_Stop_Time(void);
+void DWT_Calc_Time(uint32_t *cycles, uint32_t *us_int, uint32_t *ns_remain);
 
 
 

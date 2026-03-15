@@ -47,13 +47,13 @@ int main(void)
 	
 
 	
-	
+
 	
 		HAL_Init();  
 
   SystemClock_Config();
 //	sys_stm32_clock_init(160, 5, 2, 4); 
-stack_init_marker();// 初始化栈监控,必须放main中，否则跳出方法后卡死
+//stack_init_marker();// 初始化栈监控,必须放main中，否则跳出方法后卡死
 //	stack_fill(); // 初始化时填充栈（必须在其他函数调用前执行）
 	//ota_app_vtor_reconfig();
 //__enable_irq();

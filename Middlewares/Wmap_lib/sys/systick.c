@@ -73,7 +73,7 @@ void SysTick_Handler(void)
 {	
 	
 	#if USE_OS
-	HAL_IncTick();
+	HAL_IncTick();//ÑÓ³Ùº¯ÊýHAL_DELAY±Ø±¸
 	#else
 //	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();

@@ -12,7 +12,7 @@
 
 
 
-
+uint16_t crc_16(uint8_t* buf, uint16_t length);
 
 
 

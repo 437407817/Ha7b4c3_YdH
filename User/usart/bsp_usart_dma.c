@@ -465,7 +465,7 @@ SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,RcvDmaQueData.g_rcvDataBuf,5,"finish %d",RcvDm
 
 
 
-#if (!USE_OS&&!USE_LETTER_SHELL)
+#if (!USE_OS&&!USE_LETTER_SHELL&&USE_UART_DMA)
 #if (USE_UART_DMA_RX)
 
 void USARTx_DMA_IRQHandler(void)
