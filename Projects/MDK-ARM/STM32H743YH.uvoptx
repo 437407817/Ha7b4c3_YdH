@@ -1840,7 +1840,7 @@
 
   <Group>
     <GroupName>Third_Party/FreeRTOS/TASK</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2956,7 +2956,7 @@
 
   <Group>
     <GroupName>lvgl/example/porting</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -7056,7 +7056,7 @@
 
   <Group>
     <GroupName>LVGL/GUI_APP_example</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -7159,7 +7159,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\ui.c</PathWithFileName>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\ui.c</PathWithFileName>
       <FilenameWithoutPath>ui.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -7171,7 +7171,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\ui_helpers.c</PathWithFileName>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\ui_helpers.c</PathWithFileName>
       <FilenameWithoutPath>ui_helpers.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -7183,8 +7183,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\components\ui_comp_hook.c</PathWithFileName>
-      <FilenameWithoutPath>ui_comp_hook.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\ui_Screen1.c</PathWithFileName>
+      <FilenameWithoutPath>ui_Screen1.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -7195,8 +7195,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen1.c</PathWithFileName>
-      <FilenameWithoutPath>ui_Screen1.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\images\ui_img_arrow_png.c</PathWithFileName>
+      <FilenameWithoutPath>ui_img_arrow_png.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -7207,8 +7207,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen2.c</PathWithFileName>
-      <FilenameWithoutPath>ui_Screen2.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_badge2.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_badge2.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -7219,8 +7219,116 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen3.c</PathWithFileName>
-      <FilenameWithoutPath>ui_Screen3.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_exclamation.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_exclamation.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>565</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H1_bold.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_H1_bold.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>566</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H2_bold.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_H2_bold.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>567</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H3_bold.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_H3_bold.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>568</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_icon.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_icon.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>569</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_Min.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_Min.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>570</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P1_bold.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_P1_bold.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>571</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P1_medium.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_P1_medium.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>572</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P2_medium.c</PathWithFileName>
+      <FilenameWithoutPath>ui_font_P2_medium.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>34</GroupNumber>
+      <FileNumber>573</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\components\ui_comp_hook.c</PathWithFileName>
+      <FilenameWithoutPath>ui_comp_hook.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

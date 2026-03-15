@@ -199,9 +199,7 @@ TEST_ALL_TEST();
 //        delay_ms(5);
 //        lv_timer_handler();
 //    }
-#if !(LVGL_OS)
-//lv_test();//使用裸机调用LVGL
-#endif
+
 //IWDG_Feed();
 
 

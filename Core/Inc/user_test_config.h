@@ -38,7 +38,7 @@
 
 #define TEST_QSPI_FLASH	0
 
-#define TEST_STRESS_CALCULATE 1
+#define TEST_STRESS_CALCULATE 0
 
 
 

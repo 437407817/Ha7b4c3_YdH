@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H743xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil;..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01;..\..\Middlewares\Third_Party\sfud\inc</IncludePath>
+              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil;..\..\Middlewares\Third_Party\sfud\inc;..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -360,7 +360,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>0</umfTarg>
+            <umfTarg>1</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -369,7 +369,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Objects\STM32H743YH.sct</ScatterFile>
+            <ScatterFile>.\sct\STM32H743YH.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -5110,32 +5110,77 @@
             <File>
               <FileName>ui.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\ui.c</FilePath>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\ui.c</FilePath>
             </File>
             <File>
               <FileName>ui_helpers.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\ui_helpers.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_comp_hook.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\components\ui_comp_hook.c</FilePath>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\ui_helpers.c</FilePath>
             </File>
             <File>
               <FileName>ui_Screen1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen1.c</FilePath>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\ui_Screen1.c</FilePath>
             </File>
             <File>
-              <FileName>ui_Screen2.c</FileName>
+              <FileName>ui_img_arrow_png.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen2.c</FilePath>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\images\ui_img_arrow_png.c</FilePath>
             </File>
             <File>
-              <FileName>ui_Screen3.c</FileName>
+              <FileName>ui_font_badge2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\text01\screens\ui_Screen3.c</FilePath>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_badge2.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_exclamation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_exclamation.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_H1_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H1_bold.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_H2_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H2_bold.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_H3_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_H3_bold.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_icon.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_icon.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_Min.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_Min.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_P1_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P1_bold.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_P1_medium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P1_medium.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_P2_medium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\fonts\ui_font_P2_medium.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_comp_hook.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\components\ui_comp_hook.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -57,8 +57,8 @@ void vLvglTask(void *pvParameters)
     
     while(1)
     {
-        lv_timer_handler(); /* LVGL计时器 */
-        vTaskDelay(pdMS_TO_TICKS(LV_DEF_REFR_PERIOD));//影响刷新率FPS
+       uint32_t sleep_time_ms = lv_timer_handler(); /* LVGL计时器 */
+        vTaskDelay(pdMS_TO_TICKS(sleep_time_ms));//影响刷新率FPS
     }
 }
 

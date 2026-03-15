@@ -12,7 +12,7 @@
 
 
 
-
+void Test_All_StressTest(void);
 
 
 
