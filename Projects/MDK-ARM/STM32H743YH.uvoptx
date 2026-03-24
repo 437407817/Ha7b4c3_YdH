@@ -2020,7 +2020,7 @@
 
   <Group>
     <GroupName>BSP_COMMON_DRIVER</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2256,7 +2256,7 @@
 
   <Group>
     <GroupName>BSP_H743_DRIVER</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2440,7 +2440,7 @@
 
   <Group>
     <GroupName>WMAP_lib/sys</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2840,7 +2840,7 @@
 
   <Group>
     <GroupName>WMAP_lib/EastLogger</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2908,7 +2908,7 @@
 
   <Group>
     <GroupName>WMAP_lib/letter_shell</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -7397,6 +7397,38 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\components\ui_comp_hook.c</PathWithFileName>
       <FilenameWithoutPath>ui_comp_hook.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>pro/commu</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>36</GroupNumber>
+      <FileNumber>579</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\User_pro\communication\Comu485.c</PathWithFileName>
+      <FilenameWithoutPath>Comu485.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>36</GroupNumber>
+      <FileNumber>580</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\User_pro\usart\bsp_usart_com485.c</PathWithFileName>
+      <FilenameWithoutPath>bsp_usart_com485.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
