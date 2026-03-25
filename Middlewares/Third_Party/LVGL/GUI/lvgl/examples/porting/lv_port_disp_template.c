@@ -45,8 +45,8 @@
 #define EXT_SRAM_SIZE          (2 * 1024 * 1024) // 外部内存总大小2MB
 
 /* LCD核心配置：800×480+ARGB8888 */
-#define LCD_WIDTH              800
-#define LCD_HEIGHT             480
+#define LCD_WIDTH              MY_DISP_HOR_RES
+#define LCD_HEIGHT             MY_DISP_VER_RES
 #define LCD_PIXEL_FORMAT       LTDC_PIXEL_FORMAT_ARGB8888 // 固定ARGB8888
 //#define PIXEL_BYTES            BYTE_PER_PIXEL                           // 4字节/像素
 #define ActiveLayer            0                           // LTDC使用层0（可改1）

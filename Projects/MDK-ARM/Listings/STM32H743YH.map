@@ -1594,28 +1594,28 @@ Section Cross References
     tasks.o(i.xTaskResumeFromISR) refers to list.o(i.vListInsertEnd) for vListInsertEnd
     tasks.o(i.xTaskResumeFromISR) refers to tasks.o(.data) for uxSchedulerSuspended
     tasks.o(i.xTaskResumeFromISR) refers to tasks.o(.bss) for pxReadyTasksLists
-    freerotspro_1.o(i.AppTaskCreate) refers to port.o(i.vPortEnterCritical) for vPortEnterCritical
-    freerotspro_1.o(i.AppTaskCreate) refers to bsp_systime.o(i.SYSTEM_set_rtos_running) for SYSTEM_set_rtos_running
-    freerotspro_1.o(i.AppTaskCreate) refers to hook_mem.o(i.vPrintHeapState) for vPrintHeapState
-    freerotspro_1.o(i.AppTaskCreate) refers to shell_port.o(i.LetterShell_OS_Init) for LetterShell_OS_Init
-    freerotspro_1.o(i.AppTaskCreate) refers to hook_mem.o(i.vPrintStack_TaskCreationResult) for vPrintStack_TaskCreationResult
-    freerotspro_1.o(i.AppTaskCreate) refers to tasks.o(i.xTaskCreate) for xTaskCreate
-    freerotspro_1.o(i.AppTaskCreate) refers to elog_port.o(i.easylogger_init) for easylogger_init
-    freerotspro_1.o(i.AppTaskCreate) refers to tasks.o(i.xTaskGetHandle) for xTaskGetHandle
-    freerotspro_1.o(i.AppTaskCreate) refers to tasks.o(i.vTaskDelete) for vTaskDelete
-    freerotspro_1.o(i.AppTaskCreate) refers to port.o(i.vPortExitCritical) for vPortExitCritical
-    freerotspro_1.o(i.AppTaskCreate) refers to freerotspro_1.o(.data) for tmp_handle
-    freerotspro_1.o(i.AppTaskCreate) refers to user_task_1.o(i.T_1_Task) for T_1_Task
-    freerotspro_1.o(i.AppTaskCreate) refers to user_task_1.o(i.T_2_Task) for T_2_Task
-    freerotspro_1.o(i.AppTaskCreate) refers to user_lvgltask.o(i.vLvglTask) for vLvglTask
-    freerotspro_1.o(i.AppTaskCreate) refers to user_systemtask.o(i.SEGGERTask) for SEGGERTask
-    freerotspro_1.o(i.AppTaskCreate) refers to business.o(i.busi_process_task_entry) for busi_process_task_entry
-    freerotspro_1.o(i.FreerTosProBegin) refers to tasks.o(i.xTaskCreate) for xTaskCreate
-    freerotspro_1.o(i.FreerTosProBegin) refers to tasks.o(i.vTaskStartScheduler) for vTaskStartScheduler
-    freerotspro_1.o(i.FreerTosProBegin) refers to printfa.o(i.__0printf) for __2printf
-    freerotspro_1.o(i.FreerTosProBegin) refers to freerotspro_1.o(.data) for tmp_handle
-    freerotspro_1.o(i.FreerTosProBegin) refers to freerotspro_1.o(i.AppTaskCreate) for AppTaskCreate
-    freerotspro_1.o(i.StartNeedDeleteTask) refers to tasks.o(i.vTaskDelay) for vTaskDelay
+    freerotspro.o(i.AppTaskCreate) refers to port.o(i.vPortEnterCritical) for vPortEnterCritical
+    freerotspro.o(i.AppTaskCreate) refers to bsp_systime.o(i.SYSTEM_set_rtos_running) for SYSTEM_set_rtos_running
+    freerotspro.o(i.AppTaskCreate) refers to hook_mem.o(i.vPrintHeapState) for vPrintHeapState
+    freerotspro.o(i.AppTaskCreate) refers to shell_port.o(i.LetterShell_OS_Init) for LetterShell_OS_Init
+    freerotspro.o(i.AppTaskCreate) refers to hook_mem.o(i.vPrintStack_TaskCreationResult) for vPrintStack_TaskCreationResult
+    freerotspro.o(i.AppTaskCreate) refers to tasks.o(i.xTaskCreate) for xTaskCreate
+    freerotspro.o(i.AppTaskCreate) refers to elog_port.o(i.easylogger_init) for easylogger_init
+    freerotspro.o(i.AppTaskCreate) refers to tasks.o(i.xTaskGetHandle) for xTaskGetHandle
+    freerotspro.o(i.AppTaskCreate) refers to tasks.o(i.vTaskDelete) for vTaskDelete
+    freerotspro.o(i.AppTaskCreate) refers to port.o(i.vPortExitCritical) for vPortExitCritical
+    freerotspro.o(i.AppTaskCreate) refers to freerotspro.o(.data) for tmp_handle
+    freerotspro.o(i.AppTaskCreate) refers to user_task_1.o(i.T_1_Task) for T_1_Task
+    freerotspro.o(i.AppTaskCreate) refers to user_task_1.o(i.T_2_Task) for T_2_Task
+    freerotspro.o(i.AppTaskCreate) refers to user_lvgltask.o(i.vLvglTask) for vLvglTask
+    freerotspro.o(i.AppTaskCreate) refers to user_systemtask.o(i.SEGGERTask) for SEGGERTask
+    freerotspro.o(i.AppTaskCreate) refers to business.o(i.busi_process_task_entry) for busi_process_task_entry
+    freerotspro.o(i.FreerTosProBegin) refers to tasks.o(i.xTaskCreate) for xTaskCreate
+    freerotspro.o(i.FreerTosProBegin) refers to tasks.o(i.vTaskStartScheduler) for vTaskStartScheduler
+    freerotspro.o(i.FreerTosProBegin) refers to printfa.o(i.__0printf) for __2printf
+    freerotspro.o(i.FreerTosProBegin) refers to freerotspro.o(.data) for tmp_handle
+    freerotspro.o(i.FreerTosProBegin) refers to freerotspro.o(i.AppTaskCreate) for AppTaskCreate
+    freerotspro.o(i.StartNeedDeleteTask) refers to tasks.o(i.vTaskDelay) for vTaskDelay
     user_lvgltask.o(i.vApplicationTickHook) refers to lv_tick.o(i.lv_tick_inc) for lv_tick_inc
     user_lvgltask.o(i.vLvglTask) refers to lvgl_port.o(i.lv_init_all) for lv_init_all
     user_lvgltask.o(i.vLvglTask) refers to lvgl_port.o(i.lv_test) for lv_test
@@ -1653,7 +1653,7 @@ Section Cross References
     main.o(i.main) refers to stm32h7xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq) for HAL_RCC_GetPCLK1Freq
     main.o(i.main) refers to stm32h7xx_hal_rcc.o(i.HAL_RCC_GetPCLK2Freq) for HAL_RCC_GetPCLK2Freq
     main.o(i.main) refers to sys_init_all.o(i.NeedToOnceOperate_Pro) for NeedToOnceOperate_Pro
-    main.o(i.main) refers to freerotspro_1.o(i.FreerTosProBegin) for FreerTosProBegin
+    main.o(i.main) refers to freerotspro.o(i.FreerTosProBegin) for FreerTosProBegin
     main.o(i.main) refers to sys_init_all.o(i.NeedToRepeatOperate_Pro) for NeedToRepeatOperate_Pro
     main.o(i.sys_stm32_clock_init) refers to stm32h7xx_hal_rcc.o(i.HAL_RCC_OscConfig) for HAL_RCC_OscConfig
     main.o(i.sys_stm32_clock_init) refers to stm32h7xx_hal_rcc.o(i.HAL_RCC_ClockConfig) for HAL_RCC_ClockConfig
@@ -3179,7 +3179,7 @@ Section Cross References
     lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_display.o(i.lv_display_create) for lv_display_create
     lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_display.o(i.lv_display_set_buffers) for lv_display_set_buffers
     lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_display.o(i.lv_display_set_flush_cb) for lv_display_set_flush_cb
-    lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_port_disp_template.o(.ARM.__AT_0xD005DC00) for buf_1_1
+    lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_port_disp_template.o(.ARM.__AT_0xD0096000) for buf_1_1
     lv_port_disp_template.o(i.lv_port_disp_init) refers to lv_port_disp_template.o(i.disp_flush) for disp_flush
     lv_port_indev_template.o(i.lv_port_indev_init) refers to lv_port_indev_template.o(i.touchpad_init) for touchpad_init
     lv_port_indev_template.o(i.lv_port_indev_init) refers to lv_indev.o(i.lv_indev_create) for lv_indev_create
@@ -16048,10 +16048,10 @@ Removing Unused input sections from the image.
     Removing tasks.o(i.xTaskNotifyStateClear), (52 bytes).
     Removing tasks.o(i.xTaskNotifyWait), (160 bytes).
     Removing tasks.o(i.xTaskResumeFromISR), (152 bytes).
-    Removing freerotspro_1.o(.rev16_text), (4 bytes).
-    Removing freerotspro_1.o(.revsh_text), (4 bytes).
-    Removing freerotspro_1.o(.rrx_text), (6 bytes).
-    Removing freerotspro_1.o(i.StartNeedDeleteTask), (10 bytes).
+    Removing freerotspro.o(.rev16_text), (4 bytes).
+    Removing freerotspro.o(.revsh_text), (4 bytes).
+    Removing freerotspro.o(.rrx_text), (6 bytes).
+    Removing freerotspro.o(i.StartNeedDeleteTask), (10 bytes).
     Removing user_lvgltask.o(.rev16_text), (4 bytes).
     Removing user_lvgltask.o(.revsh_text), (4 bytes).
     Removing user_lvgltask.o(.rrx_text), (6 bytes).
@@ -18125,7 +18125,7 @@ Image Symbol Table
     ..\..\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_ll_usart.c 0x00000000   Number         0  stm32h7xx_ll_usart.o ABSOLUTE
     ..\..\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_ll_usb.c 0x00000000   Number         0  stm32h7xx_ll_usb.o ABSOLUTE
     ..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_\cmsis_os.c 0x00000000   Number         0  cmsis_os.o ABSOLUTE
-    ..\..\Middlewares\Third_Party\FreeRTOS\Source\freerotspro.c 0x00000000   Number         0  freerotspro_1.o ABSOLUTE
+    ..\..\Middlewares\Third_Party\FreeRTOS\Source\freerotspro.c 0x00000000   Number         0  freerotspro.o ABSOLUTE
     ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c 0x00000000   Number         0  heap_4.o ABSOLUTE
     ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\port.c 0x00000000   Number         0  port.o ABSOLUTE
     ..\..\Middlewares\Third_Party\FreeRTOS\Source\src\croutine.c 0x00000000   Number         0  croutine.o ABSOLUTE
@@ -18597,7 +18597,7 @@ Image Symbol Table
     ..\\..\\Drivers\\STM32H7xx_HAL_Driver\\Src\\stm32h7xx_ll_sdmmc.c 0x00000000   Number         0  stm32h7xx_ll_sdmmc.o ABSOLUTE
     ..\\..\\Drivers\\STM32H7xx_HAL_Driver\\Src\\stm32h7xx_ll_usb.c 0x00000000   Number         0  stm32h7xx_ll_usb.o ABSOLUTE
     ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_\\cmsis_os.c 0x00000000   Number         0  cmsis_os.o ABSOLUTE
-    ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\freerotspro.c 0x00000000   Number         0  freerotspro_1.o ABSOLUTE
+    ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\freerotspro.c 0x00000000   Number         0  freerotspro.o ABSOLUTE
     ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F\\port.c 0x00000000   Number         0  port.o ABSOLUTE
     ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\task\\user_LVGLTask.c 0x00000000   Number         0  user_lvgltask.o ABSOLUTE
     ..\\..\\Middlewares\\Third_Party\\FreeRTOS\\Source\\task\\user_SystemTask.c 0x00000000   Number         0  user_systemtask.o ABSOLUTE
@@ -20744,8 +20744,8 @@ Image Symbol Table
     .text                                    0x081002e8   Section        0  _strtoul.o(.text)
     .text                                    0x08100386   Section        0  __dclz77c.o(.text)
     i.AppTaskCb                              0x081003e4   Section        0  taskfun.o(i.AppTaskCb)
-    i.AppTaskCreate                          0x08100404   Section        0  freerotspro_1.o(i.AppTaskCreate)
-    AppTaskCreate                            0x08100405   Thumb Code   222  freerotspro_1.o(i.AppTaskCreate)
+    i.AppTaskCreate                          0x08100404   Section        0  freerotspro.o(i.AppTaskCreate)
+    AppTaskCreate                            0x08100405   Thumb Code   222  freerotspro.o(i.AppTaskCreate)
     i.AppTaskHandler                         0x08100574   Section        0  taskfun.o(i.AppTaskHandler)
     i.AsciiRemoveSpace02                     0x08100580   Section        0  data_convert.o(i.AsciiRemoveSpace02)
     i.DMA1_Stream1_IRQHandler                0x081005d0   Section        0  bsp_usart_dma.o(i.DMA1_Stream1_IRQHandler)
@@ -20759,7 +20759,7 @@ Image Symbol Table
     i.Delay_Ms_NoTask                        0x081007d2   Section        0  bsp_systime.o(i.Delay_Ms_NoTask)
     i.FMC_SDRAM_Init                         0x081007f2   Section        0  stm32h7xx_ll_fmc.o(i.FMC_SDRAM_Init)
     i.FMC_SDRAM_Timing_Init                  0x08100860   Section        0  stm32h7xx_ll_fmc.o(i.FMC_SDRAM_Timing_Init)
-    i.FreerTosProBegin                       0x081008f4   Section        0  freerotspro_1.o(i.FreerTosProBegin)
+    i.FreerTosProBegin                       0x081008f4   Section        0  freerotspro.o(i.FreerTosProBegin)
     i.GTP_IRQ_Disable                        0x08100954   Section        0  gt9xx.o(i.GTP_IRQ_Disable)
     i.HAL_DMA2D_ConfigLayer                  0x08100960   Section        0  stm32h7xx_hal_dma2d.o(i.HAL_DMA2D_ConfigLayer)
     i.HAL_DMA2D_MspInit                      0x08100a64   Section        0  stm32h7xx_hal_dma2d.o(i.HAL_DMA2D_MspInit)
@@ -23181,7 +23181,7 @@ Image Symbol Table
     xNextTaskUnblockTime                     0x24000070   Data           4  tasks.o(.data)
     xIdleTaskHandle                          0x24000074   Data           4  tasks.o(.data)
     uxSchedulerSuspended                     0x24000078   Data           4  tasks.o(.data)
-    .data                                    0x2400007c   Section        8  freerotspro_1.o(.data)
+    .data                                    0x2400007c   Section        8  freerotspro.o(.data)
     .data                                    0x24000084   Section        4  user_task_1.o(.data)
     .data                                    0x24000088   Section        4  factory_iic.o(.data)
     .data                                    0x2400008c   Section        8  font24.o(.data)
@@ -23324,8 +23324,8 @@ Image Symbol Table
     uart_rx_buf                              0x24043e04   Data          64  bsp_usart_com485.o(.bss)
     HEAP                                     0x24043e48   Section     4608  startup_stm32h743xx.o(HEAP)
     STACK                                    0x24045048   Section     9216  startup_stm32h743xx.o(STACK)
-    .ARM.__AT_0xD005DC00                     0xd005dc00   Section    32000  lv_port_disp_template.o(.ARM.__AT_0xD005DC00)
-    buf_1_1                                  0xd005dc00   Data       32000  lv_port_disp_template.o(.ARM.__AT_0xD005DC00)
+    .ARM.__AT_0xD0096000                     0xd0096000   Section    40960  lv_port_disp_template.o(.ARM.__AT_0xD0096000)
+    buf_1_1                                  0xd0096000   Data       40960  lv_port_disp_template.o(.ARM.__AT_0xD0096000)
 
     Global Symbols
 
@@ -24256,7 +24256,7 @@ Image Symbol Table
     Delay_Ms_NoTask                          0x081007d3   Thumb Code    32  bsp_systime.o(i.Delay_Ms_NoTask)
     FMC_SDRAM_Init                           0x081007f3   Thumb Code   108  stm32h7xx_ll_fmc.o(i.FMC_SDRAM_Init)
     FMC_SDRAM_Timing_Init                    0x08100861   Thumb Code   144  stm32h7xx_ll_fmc.o(i.FMC_SDRAM_Timing_Init)
-    FreerTosProBegin                         0x081008f5   Thumb Code    50  freerotspro_1.o(i.FreerTosProBegin)
+    FreerTosProBegin                         0x081008f5   Thumb Code    50  freerotspro.o(i.FreerTosProBegin)
     GTP_IRQ_Disable                          0x08100955   Thumb Code    12  gt9xx.o(i.GTP_IRQ_Disable)
     HAL_DMA2D_ConfigLayer                    0x08100961   Thumb Code   254  stm32h7xx_hal_dma2d.o(i.HAL_DMA2D_ConfigLayer)
     HAL_DMA2D_MspInit                        0x08100a65   Thumb Code     2  stm32h7xx_hal_dma2d.o(i.HAL_DMA2D_MspInit)
@@ -24997,8 +24997,8 @@ Image Symbol Table
     uwTickPrio                               0x2400000c   Data           4  stm32h7xx_hal.o(.data)
     uwTickFreq                               0x24000010   Data           1  stm32h7xx_hal.o(.data)
     pxCurrentTCB                             0x24000040   Data           4  tasks.o(.data)
-    tmp_handle                               0x2400007c   Data           4  freerotspro_1.o(.data)
-    thread_shell_Handle                      0x24000080   Data           4  freerotspro_1.o(.data)
+    tmp_handle                               0x2400007c   Data           4  freerotspro.o(.data)
+    thread_shell_Handle                      0x24000080   Data           4  freerotspro.o(.data)
     timedelar_T_1_Task                       0x24000084   Data           2  user_task_1.o(.data)
     timedelar_T_2_Task                       0x24000086   Data           2  user_task_1.o(.data)
     IIC_EE_currentDriver                     0x24000088   Data           4  factory_iic.o(.data)
@@ -26513,7 +26513,7 @@ Memory Map of the image
     0x2400001c   COMPRESSED   0x00000020   Data   RW         8075    .data               heap_4.o
     0x2400003c   COMPRESSED   0x00000004   Data   RW         8136    .data               port.o
     0x24000040   COMPRESSED   0x0000003c   Data   RW         8781    .data               tasks.o
-    0x2400007c   COMPRESSED   0x00000008   Data   RW         9128    .data               freerotspro_1.o
+    0x2400007c   COMPRESSED   0x00000008   Data   RW         9128    .data               freerotspro.o
     0x24000084   COMPRESSED   0x00000004   Data   RW         9833    .data               user_task_1.o
     0x24000088   COMPRESSED   0x00000004   Data   RW        10634    .data               factory_iic.o
     0x2400008c   COMPRESSED   0x00000008   Data   RW        10820    .data               font24.o
@@ -26615,7 +26615,7 @@ Memory Map of the image
     0x081002e8   0x081002e8   0x0000009e   Code   RO        74234    .text               mc_w.l(_strtoul.o)
     0x08100386   0x08100386   0x0000005e   Code   RO        74255    .text               mc_w.l(__dclz77c.o)
     0x081003e4   0x081003e4   0x00000020   Code   RO        12377    i.AppTaskCb         taskfun.o
-    0x08100404   0x08100404   0x00000170   Code   RO         9125    i.AppTaskCreate     freerotspro_1.o
+    0x08100404   0x08100404   0x00000170   Code   RO         9125    i.AppTaskCreate     freerotspro.o
     0x08100574   0x08100574   0x0000000c   Code   RO        12378    i.AppTaskHandler    taskfun.o
     0x08100580   0x08100580   0x0000004e   Code   RO        13289    i.AsciiRemoveSpace02  data_convert.o
     0x081005ce   0x081005ce   0x00000002   PAD
@@ -26629,7 +26629,7 @@ Memory Map of the image
     0x081007f2   0x081007f2   0x0000006c   Code   RO         6940    i.FMC_SDRAM_Init    stm32h7xx_ll_fmc.o
     0x0810085e   0x0810085e   0x00000002   PAD
     0x08100860   0x08100860   0x00000094   Code   RO         6944    i.FMC_SDRAM_Timing_Init  stm32h7xx_ll_fmc.o
-    0x081008f4   0x081008f4   0x00000060   Code   RO         9126    i.FreerTosProBegin  freerotspro_1.o
+    0x081008f4   0x081008f4   0x00000060   Code   RO         9126    i.FreerTosProBegin  freerotspro.o
     0x08100954   0x08100954   0x0000000c   Code   RO        11609    i.GTP_IRQ_Disable   gt9xx.o
     0x08100960   0x08100960   0x00000104   Code   RO         1094    i.HAL_DMA2D_ConfigLayer  stm32h7xx_hal_dma2d.o
     0x08100a64   0x08100a64   0x00000002   Code   RO         1105    i.HAL_DMA2D_MspInit  stm32h7xx_hal_dma2d.o
@@ -28005,13 +28005,13 @@ Memory Map of the image
 
 
 
-  Load Region LR$$.ARM.__AT_0xD005DC00 (Base: 0xd005dc00, Size: 0x00000000, Max: 0x00007d00, ABSOLUTE)
+  Load Region LR$$.ARM.__AT_0xD0096000 (Base: 0xd0096000, Size: 0x00000000, Max: 0x0000a000, ABSOLUTE)
 
-    Execution Region ER$$.ARM.__AT_0xD005DC00 (Exec base: 0xd005dc00, Load base: 0xd005dc00, Size: 0x00007d00, Max: 0x00007d00, ABSOLUTE, UNINIT)
+    Execution Region ER$$.ARM.__AT_0xD0096000 (Exec base: 0xd0096000, Load base: 0xd0096000, Size: 0x0000a000, Max: 0x0000a000, ABSOLUTE, UNINIT)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0xd005dc00        -       0x00007d00   Zero   RW        15246    .ARM.__AT_0xD005DC00  lv_port_disp_template.o
+    0xd0096000        -       0x0000a000   Zero   RW        15246    .ARM.__AT_0xD0096000  lv_port_disp_template.o
 
 
 ==============================================================================
@@ -28021,235 +28021,235 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-        28         18          0          0          0        496   bsp_all_test.o
-       398         10          0          0          0       2932   bsp_i2c_ee.o
-       792         50          0          0         76       4918   bsp_i2c_touch.o
-       244         20          0          0         76       2485   bsp_iic.o
-      2976        182         56          5        476      18789   bsp_lcd.o
-       580         22          0          0          0      38424   bsp_mpu.o
-      1076         56          0          0         76       5335   bsp_qspi_flash.o
-      2930        172          0          0         68       8107   bsp_sdram.o
-       420        192          0          0        240       2397   bsp_sdram_dma.o
-       196         30          0         12          0       5395   bsp_systime.o
-       336         28          0          0          0       2153   bsp_usart.o
-       130         74          0          0          0       2377   bsp_usart_callback.o
-       116         34          0          8        204       1591   bsp_usart_com485.o
-        32         12          0          0        308       1418   bsp_usart_dma.o
-       540        134          0          0        140       4057   bsp_usart_shell.o
-        18          6          0          0         64       1760   btim.o
-      1196        644         87          8          0       3226   busi_test.o
-       716        334        199          0         80       1828   business.o
-       120          4          0          0          0      26966   cmsis_os.o
-       274          0          0          0          0       2454   data_convert.o
-       192        118          0          0         20       1866   data_random.o
-      3440       1238        297         52       1272      22054   elog.o
-       556         64          0         14       3072       5725   elog_async.o
-       496        144          0          8       1036      11135   elog_port.o
-       600        252         35          0          0       2517   elog_utils.o
-        88         10         16          4          0       3346   factory_iic.o
-         0          0       6840          8          0       1215   font24.o
-       464        192          0          8          0       6316   freerotspro_1.o
-       128         46         30          1        256       3365   frtos_printf.o
-        44          8          0       1277          0       5101   gt9xx.o
-      1396        720        523          0          0       2630   hal_ext_uart.o
-       572         84          0         32     131072       6844   heap_4.o
-       736        490        137         17          0       8491   hook_mem.o
-       324        182        139          0          0       2888   letter_shell_noos_cmd.o
-       992        464        614         24          0      10613   letter_shell_rtos_cmd.o
-       148          0          0          0          0       3782   list.o
-       996        250        237          0        276       8303   log.o
-      2372        380        127          0          0      76888   lv_anim.o
-         0          0          0          0          0       1120   lv_anim_timeline.o
-      5316        792        664          0          0     106057   lv_arc.o
-      2858         30          0          0          0      65632   lv_area.o
-       974        588        100          0          0      14562   lv_array.o
-       122          4          0          0          0      10975   lv_async.o
-      3228        440        372          0          0      90218   lv_bar.o
-         0          0          0          0          0       2136   lv_bidi.o
-      3968        834        264          0          0      68044   lv_bin_decoder.o
-         0          0          0          0          0       1412   lv_binfont_loader.o
-        66          4         46          0          0      43173   lv_button.o
-      6218        842        698          0          0     110274   lv_buttonmatrix.o
-      1096        420        326          0          0      23524   lv_cache.o
-      1372        780        518          0          0      21764   lv_cache_entry.o
-         0          0          0          0          0       1700   lv_cache_lru_ll.o
-      3330       1332        324          0          0      26709   lv_cache_lru_rb.o
-      1624        228        588         28          0      66507   lv_calendar.o
-       832        262        299         48          0      37934   lv_calendar_header_arrow.o
-       628         92        838          8          0       4444   lv_calendar_header_dropdown.o
-      7018        382       1124          0          0     122128   lv_chart.o
-      1132         16         69          0          0      77686   lv_checkbox.o
-       952         78          0          0          0      27836   lv_color.o
-       550          0          0          0          0      15567   lv_color_op.o
-      5136       1460        921          0          0     100222   lv_display.o
-      2868       1138        155          0          0      76382   lv_draw.o
-      1150          0          0          0          0      41257   lv_draw_arc.o
-      4440       1358        360          0          0      75985   lv_draw_buf.o
-       484        108        115          0          0      21450   lv_draw_buf_convert.o
-      2218        230        157          0          0      55044   lv_draw_image.o
-      2906        246        141          0          0      63050   lv_draw_label.o
-       190          0          0          0          0       2279   lv_draw_line.o
-       196         56         86          0          0      37930   lv_draw_mask.o
-      1464          6          0          0          0      49231   lv_draw_rect.o
-       468         34          0          0          0      57370   lv_draw_sw.o
-      1508        114         88          0          0      57770   lv_draw_sw_arc.o
-       950         90         98          0          0      45568   lv_draw_sw_blend.o
-      4570        152        164          0          0      58647   lv_draw_sw_blend_to_al88.o
-      7088        154        170          0          0      62239   lv_draw_sw_blend_to_argb8888.o
-      4750        152        219          0          0      15370   lv_draw_sw_blend_to_argb8888_premultiplied.o
-      6630         86        139          0          0      26838   lv_draw_sw_blend_to_i1.o
-      4642         86        139          0          0      21370   lv_draw_sw_blend_to_l8.o
-     10958        372        292          0          0      28550   lv_draw_sw_blend_to_rgb565.o
-     11752        370        308          0          0      29562   lv_draw_sw_blend_to_rgb565_swapped.o
-      5682         86        147          0          0      24142   lv_draw_sw_blend_to_rgb888.o
-      1574          0          0          0          0      49101   lv_draw_sw_border.o
-      3746         72        102          0          0      56777   lv_draw_sw_box_shadow.o
-      1316         80         90          0          0       4218   lv_draw_sw_fill.o
-       904        186        140          0          0      28758   lv_draw_sw_grad.o
-      5146        342        119          0          0      75791   lv_draw_sw_img.o
-       694         54         91          0          0      47872   lv_draw_sw_letter.o
-      1962          6         33          0          0      50271   lv_draw_sw_line.o
-      6050        362        143          0          0      69219   lv_draw_sw_mask.o
-       410          0          0          0          0      41736   lv_draw_sw_mask_rect.o
-      5602         12        248          0          0      52272   lv_draw_sw_transform.o
-      1224         74         98          0          0      44403   lv_draw_sw_triangle.o
-       264          0          0          0          0       2385   lv_draw_sw_utils.o
-      5740       1000        723          0          0     114415   lv_dropdown.o
-      1846        810        175          0          0      65270   lv_event.o
-      3972        196        101          0          0      95845   lv_flex.o
-      1336        606        153          0          0      30368   lv_font.o
-      2066        180        262          0          0      58842   lv_font_fmt_txt.o
-         0          0          0          0          0       1440   lv_font_montserrat_12.o
-         0          0      13644          0          0      35431   lv_font_montserrat_14.o
-      2218        660         93          0          0      57577   lv_fs.o
-      3574        156         91          0          0      99991   lv_grid.o
-      2184        826        266          0          0      70876   lv_group.o
-      4396        568        828          0          0     107408   lv_image.o
-       272         26         48          0          0      57137   lv_image_cache.o
-      1688        326        171          0          0      62609   lv_image_decoder.o
-       262         34         55          0          0      59730   lv_image_header_cache.o
-      7372        592        384          0          0     120491   lv_indev.o
-      3940         22          0          0          0      75753   lv_indev_scroll.o
-       692        340        210          0        564      76119   lv_init.o
-       340        196        155          0          0      14481   lv_iter.o
-       940        142       1543         80          0      53493   lv_keyboard.o
-      7488       1366        590          0          0     115083   lv_label.o
-       100         12          0          0          0      67748   lv_layout.o
-       726          6        104          0          0      48234   lv_led.o
-       748         14        203          0          0      69747   lv_line.o
-         0          0        145          0          0      36193   lv_list.o
-       750          0          0          0          0      12163   lv_ll.o
-       340         84         38         20          0       1129   lv_log.o
-       846         16        438          0          0       8644   lv_math.o
-       358        114         23          0          0      52842   lv_mem.o
-       624        114        149          0     131072      56529   lv_mem_core_builtin.o
-      2018        482       1048          0          0      66430   lv_menu.o
-         0          0        567          0          0      48422   lv_msgbox.o
-      6068       1596        450          0          0     109909   lv_obj.o
-       808        166         92          0          0      50195   lv_obj_class.o
-      3170         68         96          0          0      86352   lv_obj_draw.o
-      2220        774        550          0          0      62890   lv_obj_event.o
-      9412       1644        516          0          0     127607   lv_obj_pos.o
-      5822        350        167          0          0      90183   lv_obj_scroll.o
-      6346        658        296          0          0     110774   lv_obj_style.o
-       744          0          0          0          0      58903   lv_obj_style_gen.o
-      3106       1070        459          0          0      74482   lv_obj_tree.o
-      1314        488        959          0          0      76688   lv_observer.o
-         6          0          0          0          0       1559   lv_os.o
-         8          0          0          0          0        609   lv_os_none.o
-       528        164        689          0          0       2923   lv_palette.o
-       112         12          0          9      32000      53862   lv_port_disp_template.o
-       156         28          0         20          0       4134   lv_port_indev_template.o
-      2580       1012        148          0          0      22264   lv_rb.o
-      6822        990        197          0          0      94467   lv_refr.o
-      4380        384        396          0          0     107915   lv_roller.o
-      6032          8        701          0          0     125732   lv_scale.o
-      3260          6         88          0          0      93418   lv_slider.o
-      4344        518        879          0          0     120384   lv_span.o
-      1632        288        580          0          0      64914   lv_spinbox.o
-       236         14         47          0          0      39813   lv_spinner.o
-      2402         16          0          0          0      13289   lv_sprintf_builtin.o
-      1048          0          0          0          0      16460   lv_string_builtin.o
-      1402        288        268          0          0      56991   lv_style.o
-      1046          0          0          0          0      62652   lv_style_gen.o
-      1290         82        197          0          0      75286   lv_switch.o
-      1440        290        229          0         28      69356   lv_sysmon.o
-      3456          6        425          0          0     105822   lv_table.o
-      1570        334        327          0          0      79161   lv_tabview.o
-      2942        414         82          0          0      44386   lv_text.o
-      7306       1594       1131          4          0     119733   lv_textarea.o
-       188          0          0          0          0      45166   lv_theme.o
-     16022        426        116          0          0      68509   lv_theme_default.o
-        80          8          0          0          0       4151   lv_tick.o
-       324         14        122          0          0      49415   lv_tileview.o
-      1552        692        204          0          0      58507   lv_timer.o
-      5122       2000        819          0          0      44561   lv_tlsf.o
-        84          0          0          0          0        999   lv_utils.o
-       140          6         43          0          0      43795   lv_win.o
-        24          0          0          0          0       1076   lvgl_port.o
-       504        156          0          0          0       1984   main.o
-       496        294         31          0          0       2647   mmc.o
-       718        238          0          0          0       6066   p_data_queue.o
-        16          6          0          0        584       1912   p_data_queue_outer.o
-       488         56          0          4          0      10560   port.o
-      1758         16          0          0          0      19986   queue.o
-       150          0          0          0          0       3584   queue2.o
-       262         52          0          4          0       6630   segger_dao.o
-       660        402          0          0          0      13428   segger_outinterface.o
-      1104         64         33          1       3300      15432   segger_rtt.o
-      1096          6         16          0          0       6161   segger_rtt_printf.o
-      1100        382        464          0          0       2173   segger_toolkit.o
-      5194        276       1188         87         29      47729   shell.o
-        80          0          0          0          0       2200   shell_companion.o
-       960         12          0          0          0       7866   shell_ext.o
-       804        316         96         39        632       8307   shell_port.o
-        36          8        664          0      13824        964   startup_stm32h743xx.o
-       220         42          0          9          0      21854   stm32h7xx_hal.o
-       570         44          0          0          0      42543   stm32h7xx_hal_cortex.o
-      5774        114          8          0          0      10072   stm32h7xx_hal_dma.o
-      1048          6          0          0          0       5879   stm32h7xx_hal_dma2d.o
-       908        100          0          0          0       3402   stm32h7xx_hal_gpio.o
-      2170         34          0          0          0      13951   stm32h7xx_hal_i2c.o
-       106          0          0          0          0       1259   stm32h7xx_hal_i2c_ex.o
-       996          6          0          0          0       4406   stm32h7xx_hal_ltdc.o
-        36          4          0          0          0       1046   stm32h7xx_hal_msp.o
-        96          6          0          0          0        773   stm32h7xx_hal_pwr_ex.o
-      1436         10          0          0          0       8986   stm32h7xx_hal_qspi.o
-      3308        102          0          0          0       6736   stm32h7xx_hal_rcc.o
-      4800        122          0          0          0       7919   stm32h7xx_hal_rcc_ex.o
-        70          0          0          0          0       1781   stm32h7xx_hal_rng.o
-       214          4          0          0          0       3520   stm32h7xx_hal_sdram.o
-       448          0          0          0          0       3838   stm32h7xx_hal_tim.o
-         6          0          0          0          0       2312   stm32h7xx_hal_tim_ex.o
-      8644        212          0          0          0      18516   stm32h7xx_hal_uart.o
-       384         18          0          0          0       5598   stm32h7xx_hal_uart_ex.o
-       274        162          0          0          0       2873   stm32h7xx_it.o
-       310          4          0          0          0       4320   stm32h7xx_ll_fmc.o
-       148         28          0         12          0       2725   sys_dwt.o
-       736        462          0          0          0      18113   sys_init_all.o
-        98         14          0          0          0       6379   sys_interrupt.o
-       148         18         16          8          0    1320497   system_stm32h7xx.o
-        56         10          0          8          0       2082   systick.o
-       292        142          0          0          0       2745   task_check.o
-       284         22          0          8          0       4409   taskfun.o
-       832        438         12        122          0       2686   taskfun_outer.o
-      4558        576          0         60        740      44590   tasks.o
-       384         78          0          1          0       1497   tasksema.o
-       404        324          0         74          0       2007   tasksemafun_outer.o
-       340        214          0          2          0       1695   taskworkhandle.o
-      1460        616          0         36          0       4553   touch_drv.o
-        88         14          0          4          0       1323   ui.o
-         0          0      28412          0          0       1082   ui_font_h2_bold.o
-         0          0       2204          0          0        845   ui_img_arrow_png.o
-      1032        158        155         28          0       3830   ui_screen1.o
-        20          4          0          0         76        755   user_buffers.o
-        50          0          0          0          0       6579   user_lvgltask.o
-        16          0          0          0          0        609   user_systemtask.o
-       472        226         33          4          0       6121   user_task_1.o
-        42          0          0          0          0        686   w_string.o
+        28         18          0          0          0        484   bsp_all_test.o
+       398         10          0          0          0       2884   bsp_i2c_ee.o
+       792         50          0          0         76       4822   bsp_i2c_touch.o
+       244         20          0          0         76       2425   bsp_iic.o
+      2976        182         56          5        476      18577   bsp_lcd.o
+       580         22          0          0          0      38352   bsp_mpu.o
+      1076         56          0          0         76       5239   bsp_qspi_flash.o
+      2930        172          0          0         68       7987   bsp_sdram.o
+       420        192          0          0        240       2337   bsp_sdram_dma.o
+       196         30          0         12          0       5299   bsp_systime.o
+       336         28          0          0          0       2117   bsp_usart.o
+       130         74          0          0          0       2329   bsp_usart_callback.o
+       116         34          0          8        204       1555   bsp_usart_com485.o
+        32         12          0          0        308       1382   bsp_usart_dma.o
+       540        134          0          0        140       3973   bsp_usart_shell.o
+        18          6          0          0         64       1712   btim.o
+      1196        644         87          8          0       3166   busi_test.o
+       716        334        199          0         80       1792   business.o
+       120          4          0          0          0      26834   cmsis_os.o
+       274          0          0          0          0       2418   data_convert.o
+       192        118          0          0         20       1830   data_random.o
+      3440       1238        297         52       1272      21742   elog.o
+       556         64          0         14       3072       5617   elog_async.o
+       496        144          0          8       1036      10979   elog_port.o
+       600        252         35          0          0       2481   elog_utils.o
+        88         10         16          4          0       3274   factory_iic.o
+         0          0       6840          8          0       1179   font24.o
+       464        192          0          8          0       6268   freerotspro.o
+       128         46         30          1        256       3305   frtos_printf.o
+        44          8          0       1277          0       5041   gt9xx.o
+      1396        720        523          0          0       2582   hal_ext_uart.o
+       572         84          0         32     131072       6736   heap_4.o
+       736        490        137         17          0       8419   hook_mem.o
+       324        182        139          0          0       2840   letter_shell_noos_cmd.o
+       992        464        614         24          0      10469   letter_shell_rtos_cmd.o
+       148          0          0          0          0       3710   list.o
+       996        250        237          0        276       8183   log.o
+      2372        380        127          0          0      76084   lv_anim.o
+         0          0          0          0          0       1108   lv_anim_timeline.o
+      5316        792        664          0          0     105121   lv_arc.o
+      2858         30          0          0          0      65056   lv_area.o
+       974        588        100          0          0      14430   lv_array.o
+       122          4          0          0          0      10891   lv_async.o
+      3228        440        372          0          0      89522   lv_bar.o
+         0          0          0          0          0       2112   lv_bidi.o
+      3968        834        264          0          0      67540   lv_bin_decoder.o
+         0          0          0          0          0       1400   lv_binfont_loader.o
+        66          4         46          0          0      42921   lv_button.o
+      6218        842        698          0          0     109350   lv_buttonmatrix.o
+      1096        420        326          0          0      23284   lv_cache.o
+      1372        780        518          0          0      21500   lv_cache_entry.o
+         0          0          0          0          0       1664   lv_cache_lru_ll.o
+      3330       1332        324          0          0      26433   lv_cache_lru_rb.o
+      1624        228        588         28          0      65943   lv_calendar.o
+       832        262        299         48          0      37718   lv_calendar_header_arrow.o
+       628         92        838          8          0       4372   lv_calendar_header_dropdown.o
+      7018        382       1124          0          0     121036   lv_chart.o
+      1132         16         69          0          0      77182   lv_checkbox.o
+       952         78          0          0          0      27512   lv_color.o
+       550          0          0          0          0      15471   lv_color_op.o
+      5136       1460        921          0          0      99178   lv_display.o
+      2868       1138        155          0          0      75710   lv_draw.o
+      1150          0          0          0          0      41017   lv_draw_arc.o
+      4440       1358        360          0          0      75253   lv_draw_buf.o
+       484        108        115          0          0      21354   lv_draw_buf_convert.o
+      2218        230        157          0          0      54684   lv_draw_image.o
+      2906        246        141          0          0      62582   lv_draw_label.o
+       190          0          0          0          0       2243   lv_draw_line.o
+       196         56         86          0          0      37726   lv_draw_mask.o
+      1464          6          0          0          0      48919   lv_draw_rect.o
+       468         34          0          0          0      56962   lv_draw_sw.o
+      1508        114         88          0          0      57374   lv_draw_sw_arc.o
+       950         90         98          0          0      45304   lv_draw_sw_blend.o
+      4570        152        164          0          0      58263   lv_draw_sw_blend_to_al88.o
+      7088        154        170          0          0      61843   lv_draw_sw_blend_to_argb8888.o
+      4750        152        219          0          0      15238   lv_draw_sw_blend_to_argb8888_premultiplied.o
+      6630         86        139          0          0      26622   lv_draw_sw_blend_to_i1.o
+      4642         86        139          0          0      21178   lv_draw_sw_blend_to_l8.o
+     10958        372        292          0          0      28334   lv_draw_sw_blend_to_rgb565.o
+     11752        370        308          0          0      29346   lv_draw_sw_blend_to_rgb565_swapped.o
+      5682         86        147          0          0      23950   lv_draw_sw_blend_to_rgb888.o
+      1574          0          0          0          0      48813   lv_draw_sw_border.o
+      3746         72        102          0          0      56417   lv_draw_sw_box_shadow.o
+      1316         80         90          0          0       4182   lv_draw_sw_fill.o
+       904        186        140          0          0      28590   lv_draw_sw_grad.o
+      5146        342        119          0          0      75263   lv_draw_sw_img.o
+       694         54         91          0          0      47572   lv_draw_sw_letter.o
+      1962          6         33          0          0      49971   lv_draw_sw_line.o
+      6050        362        143          0          0      68679   lv_draw_sw_mask.o
+       410          0          0          0          0      41508   lv_draw_sw_mask_rect.o
+      5602         12        248          0          0      51996   lv_draw_sw_transform.o
+      1224         74         98          0          0      44151   lv_draw_sw_triangle.o
+       264          0          0          0          0       2361   lv_draw_sw_utils.o
+      5740       1000        723          0          0     113455   lv_dropdown.o
+      1846        810        175          0          0      64682   lv_event.o
+      3972        196        101          0          0      95125   lv_flex.o
+      1336        606        153          0          0      30128   lv_font.o
+      2066        180        262          0          0      58398   lv_font_fmt_txt.o
+         0          0          0          0          0       1428   lv_font_montserrat_12.o
+         0          0      13644          0          0      35263   lv_font_montserrat_14.o
+      2218        660         93          0          0      57133   lv_fs.o
+      3574        156         91          0          0      99223   lv_grid.o
+      2184        826        266          0          0      70240   lv_group.o
+      4396        568        828          0          0     106460   lv_image.o
+       272         26         48          0          0      56717   lv_image_cache.o
+      1688        326        171          0          0      62105   lv_image_decoder.o
+       262         34         55          0          0      59310   lv_image_header_cache.o
+      7372        592        384          0          0     119387   lv_indev.o
+      3940         22          0          0          0      75309   lv_indev_scroll.o
+       692        340        210          0        564      75495   lv_init.o
+       340        196        155          0          0      14337   lv_iter.o
+       940        142       1543         80          0      53121   lv_keyboard.o
+      7488       1366        590          0          0     114111   lv_label.o
+       100         12          0          0          0      67340   lv_layout.o
+       726          6        104          0          0      47922   lv_led.o
+       748         14        203          0          0      69303   lv_line.o
+         0          0        145          0          0      36013   lv_list.o
+       750          0          0          0          0      11959   lv_ll.o
+       340         84         38         20          0       1117   lv_log.o
+       846         16        438          0          0       8512   lv_math.o
+       358        114         23          0          0      52434   lv_mem.o
+       624        114        149          0     131072      56085   lv_mem_core_builtin.o
+      2018        482       1048          0          0      65818   lv_menu.o
+         0          0        567          0          0      48098   lv_msgbox.o
+      6068       1596        450          0          0     108973   lv_obj.o
+       808        166         92          0          0      49871   lv_obj_class.o
+      3170         68         96          0          0      85752   lv_obj_draw.o
+      2220        774        550          0          0      62350   lv_obj_event.o
+      9412       1644        516          0          0     126395   lv_obj_pos.o
+      5822        350        167          0          0      89475   lv_obj_scroll.o
+      6346        658        296          0          0     109850   lv_obj_style.o
+       744          0          0          0          0      58387   lv_obj_style_gen.o
+      3106       1070        459          0          0      73870   lv_obj_tree.o
+      1314        488        959          0          0      75980   lv_observer.o
+         6          0          0          0          0       1523   lv_os.o
+         8          0          0          0          0        597   lv_os_none.o
+       528        164        689          0          0       2875   lv_palette.o
+       112         12          0          9      40960      53622   lv_port_disp_template.o
+       156         28          0         20          0       4050   lv_port_indev_template.o
+      2580       1012        148          0          0      22012   lv_rb.o
+      6822        990        197          0          0      93795   lv_refr.o
+      4380        384        396          0          0     107087   lv_roller.o
+      6032          8        701          0          0     124568   lv_scale.o
+      3260          6         88          0          0      92698   lv_slider.o
+      4344        518        879          0          0     119304   lv_span.o
+      1632        288        580          0          0      64362   lv_spinbox.o
+       236         14         47          0          0      39585   lv_spinner.o
+      2402         16          0          0          0      13145   lv_sprintf_builtin.o
+      1048          0          0          0          0      16316   lv_string_builtin.o
+      1402        288        268          0          0      56523   lv_style.o
+      1046          0          0          0          0      61980   lv_style_gen.o
+      1290         82        197          0          0      74782   lv_switch.o
+      1440        290        229          0         28      68816   lv_sysmon.o
+      3456          6        425          0          0     104994   lv_table.o
+      1570        334        327          0          0      78657   lv_tabview.o
+      2942        414         82          0          0      44026   lv_text.o
+      7306       1594       1131          4          0     118605   lv_textarea.o
+       188          0          0          0          0      44878   lv_theme.o
+     16022        426        116          0          0      68041   lv_theme_default.o
+        80          8          0          0          0       4067   lv_tick.o
+       324         14        122          0          0      49115   lv_tileview.o
+      1552        692        204          0          0      57991   lv_timer.o
+      5122       2000        819          0          0      43877   lv_tlsf.o
+        84          0          0          0          0        987   lv_utils.o
+       140          6         43          0          0      43555   lv_win.o
+        24          0          0          0          0       1052   lvgl_port.o
+       504        156          0          0          0       1948   main.o
+       496        294         31          0          0       2599   mmc.o
+       718        238          0          0          0       5946   p_data_queue.o
+        16          6          0          0        584       1876   p_data_queue_outer.o
+       488         56          0          4          0      10428   port.o
+      1758         16          0          0          0      19746   queue.o
+       150          0          0          0          0       3512   queue2.o
+       262         52          0          4          0       6570   segger_dao.o
+       660        402          0          0          0      13356   segger_outinterface.o
+      1104         64         33          1       3300      15252   segger_rtt.o
+      1096          6         16          0          0       6089   segger_rtt_printf.o
+      1100        382        464          0          0       2137   segger_toolkit.o
+      5194        276       1188         87         29      46997   shell.o
+        80          0          0          0          0       2164   shell_companion.o
+       960         12          0          0          0       7758   shell_ext.o
+       804        316         96         39        632       8175   shell_port.o
+        36          8        664          0      13824        952   startup_stm32h743xx.o
+       220         42          0          9          0      21770   stm32h7xx_hal.o
+       570         44          0          0          0      42399   stm32h7xx_hal_cortex.o
+      5774        114          8          0          0       9964   stm32h7xx_hal_dma.o
+      1048          6          0          0          0       5795   stm32h7xx_hal_dma2d.o
+       908        100          0          0          0       3354   stm32h7xx_hal_gpio.o
+      2170         34          0          0          0      13771   stm32h7xx_hal_i2c.o
+       106          0          0          0          0       1235   stm32h7xx_hal_i2c_ex.o
+       996          6          0          0          0       4334   stm32h7xx_hal_ltdc.o
+        36          4          0          0          0       1022   stm32h7xx_hal_msp.o
+        96          6          0          0          0        761   stm32h7xx_hal_pwr_ex.o
+      1436         10          0          0          0       8854   stm32h7xx_hal_qspi.o
+      3308        102          0          0          0       6652   stm32h7xx_hal_rcc.o
+      4800        122          0          0          0       7823   stm32h7xx_hal_rcc_ex.o
+        70          0          0          0          0       1745   stm32h7xx_hal_rng.o
+       214          4          0          0          0       3460   stm32h7xx_hal_sdram.o
+       448          0          0          0          0       3766   stm32h7xx_hal_tim.o
+         6          0          0          0          0       2264   stm32h7xx_hal_tim_ex.o
+      8644        212          0          0          0      18300   stm32h7xx_hal_uart.o
+       384         18          0          0          0       5502   stm32h7xx_hal_uart_ex.o
+       274        162          0          0          0       2801   stm32h7xx_it.o
+       310          4          0          0          0       4260   stm32h7xx_ll_fmc.o
+       148         28          0         12          0       2665   sys_dwt.o
+       736        462          0          0          0      17981   sys_init_all.o
+        98         14          0          0          0       6343   sys_interrupt.o
+       148         18         16          8          0    1320233   system_stm32h7xx.o
+        56         10          0          8          0       2034   systick.o
+       292        142          0          0          0       2685   task_check.o
+       284         22          0          8          0       4313   taskfun.o
+       832        438         12        122          0       2638   taskfun_outer.o
+      4558        576          0         60        740      44026   tasks.o
+       384         78          0          1          0       1461   tasksema.o
+       404        324          0         74          0       1959   tasksemafun_outer.o
+       340        214          0          2          0       1659   taskworkhandle.o
+      1460        616          0         36          0       4469   touch_drv.o
+        88         14          0          4          0       1287   ui.o
+         0          0      28412          0          0       1058   ui_font_h2_bold.o
+         0          0       2204          0          0        821   ui_img_arrow_png.o
+      1032        158        155         28          0       3758   ui_screen1.o
+        20          4          0          0         76        731   user_buffers.o
+        50          0          0          0          0       6531   user_lvgltask.o
+        16          0          0          0          0        597   user_systemtask.o
+       472        226         33          4          0       6049   user_task_1.o
+        42          0          0          0          0        674   w_string.o
 
     ----------------------------------------------------------------------
-    409328      53188      87376       2228     321668    8877401   Object Totals
+    409328      53188      87376       2228     330628    8814297   Object Totals
          0          0         32          0          0          0   (incl. Generated)
        356          0        202         22          7          0   (incl. Padding)
 
@@ -28321,14 +28321,14 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-    414132      53344      87512       2244     321668    8656257   Grand Totals
-    414132      53344      87512       1140     321668    8656257   ELF Image Totals (compressed)
+    414132      53344      87512       2244     330628    8593153   Grand Totals
+    414132      53344      87512       1140     330628    8593153   ELF Image Totals (compressed)
     414132      53344      87512       1140          0          0   ROM Totals
 
 ==============================================================================
 
     Total RO  Size (Code + RO Data)               501644 ( 489.89kB)
-    Total RW  Size (RW Data + ZI Data)            323912 ( 316.32kB)
+    Total RW  Size (RW Data + ZI Data)            332872 ( 325.07kB)
     Total ROM Size (Code + RO Data + RW Data)     502784 ( 491.00kB)
 
 ==============================================================================

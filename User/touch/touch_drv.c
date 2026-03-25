@@ -495,7 +495,7 @@ void TouchScan(TouchInfo_t *touchInfo)
 }
 #endif
 
-
+#if USE_GT911
 void TouchScan(TouchInfo_t *touchInfo)
 {
 	static TouchInfo_t lastTouchInfo = {UP};
@@ -556,6 +556,78 @@ void TouchScan(TouchInfo_t *touchInfo)
 //	SYSTEM_INFO("4--%d \r\n",TouchScanNUM);
 	return;
 }
+
+
+#ELSE
+
+void TouchScan(TouchInfo_t *touchInfo)
+{
+    static TouchInfo_t lastTouchInfo = {UP};
+    static uint64_t lastSysTime = 0;
+    static uint32_t TouchScanNUM=0;
+    
+    // 检测间隔控制
+    if ((GetSysRunTime() - lastSysTime) < DETECT_INTERVAL_TIME)
+    {
+        *touchInfo = lastTouchInfo;
+        return;
+    }
+    lastSysTime = GetSysRunTime();
+
+    uint8_t statRegVal;
+    uint8_t buff[4];  // FT5446单触点数据占4字节（0x03~0x06）
+    TouchScanNUM++;
+
+    // 读取触控状态寄存器（0x02）：bit0~bit3=触控点数量；bit7=触摸事件（1=按下/0=释放）
+    if (!ReadTouchReg(FT5446_STATUS_REG, &statRegVal, 1))
+    {
+        SYSTEM_INFO("read FT5446_STATUS_REG error\n");
+        SYSTEM_DEBUG("--%d \r\n",TouchScanNUM);
+        touchInfo->state = UP;
+        lastTouchInfo = *touchInfo;
+        return;
+    }
+
+    // 解析触控点数量和状态
+    uint8_t touchNums = statRegVal & 0x0F;  // 触控点数量（0~10）
+    bool isTouch = (statRegVal & 0x80) ? true : false; // bit7=1表示有触摸
+
+    if (!isTouch || touchNums == 0 || touchNums > TOUCH_POINT_MAX)
+    {
+        touchInfo->state = UP;
+        lastTouchInfo = *touchInfo;
+        return;
+    }
+
+    // 读取第一个触控点数据（0x03~0x06）
+    if (!ReadTouchReg(FT5446_TP1_REG, buff, 4))
+    {
+        SYSTEM_INFO("read FT5446 TP data error\n");
+        touchInfo->state = UP;
+        lastTouchInfo = *touchInfo;
+        return;
+    }
+
+    // 解析FT5446坐标：
+    // X坐标 = (buff[1] & 0xF0) << 4 | buff[0]
+    // Y坐标 = (buff[1] & 0x0F) << 8 | buff[2]
+    touchInfo->point.x = ((buff[1] & 0xF0) << 4) | buff[0];
+    touchInfo->point.y = ((buff[1] & 0x0F) << 8) | buff[2];
+    touchInfo->point.size = 0;  // FT5446无size字段，设为0
+    
+    touchInfo->state = DOWN;
+    lastTouchInfo = *touchInfo;
+    return;
+}
+
+
+
+#endif
+
+
+
+
+
 
 
 

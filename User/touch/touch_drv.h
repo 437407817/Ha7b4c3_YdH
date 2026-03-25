@@ -11,7 +11,7 @@
 
 
 /* GT911 部分寄存器定义 */ 
-#define TOUCH_DEV_ADDR 	 			0xBA
+#define TOUCH_DEV_ADDR 	 			0xBA      // 写
 #define GT911_CTRL_REG   			0x8040      // GT911控制寄存器
 #define GT911_CFGS_REG   			0x8050      // GT911配置起始地址寄存器
 #define GT911_PID_REG    			0x8140      // GT911产品ID寄存器

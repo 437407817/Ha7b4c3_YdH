@@ -1779,6 +1779,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\flash\bsp_qspi_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>ft5206.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\touch\ft5206.c</FilePath>
+            </File>
+            <File>
+              <FileName>ft5206_ct_iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\touch\ft5206_ct_iic.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
