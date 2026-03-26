@@ -286,17 +286,19 @@ void I2Cx_Reset(I2C_HandleTypeDef  I2Cx_Handle)
     // 重新初始化
     HAL_I2C_Init(&I2Cx_Handle);
 }
+// 根据宏定义自动选择 I2C_MEMADD_SIZE_8BIT 或 16BIT
+//    uint16_t mem_size = (TOUCH_REG_ADDR_SIZE == 2) ? I2C_MEMADD_SIZE_16BIT : I2C_MEMADD_SIZE_8BIT;
 
 bool WriteTouchReg(uint16_t reg, uint8_t *pBuffer, uint8_t numToWrite){
 
 	uint16_t i;
-	i=HAL_I2C_Mem_Write(&I2C_Handle,TOUCH_DEV_ADDR,reg,2,pBuffer,numToWrite,1000);
+	i=HAL_I2C_Mem_Write(&I2C_Handle,TOUCH_DEV_ADDR,reg,TOUCH_REG_ADDR_SIZE,pBuffer,numToWrite,1000);
 if(i==0){
 return true;
 }
 SYSTEM_DEBUG(" HAL_I2C_Mem_Write error,write again");
 I2C_Recover_Bus_Stuck(&I2C_Handle);
-	i=HAL_I2C_Mem_Write(&I2C_Handle,TOUCH_DEV_ADDR,reg,2,pBuffer,numToWrite,1000);
+	i=HAL_I2C_Mem_Write(&I2C_Handle,TOUCH_DEV_ADDR,reg,TOUCH_REG_ADDR_SIZE,pBuffer,numToWrite,1000);
 if(i==0){
 return true;
 }
@@ -316,7 +318,7 @@ read_count++;
 					
 					
         }
-	i=HAL_I2C_Mem_Read(&I2C_Handle,TOUCH_DEV_ADDR,reg,2,pBuffer,numToRead,1000);
+	i=HAL_I2C_Mem_Read(&I2C_Handle,TOUCH_DEV_ADDR,reg,TOUCH_REG_ADDR_SIZE,pBuffer,numToRead,1000);
 if(i==0){
 return true;
 }
@@ -324,7 +326,7 @@ SYSTEM_BIGNUM_DEC(1,read_count,"  HAL_I2C_Mem_Read error,read again ");
 read_count=0;
 //SYSTEM_DEBUG(" HAL_I2C_Mem_Read error，read again");
 I2C_Recover_Bus_Stuck(&I2C_Handle);
-	i=HAL_I2C_Mem_Read(&I2C_Handle,TOUCH_DEV_ADDR,reg,2,pBuffer,numToRead,1000);
+	i=HAL_I2C_Mem_Read(&I2C_Handle,TOUCH_DEV_ADDR,reg,TOUCH_REG_ADDR_SIZE,pBuffer,numToRead,1000);
 if(i==0){
 	
 return true;
@@ -436,20 +438,71 @@ i2c_err:
 	I2CStop(); 
 	return false;
 }
+
+
+
+
+#if SOFT_IIC&&!USE_GT911
+static bool ReadTouchReg(uint16_t reg, uint8_t *pBuffer, uint8_t numToRead) {
+    I2CStart();
+    I2CSendByte(TOUCH_DEV_ADDR | TOUCH_I2C_WR);
+    if (!I2CWaitAck()) goto i2c_err;
+
+    // --- 修改点：根据地址长度决定发送次数 ---
+    if (TOUCH_REG_ADDR_SIZE == 2) {
+        I2CSendByte((uint8_t)(reg >> 8) & 0xFF);
+        if (!I2CWaitAck()) goto i2c_err;
+    }
+    I2CSendByte((uint8_t)reg & 0xFF);
+    if (!I2CWaitAck()) goto i2c_err;
+    // --- 之后逻辑不变 ---
+    ...
+}
 #endif
+
+
+#endif
+
+//void TouchDrvInit(void)
+//{
+//		I2C_Touch_Init();
+
+//	uint8_t id[5];
+//	if (ReadTouchReg(GT911_PID_REG, id, 4))
+//	{
+//		id[4] = '\0';
+//		SYSTEM_INFO("touch success--Touch ID: %s\n", id);
+//		return;
+//	}
+//	SYSTEM_INFO("Touch init error\n");
+//}
 
 void TouchDrvInit(void)
 {
-		I2C_Touch_Init();
+    // 1. 初始化物理接口（GPIO、I2C、复位时序）
+    I2C_Touch_Init();
 
-	uint8_t id[5];
-	if (ReadTouchReg(GT911_PID_REG, id, 4))
-	{
-		id[4] = '\0';
-		SYSTEM_INFO("touch success--Touch ID: %s\n", id);
-		return;
-	}
-	SYSTEM_INFO("Touch init error\n");
+    uint8_t id[6]; // 稍微加大缓冲区以防万一
+    
+#if USE_GT911
+    // GT911 的产品 ID 存放在 0x8140 开始的 4 字节（如 "911\0"）
+    if (ReadTouchReg(TOUCH_PID_REG, id, 4))
+    {
+        id[4] = '\0';
+        SYSTEM_INFO("GT911 Detected! ID: %s\n", id);
+        return;
+    }
+#else
+    // FT5446U 的 ID 寄存器通常是 0xA8，读取 1 字节即可
+    // 有些固件版本也可以通过读取 0xA3 寄存器获取芯片库版本
+    if (ReadTouchReg(TOUCH_PID_REG, id, 1))
+    {
+        SYSTEM_INFO("FT5446U Detected! ID Code: 0x%02X\n", id[0]);
+        return;
+    }
+#endif
+
+    SYSTEM_INFO("Touch init error: Device not found or I2C fail\n");
 }
 #if 0
 void TouchScan(TouchInfo_t *touchInfo)
@@ -558,69 +611,87 @@ void TouchScan(TouchInfo_t *touchInfo)
 }
 
 
-#ELSE
+#else
 
 void TouchScan(TouchInfo_t *touchInfo)
 {
-    static TouchInfo_t lastTouchInfo = {UP};
+    static TouchInfo_t lastTouchInfo = {0};
     static uint64_t lastSysTime = 0;
-    static uint32_t TouchScanNUM=0;
     
-    // 检测间隔控制
-    if ((GetSysRunTime() - lastSysTime) < DETECT_INTERVAL_TIME)
-    {
+    if ((GetSysRunTime() - lastSysTime) < DETECT_INTERVAL_TIME) {
         *touchInfo = lastTouchInfo;
         return;
     }
     lastSysTime = GetSysRunTime();
 
     uint8_t statRegVal;
-    uint8_t buff[4];  // FT5446单触点数据占4字节（0x03~0x06）
-    TouchScanNUM++;
-
-    // 读取触控状态寄存器（0x02）：bit0~bit3=触控点数量；bit7=触摸事件（1=按下/0=释放）
-    if (!ReadTouchReg(FT5446_STATUS_REG, &statRegVal, 1))
-    {
-        SYSTEM_INFO("read FT5446_STATUS_REG error\n");
-        SYSTEM_DEBUG("--%d \r\n",TouchScanNUM);
-        touchInfo->state = UP;
-        lastTouchInfo = *touchInfo;
+    if (!ReadTouchReg(TOUCH_STATUS_REG, &statRegVal, 1)) {
+        touchInfo->state = 0;
         return;
     }
 
-    // 解析触控点数量和状态
-    uint8_t touchNums = statRegVal & 0x0F;  // 触控点数量（0~10）
-    bool isTouch = (statRegVal & 0x80) ? true : false; // bit7=1表示有触摸
-
-    if (!isTouch || touchNums == 0 || touchNums > TOUCH_POINT_MAX)
-    {
-        touchInfo->state = UP;
-        lastTouchInfo = *touchInfo;
+#if USE_GT911
+    // GT911 逻辑
+    if ((statRegVal & 0x80) == 0) { // Buffer status 未就绪
+        touchInfo->state = 0;
         return;
     }
+    uint8_t touchNums = statRegVal & 0x0F;
+    uint8_t clean = 0;
+    WriteTouchReg(TOUCH_STATUS_REG, &clean, 1); // 必须手动清除状态位
 
-    // 读取第一个触控点数据（0x03~0x06）
-    if (!ReadTouchReg(FT5446_TP1_REG, buff, 4))
-    {
-        SYSTEM_INFO("read FT5446 TP data error\n");
-        touchInfo->state = UP;
-        lastTouchInfo = *touchInfo;
-        return;
+    if (touchNums > 0) {
+        uint8_t buff[6];
+        ReadTouchReg(TOUCH_TP1_REG, buff, 6);
+        touchInfo->point.x = (uint16_t)(buff[1] << 8) | buff[0];
+        touchInfo->point.y = (uint16_t)(buff[3] << 8) | buff[2];
+        touchInfo->state = 1;
+    } else {
+        touchInfo->state = 0;
     }
 
-    // 解析FT5446坐标：
-    // X坐标 = (buff[1] & 0xF0) << 4 | buff[0]
-    // Y坐标 = (buff[1] & 0x0F) << 8 | buff[2]
-    touchInfo->point.x = ((buff[1] & 0xF0) << 4) | buff[0];
-    touchInfo->point.y = ((buff[1] & 0x0F) << 8) | buff[2];
-    touchInfo->point.size = 0;  // FT5446无size字段，设为0
-    
-    touchInfo->state = DOWN;
+#else
+    // FT5446U 逻辑
+    uint8_t touchNums = statRegVal & 0x0F; 
+    // FT系列通常不需要手动清除状态位，直接读取即可
+    if (touchNums > 0 && touchNums <= TOUCH_POINT_MAX) {
+        uint8_t buff[4]; // FT5446 第一个点坐标在 0x03~0x06
+        ReadTouchReg(TOUCH_TP1_REG, buff, 4);
+        
+        /* FT5446 坐标解析：
+           buff[0]: Point1_XH (bit7-6: Event Flag, bit3-0: X high 4 bits)
+           buff[1]: Point1_XL (X low 8 bits)
+           buff[2]: Point1_YH (bit3-0: Y high 4 bits)
+           buff[3]: Point1_YL (Y low 8 bits)
+        */
+//        touchInfo->point.x = (uint16_t)((buff[0] & 0x0F) << 8) + buff[1];
+//        touchInfo->point.y = (uint16_t)((buff[2] & 0x0F) << 8) + buff[3];
+			
+uint16_t phys_x = (uint16_t)((buff[0] & 0x0F) << 8) | buff[1];
+            uint16_t phys_y = (uint16_t)((buff[2] & 0x0F) << 8) | buff[3];
+
+            // 2. 处理对角线对称 (X/Y 互换)
+            // 关键点：将读取到的 X 赋值给 Y，将 Y 赋值给 X
+            uint16_t temp_x = phys_y;
+            uint16_t temp_y = phys_x;
+
+            // 3. 轴向校正 (根据 1024*600 分辨率适配)
+            // 如果对调后左右反了，用 1024 - temp_x；如果上下反了，用 600 - temp_y
+            // 以下是常见的对角线修复组合，请尝试：
+            touchInfo->point.x = temp_x; 
+            touchInfo->point.y = temp_y;
+
+
+			
+			
+        touchInfo->state = 1;
+    } else {
+        touchInfo->state = 0;
+    }
+#endif
+
     lastTouchInfo = *touchInfo;
-    return;
 }
-
-
 
 #endif
 
