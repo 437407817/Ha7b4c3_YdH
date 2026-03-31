@@ -24,7 +24,6 @@
 
 #define LOG_TAG "OS"
 #include "elog.h"
-
 #include "log.h"
 //#define v_printf SYSTEM_i_print
 #if 1

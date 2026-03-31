@@ -24,8 +24,8 @@
 #define FRAME_REC_HEAD_1           0xA5
 
 #if c485_232_CRC16
-#define PACKET_DATA_LEN_MIN    10                  //最小包长度
-#define PACKET_DATA_LEN_MAX    136                 //最大包长度
+#define PACKET_DATA_LEN_MIN    20                  //最小包长度
+#define PACKET_DATA_LEN_MAX    120                 //最大包长度
 #else
 #define PACKET_DATA_LEN_MIN    10                  //最小包长度
 #define PACKET_DATA_LEN_MAX    120                 //最大包长度

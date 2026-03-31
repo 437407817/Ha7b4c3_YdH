@@ -116,7 +116,7 @@ static void T_1_Task(void* pvParameters);/* LED_Task任务实现 */
 static void T_2_Task(void* pvParameters);/* KEY_Task任务实现 */
 //void SEGGERTask(void *pvParameters);
 //QueueHandle_t Test_Queue =NULL;
-
+ void T_pull_data_Task(void* parameter);
 
 //void vLvglTask(void *pvParameters);  /* 任务函数 */
 /*****************************************************************
@@ -233,9 +233,13 @@ vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);
 			 
 								
 								
-			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				
-			vPrintStack_TaskCreationResult("busi_pro_task", xReturn, 128);
+//			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				
+//			vPrintStack_TaskCreationResult("busi_pro_task", xReturn, 128);
 
+			xTaskCreate(T_pull_data_Task,"T_pull_data_Task",512,(void *)0,14,&tmp_handle);				
+			vPrintStack_TaskCreationResult("T_pull_data_Task", xReturn, 512);					
+								
+								
 easylogger_init();								
 //    xTaskCreate((TaskFunction_t )uart_health_check_task,
 //                (const char*    )"uart_health_check_task",
@@ -290,12 +294,24 @@ void StartNeedDeleteTask(void *pvParameters)
 #include "string.h"
 
 
+#include "./pro_com/usart485verify.h"
 
 
+ void T_pull_data_Task(void* parameter)
+{	
 
+	
+  while (1)
+  {
+		
+		SYSTEM_INFO("T_pull_data_Task  \r\n");
+Usart485ComTask();
+		
+    vTaskDelay(pdMS_TO_TICKS(800));   /* 延时1000个ms */
+  }
+}
 
-
-
+//pull_data_from_485
 
 //static void AppTaskCreate(void)
 //{

@@ -10,7 +10,7 @@
 
 
 //´®¿Ú²¨ÌØÂÊ
-#define USART_COM485_BAUDRATE                    115200
+#define USART_COM485_BAUDRATE                    9600
 
 
 

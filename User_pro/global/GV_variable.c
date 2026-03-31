@@ -16,7 +16,9 @@ STR_SEND_RUN_DATA_t GV_send_run_state_data;
 STR_SEND_RUN_DATA_t GV_send_run_state_bigdata;
 
 
-STR_SEND_SETTING_DATA_t gv_send_setting_data_t;
+STR_SEND_SETTING_DATA_t GV_send_setting_data;
+
+STR_SEND_SETTING_DATA_t GV_send_setting_bigdata;
 
 ////GV_HardwareState.HW_NeedWorkingState=0;
 //uint8_t checkNeedStateNotEquRealState(void){

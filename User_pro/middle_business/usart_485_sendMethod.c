@@ -29,11 +29,20 @@
 
 #include "./global/GV_enum.h" 
 
+#define LOG_TAG "COM_INPUT"
+#include "elog.h"
+#include "log.h"
+#define v_printf logInfo
+
+
+
+
 
 extern STR_SEND_RUN_DATA_t GV_send_run_state_data;
 extern STR_SEND_RUN_DATA_t GV_send_run_state_bigdata;
 
-
+extern STR_SEND_SETTING_DATA_t GV_send_setting_data;
+extern STR_SEND_SETTING_DATA_t GV_send_setting_bigdata;
 
 void run_machine(void){
 	
@@ -60,7 +69,7 @@ com_DW_write_cmd_print((uint16_t)EM_SEND_RUNSTOP_ADDRESS,(uint16_t *)&GV_send_ru
 }
 
 #include "shell.h"
-int runfunc(int i)
+int shell_runfunc(int i)
 {
 	if(i==1){
 	run_machine();
@@ -68,9 +77,9 @@ int runfunc(int i)
 	stop_machine();
 	
 	}
-    printf("runfunc input int: %d, \r\n", i);
+    v_printf("runfunc input int: %d, \r\n", i);
 }
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC), t01, runfunc, test01);
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC), rf, shell_runfunc, test01);
 
 
 
@@ -78,6 +87,23 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC), t0
 
 
 
+
+
+void shell_settingfun(int iar,int sv,int sd){
+GV_send_setting_data.IsAutoRun=iar;
+GV_send_setting_data.StopVoltage=sv;	
+GV_send_setting_data.VoltageDifference=sd;
+v_printf("shell_settingfun input int: %d, %x, %x, \r\n", iar ,sv,sd);
+	memmove(&GV_send_setting_bigdata,&GV_send_setting_data,sizeof(GV_send_setting_data));
+EndianSwap_VpChange16HL((uint16_t *)&GV_send_setting_bigdata.IsAutoRun,2);
+
+com_DW_write_cmd_print((uint16_t)EM_SEND_SETTING_ADDRESS,(uint16_t *)&GV_send_setting_bigdata,sizeof(GV_send_setting_bigdata)/2,1);
+	
+	
+	
+}
+
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC), sf, shell_settingfun, test01);
 
 
 /*********************************************END OF FILE**********************/

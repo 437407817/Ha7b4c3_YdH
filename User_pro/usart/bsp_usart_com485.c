@@ -223,7 +223,7 @@ void USART_COM485_IRQHandler(void)
     __HAL_UART_CLEAR_FLAG(&huart_COM485_Handle, UART_FLAG_RXNE);
 		    /* 读取接收到的1个字节 */
     recv_byte = (uint8_t)(huart_COM485_Handle.Instance->RDR);
-		SYSTEM_INFO("+%02x",recv_byte);
+//		SYSTEM_INFO(" %02x",recv_byte);
 		pProcUartDataFunc(recv_byte);
 //				if (index < RX_BUF_LEN)
 //     {
@@ -235,7 +235,7 @@ void USART_COM485_IRQHandler(void)
 	}
 			if (__HAL_UART_GET_FLAG(&huart_COM485_Handle, UART_FLAG_IDLE) != RESET)
 	{		
-
+//SYSTEM_INFO(" \r\n");
         // 关键：清除 IDLE 标志（必须手动清除，否则会持续触发中断）
         __HAL_UART_CLEAR_IDLEFLAG(&huart_COM485_Handle);
 //				indexsize=index;
