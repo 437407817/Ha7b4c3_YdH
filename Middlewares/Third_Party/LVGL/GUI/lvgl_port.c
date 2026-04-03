@@ -27,6 +27,7 @@
 //#include "lv_demo_music.h"
 #include "timer/btim.h"
 #include "./user_config.h"
+#include "./global/GV_variable.h" 
 
 volatile uint32_t lv_tick_cnt = 0;
 
@@ -44,13 +45,52 @@ void lv_init_all(void){
 
 }
 
+#include "ui.h"
+#include "./global/GV_variable.h" 
+
+extern lv_obj_t * scroll_view ;
+extern STR_GET_VOL_Data_t GV_get_vol_real_data;
+
+extern uint8_t update_flag;
+bool ui_initialized = false; // 新增标志位
+
+//void update_lvgl_data(void){
+//    // 增加对核心 UI 组件的检查
+//    // 假设 display_64_values 内部会访问特定的 label，确保那些 label 已经存在
+//    if(scroll_view != NULL && lv_obj_is_valid(scroll_view)) { 
+//        display_64_values(scroll_view, 
+//                          GV_get_vol_real_data.Bat_Vol, 
+//                          GV_get_vol_real_data.Bat_WorkStatus, 
+//                          BAT_MAX_NUM);
+//    } else {
+//        // 如果 UI 还没准备好，先不刷新，防止报 NULL 错误
+//         log_d("UI not ready yet..."); 
+//    }
+//}
+
+// lvgl_port.c
+
+void update_lvgl_data(void){
+    // 检查 UI 是否已经加载到当前屏幕，防止在后台页面刷新报错
+    if(lv_screen_active() == ui_S_page01_screen) {
+        // 直接调用高效的更新函数
+        ui_S_page01_update_values(GV_get_vol_real_data.Bat_Vol, 
+                                  GV_get_vol_real_data.Bat_WorkStatus);
+    }
+}
 
 
 
+// ui_manager.c
+void sensor_update_timer_cb(lv_timer_t * timer) {
+    // 检查是否有新数据（或者直接强制刷新）
+if (ui_initialized && update_flag) { 
+        update_lvgl_data();
+        update_flag = 0;
+    }
+}
 
-
-
-
+#if !(USE_LVGL_OS)&&(USE_LVGL)
 void Handle_lv(void){
 
 
@@ -64,16 +104,27 @@ void Handle_lv(void){
 }
 
 
+#endif
+
+
+
+
+
+
+
 #include "ui.h"
 #include "lv_demo_stress.h"
 //#include "lv_demo_music.h"
 #include "../lv_examples.h"
-void lv_test(void){
+void lv_pro_run(void){
 
 //    lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
 //    lv_obj_set_size(switch_obj, 120, 60);
 //    lv_obj_align(switch_obj, LV_ALIGN_CENTER, 0, 0);
 	ui_init();
+	// 在 lv_init() 和 界面创建代码 之后
+lv_timer_t * timer = lv_timer_create(sensor_update_timer_cb, 200, NULL);
+	ui_initialized = true; // 标记初始化完成
 #if 0		
 	lv_demo_stress();
 #endif
@@ -101,6 +152,8 @@ void lv_test(void){
 //lv_example_get_started_2();
 //lv_demo_stress();
 #endif
+
+
 }
 
 

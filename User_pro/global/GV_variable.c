@@ -20,6 +20,8 @@ STR_SEND_SETTING_DATA_t GV_send_setting_data;
 
 STR_SEND_SETTING_DATA_t GV_send_setting_bigdata;
 
+
+uint8_t update_flag;
 ////GV_HardwareState.HW_NeedWorkingState=0;
 //uint8_t checkNeedStateNotEquRealState(void){
 

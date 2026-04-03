@@ -766,14 +766,14 @@
 
 
 
-#define BATNUM 64
-
+#define BATNUM 52
+#define BAT_MAX_NUM 64
 
 typedef struct GET_VOL_Data_ITEM
 {
 	
 uint64_t     Bat_WorkStatus;
-uint16_t    Bat_Vol[BATNUM];	
+uint16_t    Bat_Vol[64];	
 
 }STR_GET_VOL_Data_t;
 
@@ -821,7 +821,11 @@ uint16_t 	VoltageDifference;
 
 
 
+extern STR_SEND_RUN_DATA_t GV_send_run_state_data;
+extern STR_SEND_RUN_DATA_t GV_send_run_state_bigdata;
 
+extern STR_SEND_SETTING_DATA_t GV_send_setting_data;
+extern STR_SEND_SETTING_DATA_t GV_send_setting_bigdata;
 
 
 

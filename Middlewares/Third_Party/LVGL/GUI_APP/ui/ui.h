@@ -24,6 +24,7 @@ extern "C" {
 #include "screens/ui_S_page02.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "lvgl_user_inc.h"
 ///////////////////// VARIABLES ////////////////////
 
 

@@ -132,9 +132,14 @@ void USART_COM485_GpioInit(void)
     USART_COM485_TX_GPIO_CLK_ENABLE();
     USART_COM485_RX_GPIO_CLK_ENABLE();
 
+		#if !EXCHINGE_UASRT_SHELL_485
     /* USART1 clock source */
     RCC_PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
     RCC_PeriphClkInit.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
+		#else
+		RCC_PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
+    RCC_PeriphClkInit.Usart16ClockSelection = RCC_USART16CLKSOURCE_D2PCLK2;
+		#endif
     HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphClkInit);
 
     GPIO_InitStruct.Pin = USART_COM485_TX_PIN;

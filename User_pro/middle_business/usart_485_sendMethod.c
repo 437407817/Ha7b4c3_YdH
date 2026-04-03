@@ -52,7 +52,7 @@ memmove(&GV_send_run_state_bigdata,&GV_send_run_state_data,2);
 EndianSwap_VpChange16HL((uint16_t *)&GV_send_run_state_bigdata.Machine_RUN,2);
 com_DW_write_cmd_print((uint16_t)EM_SEND_RUNSTOP_ADDRESS,(uint16_t *)&GV_send_run_state_bigdata,sizeof(GV_send_run_state_bigdata)/2,1);
 	
-	
+
 }
 
 
@@ -67,6 +67,22 @@ com_DW_write_cmd_print((uint16_t)EM_SEND_RUNSTOP_ADDRESS,(uint16_t *)&GV_send_ru
 	
 	
 }
+
+
+void run_stop_mechine(uint8_t run){
+	GV_send_run_state_data.Machine_RUN=run;
+	
+memmove(&GV_send_run_state_bigdata,&GV_send_run_state_data,2);
+EndianSwap_VpChange16HL((uint16_t *)&GV_send_run_state_bigdata.Machine_RUN,2);
+com_DW_write_cmd_print((uint16_t)EM_SEND_RUNSTOP_ADDRESS,(uint16_t *)&GV_send_run_state_bigdata,sizeof(GV_send_run_state_bigdata)/2,1);
+	
+v_printf("run stop = %d",run);
+
+}
+
+
+
+
 
 #include "shell.h"
 int shell_runfunc(int i)

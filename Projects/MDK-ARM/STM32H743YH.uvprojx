@@ -1408,6 +1408,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\FreeRTOS\Source\task\user_TestTask.c</FilePath>
             </File>
+            <File>
+              <FileName>rtos_ProBtnTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\FreeRTOS\Source\task\rtos_ProBtnTask.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1919,6 +1924,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Wmap_lib\DataCache\data_stack.c</FilePath>
             </File>
+            <File>
+              <FileName>data_set.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Wmap_lib\DataConvert\data_set.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2118,6 +2128,11 @@
               <FileName>lvgl_private.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\lvgl_private.h</FilePath>
+            </File>
+            <File>
+              <FileName>lvgl_user_inc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl_user_inc.h</FilePath>
             </File>
           </Files>
         </Group>

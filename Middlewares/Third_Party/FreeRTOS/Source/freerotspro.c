@@ -55,8 +55,8 @@
 #include "./task/user_LVGLTask.h"
 #include "./Modules/business.h"
 #include <elog.h>
-
-
+#include "./task/rtos_ProBtnTask.h"
+#include "./task/user_Task_1.h"
 /******************************* 宏定义 ************************************/
 /*
  * 当我们在写应用程序的时候，可能需要用到一些宏定义。
@@ -112,8 +112,7 @@ TaskHandle_t tmp_handle;
 */
 static void AppTaskCreate(void);/* 用于创建任务 */
 
-static void T_1_Task(void* pvParameters);/* LED_Task任务实现 */
-static void T_2_Task(void* pvParameters);/* KEY_Task任务实现 */
+
 //void SEGGERTask(void *pvParameters);
 //QueueHandle_t Test_Queue =NULL;
  void T_pull_data_Task(void* parameter);
@@ -190,11 +189,11 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
 	
 	#if 1
   /* 创建LED_Task任务 */
-  xReturn = xTaskCreate((TaskFunction_t )T_1_Task, /* 任务入口函数 */
-                        (const char*    )"T_1_Task",/* 任务名字 */
+  xReturn = xTaskCreate((TaskFunction_t )T_lowest_Task, /* 任务入口函数 */
+                        (const char*    )"T_lowest_Task",/* 任务名字 */
                         (uint16_t       )128,   /* 任务栈大小 */
                         (void*          )NULL,	/* 任务入口函数参数 */
-                        (UBaseType_t    )13,	    /* 任务的优先级 */
+                        (UBaseType_t    )1,	    /* 任务的优先级 */
                         (TaskHandle_t*  )&tmp_handle);/* 任务控制块指针 */
    vPrintStack_TaskCreationResult("T_1_Task", xReturn, 128);
 //		vPrintHeapState("After T_1_Task Creation");										
@@ -203,7 +202,7 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                         (const char*    )"T_2_Task",/* 任务名字 */
                         (uint16_t       )128,  /* 任务栈大小 */
                         (void*          )NULL,/* 任务入口函数参数 */
-                        (UBaseType_t    )12, /* 任务的优先级 */
+                        (UBaseType_t    )4, /* 任务的优先级 */
                         (TaskHandle_t*  )&tmp_handle);/* 任务控制块指针 */ 
  vPrintStack_TaskCreationResult("T_2_Task", xReturn, 128);
 	
@@ -231,6 +230,12 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                 (TaskHandle_t*  )&tmp_handle);
 vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);				 
 			 
+			xTaskCreate(btn_data_task,"btn_data_task",128,(void *)0,15,&tmp_handle);				
+			vPrintStack_TaskCreationResult("btn_data_task", xReturn, 128);					
+								
+			xTaskCreate(btn_setting_data_task,"btn_setting_data_task",128,(void *)0,15,&tmp_handle);				
+			vPrintStack_TaskCreationResult("btn_setting_data_task", xReturn, 128);							
+								
 								
 								
 //			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				

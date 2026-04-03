@@ -206,7 +206,7 @@ EM_EASYLOG_PRINT=0x04,
 
 
 
-
+////SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,(uint8_t *)&GV_get_vol_485_232_Bigdata3.Bat_WorkStatus,sizeof(GV_get_vol_real_data),"xxxx");
 
 #define SYSTEM_DEBUG_ARRAY_MESSAGE(array, num,fmt,arg...)      	SYSTEM_DEBUG_ARRAY_MESSAGE_2(EM_SEGGER_PRINT,array, num,fmt,##arg)												
 																					

@@ -133,43 +133,7 @@ void fill_data_False_random(char *data, uint16_t max_len) {
 ///-------------------------------------------------------------------
 
 
-typedef struct
-{
-  uint8_t        up_ten;    // +10
-  uint8_t        up_five;   // +5
-  uint8_t        up_two;    // +2
-  uint8_t        up_one;    // +1
-  uint8_t        zero;      // +0
-  uint8_t        down_one;  // -1
-  uint8_t        down_two;  // -2
-  uint8_t        down_five; // -5
-  uint8_t        down_ten;  // -10
-} RNG_UpDownIncreaseTypeDef;
 
-// 2. 枚举：对应结构体的操作类型（方便映射权重和数值变化）
-typedef enum
-{
-  OP_UP_TEN,
-  OP_UP_FIVE,
-  OP_UP_TWO,
-  OP_UP_ONE,
-  OP_ZERO,
-  OP_DOWN_ONE,
-  OP_DOWN_TWO,
-  OP_DOWN_FIVE,
-  OP_DOWN_TEN,
-  OP_MAX  // 枚举总数
-} RNG_OpTypeDef;
-
-// 3. 权重-操作映射表（记录每个操作的权重区间和数值变化量）
-typedef struct
-{
-  RNG_OpTypeDef op;        // 操作类型
-  int8_t        delta;     // 数值变化量（+10/-1等）
-  uint8_t       weight;    // 权重值
-  uint8_t       start;     // 权重区间起始（0~9，总和10）
-  uint8_t       end;       // 权重区间结束（0~9）
-} WeightMapTypeDef;
 
 // 4. 初始化权重结构体（权重总和=10，可根据需求调整各字段权重）
 static void RNG_InitWeight(RNG_UpDownIncreaseTypeDef *weight)
@@ -188,8 +152,9 @@ static void RNG_InitWeight(RNG_UpDownIncreaseTypeDef *weight)
 }
 
 // 5. 构建权重映射表（根据权重结构体生成区间，用于随机选择）
-static void RNG_BuildWeightMap(RNG_UpDownIncreaseTypeDef *weight, WeightMapTypeDef *map)
+static void RNG_BuildWeightMap(RNG_UpDownIncreaseTypeDef *weight)
 {
+	WeightMapTypeDef          map[OP_MAX];  // 权重映射表
   uint8_t current = 0;  // 当前区间起始位置
 
   // 逐个映射操作：权重>0才参与随机选择
@@ -224,21 +189,23 @@ static void RNG_BuildWeightMap(RNG_UpDownIncreaseTypeDef *weight, WeightMapTypeD
 
 
 // 7. 根据权重选择操作，返回数值变化量delta
-static int8_t RNG_SelectOpByWeight(WeightMapTypeDef *map)
+ int8_t RNG_SelectOpByWeight(void)
 {
+	 WeightMapTypeDef          weight_map[OP_MAX];  // 权重映射表
+	
   uint8_t random_num = RNG_GetRandomNum(0,9);  // 生成0~9随机数
 
   // 遍历映射表，找到随机数所在的权重区间
   for (uint8_t i = 0; i < OP_MAX; i++)
   {
-    if (map[i].weight == 0) continue;  // 权重为0的操作跳过
+    if (weight_map[i].weight == 0) continue;  // 权重为0的操作跳过
 
     // 随机数在当前操作的区间内，返回对应的delta
-    if (random_num >= map[i].start && random_num <= map[i].end)
+    if (random_num >= weight_map[i].start && random_num <= weight_map[i].end)
     {
 #if 0
       // （可选）打印选中的操作（调试用）
-      switch (map[i].op)
+      switch (weight_map[i].op)
       {
         case OP_UP_TEN:    printf("+10 "); break;
         case OP_UP_FIVE:   printf("+5  "); break;
@@ -252,30 +219,40 @@ static int8_t RNG_SelectOpByWeight(WeightMapTypeDef *map)
         default: break;
       }
 #endif
-      return map[i].delta;
+			
+      return weight_map[i].delta;
     }
   }
 
   return 0;  // 异常默认返回0
 }
 
+void Weight_RANDOM_INIT(void){
+
+RNG_UpDownIncreaseTypeDef weight;
+  RNG_InitWeight(&weight);
+  RNG_BuildWeightMap(&weight);
+}
+
+
+
 // 8. 核心测试函数：初始值100，运行10次，输出每次结果
 void RNG_RunTest(int c_val,int r_count)
 {
   RNG_UpDownIncreaseTypeDef weight;
-  WeightMapTypeDef          weight_map[OP_MAX];  // 权重映射表
+//  WeightMapTypeDef          weight_map[OP_MAX];  // 权重映射表
   uint16_t                  current_val = c_val;   // 初始值
   const uint16_t             run_count = r_count;      // 运行次数
 
   // 步骤1：初始化权重和映射表
   RNG_InitWeight(&weight);
-  RNG_BuildWeightMap(&weight, weight_map);
+  RNG_BuildWeightMap(&weight);
 
   // 步骤2：运行10次，迭代调整数值
   printf("=== weight test(start :%d) ===\r\n", current_val);
   for (uint16_t i = 0; i < run_count; i++)
   {
-    int8_t delta = RNG_SelectOpByWeight(weight_map);  // 随机选择操作
+    int8_t delta = RNG_SelectOpByWeight();  // 随机选择操作
     current_val += delta;                             // 调整数值
     printf("NO:%d: CV =%d , NV =%d\r\n", i+1, delta, current_val);
   }

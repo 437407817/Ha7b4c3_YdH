@@ -50,7 +50,7 @@
 
 #include "stdarg.h"
 volatile uint16_t timedelar_T_1_Task;
- void T_1_Task(void* parameter)
+ void T_lowest_Task(void* parameter)
 {	
 //	BaseType_t xReturn = pdTRUE;/* 定义一个创建信息返回值，默认为pdTRUE */
 //	 uint32_t r_queue;	/* 定义一个接收消息的变量 */
@@ -65,7 +65,7 @@ volatile uint16_t timedelar_T_1_Task;
   {
 //LED1_TOGGLE;
 		Handle_test3();
-				logInfo("T_1_Task:-----\n");
+				logInfo("T_lowest_Task:-----\n");
 //		SYSTEM_I_PRINT("Task is running, count: %d", count++);
 		taskYIELD();
 //		SYSTEM_D_PRINT("Task is running, count: %d", count++);
@@ -86,7 +86,7 @@ volatile uint16_t timedelar_T_2_Task;
 {	
 //	BaseType_t xReturn = pdTRUE;/* 定义一个创建信息返回值，默认为pdTRUE */
 //	 uint32_t r_queue;	/* 定义一个接收消息的变量 */
-	timedelar_T_2_Task=3000;
+	timedelar_T_2_Task=5000;
 		if(parameter!=NULL){
 	SYSTEM_I_PRINT("2 parameter: %d", (uint16_t*)parameter);
 	}else{
@@ -96,7 +96,7 @@ volatile uint16_t timedelar_T_2_Task;
 	
   while (1)
   {
-
+   logInfo("T_2_Task:-----\n");
     vTaskDelay(pdMS_TO_TICKS(timedelar_T_2_Task));   /* 延时1000个ms */
   }
 }

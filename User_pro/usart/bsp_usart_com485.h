@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "./user_config.h"
 
-
+#include "./usart/bsp_usart_shell.h"
 
 
 
@@ -13,7 +13,7 @@
 #define USART_COM485_BAUDRATE                    9600
 
 
-
+#if !EXCHINGE_UASRT_SHELL_485
 /************************ USART1 ≈‰÷√£®ÃÊªª‘≠USART6£© ************************/
 #define USART_COM485                             USART2
 #define USART_COM485_CLK_ENABLE()                __USART2_CLK_ENABLE();
@@ -32,7 +32,25 @@
 #define USART_COM485_IRQ                 		    USART2_IRQn
 
 
+#else
+#define USART_COM485                             USART1
+#define USART_COM485_CLK_ENABLE()                __USART1_CLK_ENABLE();
+			  
+#define USART_COM485_RX_GPIO_PORT                GPIOA
+#define USART_COM485_RX_GPIO_CLK_ENABLE()        __HAL_RCC_GPIOA_CLK_ENABLE()
+#define USART_COM485_RX_PIN                      GPIO_PIN_10
+#define USART_COM485_RX_AF                       GPIO_AF7_USART1
+			  
+#define USART_COM485_TX_GPIO_PORT                GPIOA
+#define USART_COM485_TX_GPIO_CLK_ENABLE()        __HAL_RCC_GPIOA_CLK_ENABLE()
+#define USART_COM485_TX_PIN                      GPIO_PIN_9
+#define USART_COM485_TX_AF                       GPIO_AF7_USART1
+			  
+#define USART_COM485_IRQHandler                  USART1_IRQHandler
+#define USART_COM485_IRQ                 		    USART1_IRQn
 
+
+#endif
 
 
 

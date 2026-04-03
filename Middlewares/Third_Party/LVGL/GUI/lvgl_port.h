@@ -24,7 +24,7 @@
 void lv_init_all(void);
 
 void Handle_lv(void);
-void lv_test(void);
+void lv_pro_run(void);
 
 
 

@@ -37,7 +37,7 @@
 
 
 
-
+void update_lvgl_data(void);
 
 
 
@@ -53,11 +53,15 @@ void vLvglTask(void *pvParameters)
 {
 
 		lv_init_all();
-		lv_test();
+		lv_pro_run();
     
     while(1)
     {
+			
        uint32_t sleep_time_ms = lv_timer_handler(); /* LVGL计时器 */
+			
+			
+			
         vTaskDelay(pdMS_TO_TICKS(sleep_time_ms));//影响刷新率FPS
     }
 }
@@ -72,6 +76,9 @@ void vApplicationTickHook(void)
 {
     lv_tick_inc(1);  
 }
+
+
+
 
 
 
