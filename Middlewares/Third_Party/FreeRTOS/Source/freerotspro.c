@@ -241,8 +241,8 @@ vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);
 //			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				
 //			vPrintStack_TaskCreationResult("busi_pro_task", xReturn, 128);
 
-			xTaskCreate(T_pull_data_Task,"T_pull_data_Task",512,(void *)0,14,&tmp_handle);				
-			vPrintStack_TaskCreationResult("T_pull_data_Task", xReturn, 512);					
+			xTaskCreate(T_pull_data_Task,"pull_data",1024,(void *)0,14,&tmp_handle);				
+			vPrintStack_TaskCreationResult("pull_data", xReturn, 1024);					
 								
 								
 easylogger_init();								
@@ -301,7 +301,7 @@ void StartNeedDeleteTask(void *pvParameters)
 
 #include "./pro_com/usart485verify.h"
 
-
+extern uint8_t update_flag;
  void T_pull_data_Task(void* parameter)
 {	
 
@@ -311,7 +311,8 @@ void StartNeedDeleteTask(void *pvParameters)
 		
 		SYSTEM_INFO("T_pull_data_Task  \r\n");
 Usart485ComTask();
-		
+		update_flag=1;
+//		SYSTEM_INFO("T_pull_data_Task 485  \r\n");
     vTaskDelay(pdMS_TO_TICKS(800));   /* ÑÓÊ±1000¸öms */
   }
 }

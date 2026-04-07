@@ -58,7 +58,9 @@ void display_64_values_init(lv_obj_t *parent) {
     lv_obj_set_size(container, lv_pct(100), lv_pct(100));
     lv_obj_set_flex_flow(container, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_style_pad_all(container, 5, 0);
-
+	
+	lv_obj_set_style_bg_color(container, lv_color_hex(0x000CCC), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(container, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     for (int i = 0; i < 64; i++) {
         // 1. 创建单元格
         lv_obj_t *cell = lv_obj_create(container);
@@ -157,10 +159,12 @@ void ui_S_page01_update_values(uint16_t values[64], uint64_t color_flags) {
     if (max_idx != -1) {
         lv_obj_set_style_border_width(ui_battery_cells[max_idx], 2, 0);
         lv_obj_set_style_border_color(ui_battery_cells[max_idx], lv_color_hex(0xFF0000), 0); // 红色最高
+				lv_obj_set_style_text_color(ui_battery_labels[max_idx], lv_color_hex(0xFF0000), 0);
     }
     if (min_idx != -1 && min_idx != max_idx) {
         lv_obj_set_style_border_width(ui_battery_cells[min_idx], 2, 0);
-        lv_obj_set_style_border_color(ui_battery_cells[min_idx], lv_color_hex(0x00FF00), 0); // 绿色最低
+        lv_obj_set_style_border_color(ui_battery_cells[min_idx], lv_color_hex(0xFFD700) , 0); // 黄色最低
+			lv_obj_set_style_text_color(ui_battery_labels[min_idx], lv_color_hex(0xFFD700), 0);
     }
 }
 
@@ -561,7 +565,9 @@ lv_obj_set_pos(scroll_view, 0, 0);
     lv_obj_set_size(scroll_view, lv_pct(100), lv_pct(80));
     lv_obj_align(scroll_view, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(scroll_view, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    
+    lv_obj_set_style_bg_color(scroll_view, lv_color_hex(0xCCCCCC), LV_PART_MAIN | LV_STATE_DEFAULT);
+		// 开启背景显示（必须加）
+lv_obj_set_style_bg_opa(scroll_view, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     // 示例数据：创建64个uint16数值
     uint16_t test_values[64];
     for (int i = 0; i < 64; i++) {

@@ -80,7 +80,7 @@ log_d("start RANDOM sample task");
 //}
 //				memset(aa, ++i, BAT_MAX_NUM );
 			GV_get_vol_real_data.Bat_Vol[2]--;
-			GV_get_vol_real_data.Bat_Vol[5]++;
+			GV_get_vol_real_data.Bat_Vol[3]++;
 			GV_get_vol_real_data.Bat_WorkStatus =++i;
 			GV_get_vol_real_data.Bat_Vol[59]+=3;
 			GV_get_vol_real_data.Bat_Vol[60]-=3;
@@ -109,7 +109,7 @@ void rds(int argc,char **argv)
 	
  xTaskCreate(rdatasettask,"rdatasettask",2048,(void *)0,2,&RAN_handle);
 							
-			vPrintStack_TaskCreationResult("T_pull_data_Task", xReturn, 2048);			
+			vPrintStack_TaskCreationResult("rdatasettask", xReturn, 2048);			
  
 }
 //ZNS_CMD_EXPORT(smst,start mock sample task)

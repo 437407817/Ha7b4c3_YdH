@@ -135,10 +135,14 @@ void s485_convert_queue(uint8_t **outalldata,uint16_t* Command_address,uint8_t**
 //	SYSTEM_INFO("0x%4x ",(uint16_t)*(*outalldata+4)<<8);
 //	SYSTEM_INFO("0x%4x ",(uint16_t)*(*outalldata+5));
 //	SYSTEM_INFO("0x%4x ",((uint16_t)*(*outalldata+4)<<8)|(*(*outalldata+5)));
-	*OutData=(*outalldata)+7;
-	*Datanum=*(*outalldata+2)-4;
+	*OutData=(*outalldata)+6;
+	#if (c485_232_CRC16==1)	
+	*Datanum=*(*outalldata+2)-5;
+	#else
+	*Datanum=*(*outalldata+2)-3;
+	#endif
 	if(*Datanum!=0){
-	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,(uint8_t *)*outalldata,*(*outalldata+2)+2,"485 GET-D-PACK -count: %d\n",*(*outalldata+2)+2);
+	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,(uint8_t *)*outalldata,*(*outalldata+2)+3,"485 GET-D-PACK -count: %d\n",*(*outalldata+2)+2);
 	}
 }
 

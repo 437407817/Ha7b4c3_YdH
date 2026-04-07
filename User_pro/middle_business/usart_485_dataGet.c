@@ -70,8 +70,8 @@ uint8_t s_num = 0;
 
 void screendataswitch(uint16_t addr,uint8_t** p_data,uint8_t num){
 	
-SYSTEM_DEBUG_ARRAY_MESSAGE(*p_data,num,"   screen_ADDR =%x ",addr);
-	
+//SYSTEM_DEBUG_ARRAY_MESSAGE(*p_data,num,"   screen_ADDR =%x ",addr);
+	SYSTEM_DEBUG("%d === ",num);
 switch(addr){
 	case EM_GET_DATA_ADDRESS: Getdata485_voldata_process(num,p_data); break;//5A A5 05 83 1000 02 0001 0002
 #if 0
