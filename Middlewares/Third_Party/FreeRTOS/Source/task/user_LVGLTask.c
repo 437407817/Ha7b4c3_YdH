@@ -74,7 +74,7 @@ void vLvglTask(void *pvParameters)
  */
 void vApplicationTickHook(void)
 {
-    lv_tick_inc(1);  
+    lv_tick_inc(1);  //´úÌælv_tick_set_cb((lv_tick_get_cb_t)xTaskGetTickCount);
 }
 
 

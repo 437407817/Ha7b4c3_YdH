@@ -1,0 +1,166 @@
+
+
+
+          
+# `_ui_theme_set_variable_styles` 函数使用示例
+
+下面通过一个具体的例子，展示如何使用 `_ui_theme_set_variable_styles` 函数来管理 UI 元素的样式。
+
+## 示例场景
+
+创建一个按钮，并使其背景颜色和文本颜色随主题变化而自动更新。
+
+## 步骤 1：定义主题变量
+
+首先，在主题配置文件中定义主题变量：
+
+```c
+// 在 ui_theme.h 中定义主题变量
+#define UI_THEME_BUTTON_BG_COLOR    0
+#define UI_THEME_BUTTON_TEXT_COLOR  1
+
+// 主题变量数组
+const ui_theme_variable_t ui_theme_variables[] = {
+    // 按钮背景颜色
+    {
+        .name = "Button Background Color",
+        .type = UI_THEME_TYPE_COLOR,
+        .values = {
+            [0] = 0x0066CC,  // 主题 0: 蓝色
+            [1] = 0xFF5722,  // 主题 1: 橙色
+            [2] = 0x4CAF50   // 主题 2: 绿色
+        }
+    },
+    // 按钮文本颜色
+    {
+        .name = "Button Text Color",
+        .type = UI_THEME_TYPE_COLOR,
+        .values = {
+            [0] = 0xFFFFFF,  // 主题 0: 白色
+            [1] = 0xFFFFFF,  // 主题 1: 白色
+            [2] = 0xFFFFFF   // 主题 2: 白色
+        }
+    }
+};
+
+// 主题变量数量
+#define UI_THEME_VARIABLE_COUNT (sizeof(ui_theme_variables) / sizeof(ui_theme_variables[0]))
+```
+
+## 步骤 2：创建 UI 元素并设置主题化样式
+
+在 UI 初始化函数中创建按钮并设置可主题化的样式：
+
+```c
+void create_button_with_theme(lv_obj_t *parent) {
+    // 创建按钮
+    lv_obj_t *btn = lv_btn_create(parent);
+    lv_obj_set_size(btn, 120, 40);
+    lv_obj_align(btn, LV_ALIGN_CENTER, 0, 0);
+    
+    // 创建按钮标签
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, "Button");
+    lv_obj_center(label);
+    
+    // 设置按钮背景颜色为主题变量
+    ui_object_set_themeable_style_property(
+        btn,
+        LV_PART_MAIN | LV_STATE_DEFAULT,
+        LV_STYLE_BG_COLOR,
+        &ui_theme_variables[UI_THEME_BUTTON_BG_COLOR]
+    );
+    
+    // 设置按钮文本颜色为主题变量
+    ui_object_set_themeable_style_property(
+        label,
+        LV_PART_MAIN | LV_STATE_DEFAULT,
+        LV_STYLE_TEXT_COLOR,
+        &ui_theme_variables[UI_THEME_BUTTON_TEXT_COLOR]
+    );
+    
+    // 初始化模式：强制应用所有样式
+    _ui_theme_set_variable_styles(UI_VARIABLE_STYLES_MODE_INIT);
+}
+```
+
+## 步骤 3：主题切换函数
+
+创建一个函数来切换主题，并更新所有 UI 元素的样式：
+
+```c
+void switch_theme(uint8_t new_theme_idx) {
+    // 更新当前主题索引
+    ui_theme_idx = new_theme_idx;
+    
+    // 跟随模式：只更新变化的样式
+    _ui_theme_set_variable_styles(UI_VARIABLE_STYLES_MODE_FOLLOW);
+}
+```
+
+## 步骤 4：使用示例
+
+在主函数中使用这些功能：
+
+```c
+int main(void) {
+    // 初始化 LVGL
+    lv_init();
+    // 初始化显示和输入设备
+    // ...
+    
+    // 创建主屏幕
+    lv_obj_t *screen = lv_obj_create(NULL);
+    lv_disp_load_scr(screen);
+    
+    // 创建带主题的按钮
+    create_button_with_theme(screen);
+    
+    // 运行一段时间后切换主题
+    lv_timer_create([](lv_timer_t *t) {
+        static uint8_t theme_idx = 0;
+        theme_idx = (theme_idx + 1) % 3;
+        switch_theme(theme_idx);
+        printf("Theme switched to %d\n", theme_idx);
+    }, 5000, NULL);  // 每 5 秒切换一次主题
+    
+    // 主循环
+    while (1) {
+        lv_timer_handler();
+        usleep(5000);  // 5ms
+    }
+    
+    return 0;
+}
+```
+
+## 执行流程分析
+
+1. **初始化阶段**：
+   - 创建按钮和标签
+   - 使用 `ui_object_set_themeable_style_property` 设置可主题化样式
+   - 调用 `_ui_theme_set_variable_styles(UI_VARIABLE_STYLES_MODE_INIT)` 强制应用所有样式
+
+2. **主题切换阶段**：
+   - 调用 `switch_theme` 函数更新主题索引
+   - 调用 `_ui_theme_set_variable_styles(UI_VARIABLE_STYLES_MODE_FOLLOW)` 只更新变化的样式
+   - 函数内部检测到主题变化，更新所有相关 UI 元素的样式
+
+## 预期效果
+
+- 应用启动时，按钮会使用当前主题（默认主题 0）的样式
+- 每 5 秒，主题会自动切换，按钮的背景颜色会随之变化：
+  - 主题 0: 蓝色背景
+  - 主题 1: 橙色背景
+  - 主题 2: 绿色背景
+- 按钮文本颜色始终保持白色，因为所有主题都设置了相同的文本颜色
+
+## 技术要点
+
+1. **主题变量定义**：通过数组定义不同主题下的样式值
+2. **可主题化样式设置**：使用 `ui_object_set_themeable_style_property` 建立 UI 元素与主题变量的关联
+3. **样式更新**：通过 `_ui_theme_set_variable_styles` 根据模式更新样式
+4. **主题切换**：只需更新主题索引，然后调用样式更新函数即可
+
+通过这种方式，您可以轻松实现主题化的 UI 设计，使界面风格能够根据用户选择或应用需求动态变化。
+        

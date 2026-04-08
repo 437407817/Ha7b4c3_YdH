@@ -29,6 +29,12 @@
 #include "./user_config.h"
 #include "./global/GV_variable.h" 
 
+#if (USE_LVGL_OS) && 0
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "freerotspro.h" 
+#endif
 volatile uint32_t lv_tick_cnt = 0;
 
 
@@ -40,6 +46,14 @@ void lv_init_all(void){
 	btim_timx_int_init(100 - 1, 2400 - 1);    /* 200 000 000 / 200 00 = 10 000KHz 10KHz的计数频率，计数次为1ms */
 #endif
     lv_init(); 
+#if 0
+#if (USE_LVGL_OS)
+	// 替换原来的 lv_tick_set_cb(HAL_GetTick());
+		lv_tick_set_cb((lv_tick_get_cb_t)xTaskGetTickCount);
+#else
+		lv_tick_set_cb(HAL_GetTick);
+#endif	
+#endif
     lv_port_disp_init(); 
     lv_port_indev_init();
 
