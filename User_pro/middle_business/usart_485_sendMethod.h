@@ -22,7 +22,7 @@
 
 void run_stop_mechine(uint8_t run);
 
-void shell_settingfun(int iar,int sv,int sd);
+void shell_settingfun(int iar,int sv,int sd,int ahv);
 
 
 

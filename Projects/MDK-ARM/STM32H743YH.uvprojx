@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H743xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil;..\..\Middlewares\Third_Party\sfud\inc;..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui;..\..\User_pro</IncludePath>
+              <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil;..\..\Middlewares\Third_Party\sfud\inc;..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui;..\..\User_pro;..\..\Middlewares\Third_Party\SystemView\Config;..\..\Middlewares\Third_Party\SystemView\SEGGER;..\..\Middlewares\Third_Party\SystemView\SYSVIEW;..\..\Middlewares\Third_Party\SeggerRTT\Config;..\..\Middlewares\Third_Party\SystemView\Sample\FreeRTOSV10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1326,6 +1326,61 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Third_Party/SystemView</GroupName>
+          <Files>
+            <File>
+              <FileName>Global.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\Config\Global.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_Conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\Config\SEGGER_SYSVIEW_Conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_FreeRTOS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\Sample\FreeRTOSV10\SEGGER_SYSVIEW_FreeRTOS.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_FreeRTOS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\Sample\FreeRTOSV10\SEGGER_SYSVIEW_FreeRTOS.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_Config_FreeRTOS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\Sample\FreeRTOSV10\Config\Cortex-M\SEGGER_SYSVIEW_Config_FreeRTOS.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\SEGGER\SEGGER.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\SYSVIEW\SEGGER_SYSVIEW.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\SYSVIEW\SEGGER_SYSVIEW.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_ConfDefaults.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\SYSVIEW\SEGGER_SYSVIEW_ConfDefaults.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_SYSVIEW_Int.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\SystemView\SYSVIEW\SEGGER_SYSVIEW_Int.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Third_Party/FreeRTOS</GroupName>
           <Files>
             <File>
@@ -2128,11 +2183,6 @@
               <FileName>lvgl_private.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\lvgl_private.h</FilePath>
-            </File>
-            <File>
-              <FileName>lvgl_user_inc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI\lvgl_user_inc.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -5232,15 +5282,25 @@
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\components\ui_comp_hook.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LVGL/GUI_APP_user</GroupName>
+          <Files>
+            <File>
+              <FileName>ui_S_page02.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\ui_S_page02.c</FilePath>
+            </File>
             <File>
               <FileName>ui_S_page01.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\ui_S_page01.c</FilePath>
             </File>
             <File>
-              <FileName>ui_S_page02.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\ui_S_page02.c</FilePath>
+              <FileName>lvgl_user_inc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\lvgl_user_inc.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -7,19 +7,20 @@
 
 
 // 全局变量：记录CYCCNT溢出次数（处理长延迟溢出）
-static uint32_t DWT_Overflow_Count = 0;
+//static uint32_t DWT_Overflow_Count = 0;
 
 // 初始化DWT，启用CYCCNT计数器（用于获取时钟周期数，方便做时间相关测量等操作）
 void DWT_Init(void)
 {
-    // 1. 使能DWT模块
+    // 1. 使能 TRACE 单元
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    // 2. 清零CYCCNT计数器
-    DWT->CYCCNT = 0;
-    // 3. 启动CYCCNT计数
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     
-
+    // 2. 解锁 DWT (H7 必须执行此步，否则计数器无法写入或启动)
+    DWT->LAR = 0xC5ACCE55; 
+    
+    // 3. 清零并启动
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
 
 
@@ -27,21 +28,15 @@ void DWT_Init(void)
 
 
 // H743专属：微秒级延迟（适配480MHz，处理溢出）
-void DWT_Delay_us(uint32_t us) {
+// 微秒级延迟（480MHz 专用，安全无溢出）
+void DWT_Delay_us(uint32_t us)
+{
     if(us == 0) return;
-    
-    uint32_t target_cycles = SystemCoreClock / 1000000 * us; // 480MHz→480 cycles/μs
-    uint32_t start_cycles = DWT->CYCCNT;
-    uint32_t current_cycles;
-    uint32_t overflow_count = DWT_Overflow_Count;
-    
-    // 循环等待，同时处理溢出
-    do {
-        current_cycles = DWT->CYCCNT;
-        // 计算已过周期数（考虑溢出）
-        uint32_t elapsed_cycles = (DWT_Overflow_Count - overflow_count) * (uint64_t)0xFFFFFFFF + (current_cycles - start_cycles);
-        if(elapsed_cycles >= target_cycles) break;
-    } while(1);
+
+    uint64_t total_cycles = (uint64_t)us * (SystemCoreClock / 1000000);
+    uint32_t start = DWT->CYCCNT;
+
+    while ((DWT->CYCCNT - start) < total_cycles);
 }
 
 // H743专属：纳秒级延迟（最小2ns精度）

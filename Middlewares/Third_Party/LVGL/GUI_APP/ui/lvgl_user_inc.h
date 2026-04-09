@@ -12,6 +12,18 @@ extern "C" {
 
 #include "lvgl/lvgl.h"
 
+
+#define USE_LVGL_PC_SIMULATION  0
+
+
+#if USE_LVGL_PC_SIMULATION
+
+#define v_printf printf
+
+
+#define lvgl_BATNUM 64
+
+#else
 #include "./task/rtos_ProBtnTask.h"
 #include "./global/GV_variable.h" 
 
@@ -23,9 +35,26 @@ extern "C" {
 
 
 
+#define lvgl_BATNUM BATNUM
+
+
+
 extern STR_SEND_RUN_DATA_t GV_send_run_state_data;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
 
 
 

@@ -104,12 +104,12 @@ g_setting_data_queue = xQueueCreate(5, sizeof(STR_SEND_SETTING_DATA_t));
             if(xQueueReceive(g_setting_data_queue, &GV_send_setting_data, portMAX_DELAY) == pdPASS) {
                 
                 // 2. 接收成功，在这里执行你的逻辑
-                v_printf("Task B Received: Auto=%d, StopVol=%d, Dif=%d\n", GV_send_setting_data.IsAutoRun,
+                v_printf("Task B Received: Auto=%d, StopVol=%d, Dif=%d ,AlaHVol=%d\n", GV_send_setting_data.IsAutoRun,
                         GV_send_setting_data.StopVoltage, 
-                        GV_send_setting_data.VoltageDifference 
+                        GV_send_setting_data.VoltageDifference ,GV_send_setting_data.AlarmHighVoltage
                         );
 							
-                shell_settingfun(GV_send_setting_data.IsAutoRun,GV_send_setting_data.StopVoltage,GV_send_setting_data.VoltageDifference);
+                shell_settingfun(GV_send_setting_data.IsAutoRun,GV_send_setting_data.StopVoltage,GV_send_setting_data.VoltageDifference,GV_send_setting_data.AlarmHighVoltage);
                 // 根据收到的数据修改 STM32 的硬件运行参数...
             }
         }else{

@@ -5,9 +5,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "ui.h"
 
-void display_64_values(lv_obj_t *parent, uint16_t values[64], uint64_t color_flags, int count);
+ #include "../ui.h"
+
 
 extern void ui_S_page01_screen_init(void);
 extern void ui_S_page01_screen_destroy(void);

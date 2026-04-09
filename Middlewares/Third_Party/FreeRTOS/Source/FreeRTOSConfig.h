@@ -291,6 +291,6 @@
 
 //#define USE_CUSTOM_SYSTICK_HANDLER_IMPLEMENTATION		1			//用户自定义SysTick_Handler
 
-
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
 
 #endif

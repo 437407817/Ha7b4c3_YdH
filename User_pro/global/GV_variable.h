@@ -795,7 +795,7 @@ uint8_t   IsAutoRun;
 uint8_t   Reserver;	
 uint16_t 	StopVoltage;
 uint16_t 	VoltageDifference;	
-	
+uint16_t 	AlarmHighVoltage;
 
 }STR_SEND_SETTING_DATA_t;
 

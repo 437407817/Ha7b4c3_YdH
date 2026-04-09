@@ -105,13 +105,14 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC), rf
 
 
 
-void shell_settingfun(int iar,int sv,int sd){
+void shell_settingfun(int iar,int sv,int sd,int ahv){
 GV_send_setting_data.IsAutoRun=iar;
 GV_send_setting_data.StopVoltage=sv;	
 GV_send_setting_data.VoltageDifference=sd;
+	GV_send_setting_data.AlarmHighVoltage=ahv;
 v_printf("shell_settingfun input int: %d, %x, %x, \r\n", iar ,sv,sd);
 	memmove(&GV_send_setting_bigdata,&GV_send_setting_data,sizeof(GV_send_setting_data));
-EndianSwap_VpChange16HL((uint16_t *)&GV_send_setting_bigdata.IsAutoRun,2);
+EndianSwap_VpChange16HL((uint16_t *)&GV_send_setting_bigdata.IsAutoRun,3);
 
 com_DW_write_cmd_print((uint16_t)EM_SEND_SETTING_ADDRESS,(uint16_t *)&GV_send_setting_bigdata,sizeof(GV_send_setting_bigdata)/2,1);
 	
