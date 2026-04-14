@@ -769,14 +769,15 @@
 #define BATNUM 52
 #define BAT_MAX_NUM 64
 
-typedef struct GET_VOL_Data_ITEM
+
+// GCC/ARM ±‡“Î∆˜
+typedef struct __attribute__((packed)) GET_VOL_Data_ITEM
 {
-	
-uint64_t     Bat_WorkStatus;
-uint16_t    Bat_Vol[64];	
-
-}STR_GET_VOL_Data_t;
-
+    uint8_t      ErrorStatus;
+    uint8_t      Reserver;
+    uint64_t     Bat_WorkStatus;
+    uint16_t     Bat_Vol[64];
+} STR_GET_VOL_Data_t;
 
 typedef struct SEND_RUNSTATE_ITEM
 {

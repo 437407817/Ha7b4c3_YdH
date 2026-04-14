@@ -74,6 +74,8 @@ void screendataswitch(uint16_t addr,uint8_t** p_data,uint8_t num){
 	SYSTEM_DEBUG("%d === ",num);
 switch(addr){
 	case EM_GET_DATA_ADDRESS: Getdata485_voldata_process(num,p_data); break;//5A A5 05 83 1000 02 0001 0002
+	case EM_SEND_SETTING_ADDRESS: Getdata485_settingdata_process(num,p_data); break;//5A A5 05 83 1000 02 0001 0002	
+	
 #if 0
 	case EM_S_SetMaintainLimitVoltageComplete_Add: set_setting_Dispose(num,*p_data); break;//点击设置完成 5A A5 06 83 0000 01 0001
 	case EM_S_SetBeginMaintain_Add: set_BeginMaintain_Dispose(num,*p_data); break;//5A A5 06 83 00 04 01 00 00

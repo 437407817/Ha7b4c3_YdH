@@ -16,7 +16,7 @@
 void Getdata485_voldata_process(uint8_t num,uint8_t** p_data);
 
 
-
+void Getdata485_settingdata_process(uint8_t num,uint8_t** p_data);
 
 
 

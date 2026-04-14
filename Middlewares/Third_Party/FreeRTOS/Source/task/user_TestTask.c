@@ -54,6 +54,11 @@
 extern STR_GET_VOL_Data_t GV_get_vol_real_data;
 extern STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
  STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata3;
+ extern uint8_t update_lvgl_flag;
+ extern uint8_t update_lvgl_02_flag;
+ 
+ extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
+ 
  int8_t RNG_SelectOpByWeight2(void){
  
  
@@ -61,7 +66,7 @@ extern STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
  }
 	uint16_t aa[BAT_MAX_NUM];
  
-extern uint8_t update_flag;
+
 void rdatasettask(void *pvParameters){
 
 	MX_RNG_Init(); 
@@ -79,16 +84,32 @@ log_d("start RANDOM sample task");
 //    GV_get_vol_485_232_Bigdata3.Bat_Vol[i] = 100;
 //}
 //				memset(aa, ++i, BAT_MAX_NUM );
+			GV_get_vol_real_data.ErrorStatus+=15;
 			GV_get_vol_real_data.Bat_Vol[2]--;
 			GV_get_vol_real_data.Bat_Vol[3]++;
 			GV_get_vol_real_data.Bat_WorkStatus =++i;
 			GV_get_vol_real_data.Bat_Vol[59]+=3;
 			GV_get_vol_real_data.Bat_Vol[60]-=3;
+			if(GV_get_vol_real_data.ErrorStatus>BAT_MAX_NUM){
+			GV_get_vol_real_data.ErrorStatus=0;
+			}
 			v_printf(" = %d",GV_get_vol_real_data.Bat_Vol[1]);
 			
-			 update_flag=1;
+			 update_lvgl_flag=1;
 //			setInt16Array((int16_t *)&GV_get_vol_real_data.Bat_Vol,BAT_MAX_NUM,1);
 			SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,(uint8_t *)&GV_get_vol_real_data.Bat_WorkStatus,sizeof(GV_get_vol_real_data),"xxxx");
+			
+			if(i==3){
+			GV_send_setting_return_data.IsAutoRun=1;
+				GV_send_setting_return_data.StopVoltage=2000;
+				GV_send_setting_return_data.VoltageDifference=101;
+				GV_send_setting_return_data.AlarmHighVoltage=3003;
+			update_lvgl_02_flag=1;
+			
+			}
+			
+			
+			
 //			SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,(uint8_t *)aa,sizeof(aa)*2,"xxxx");
 			 vTaskDelay(pdMS_TO_TICKS(3000));
 		}

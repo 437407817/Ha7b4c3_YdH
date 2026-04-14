@@ -33,6 +33,10 @@ extern STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
 
 extern STR_GET_VOL_Data_t GV_get_vol_real_data;
 
+extern STR_SEND_SETTING_DATA_t GV_send_setting_return_Bigdata;
+extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
+
+extern uint8_t update_lvgl_02_flag;
 
 
 void Getdata485_voldata_process(uint8_t num,uint8_t** p_data){
@@ -47,7 +51,7 @@ void Getdata485_voldata_process(uint8_t num,uint8_t** p_data){
 
 	
 	
-EndianSwap_VpChange64HL_CM7((uint64_t *)&GV_get_vol_485_232_Bigdata);
+EndianSwap_VpChange64HL_CM7((uint64_t *)&GV_get_vol_485_232_Bigdata.Bat_WorkStatus);
 
 EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BAT_MAX_NUM*2);
 	
@@ -64,12 +68,17 @@ EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BAT_MAX_
 //	SYSTEM_DEBUG("---------------%x---",*(*p_data+1));
 }
 
+void Getdata485_settingdata_process(uint8_t num,uint8_t** p_data){
 
+memmove(&GV_send_setting_return_Bigdata,*p_data,num);
 
-
-
-
-
+	EndianSwap_VpChange16HL((uint16_t *)&GV_send_setting_return_Bigdata.StopVoltage,6);
+	
+		memmove(&GV_send_setting_return_data,&GV_send_setting_return_Bigdata,sizeof(GV_send_setting_return_data));
+	
+	update_lvgl_02_flag=1;
+SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&GV_send_setting_return_data,num,"485 GET REAL DATA = ");
+}
 
 
 /*********************************************END OF FILE**********************/

@@ -13,7 +13,7 @@ extern "C" {
 #include "lvgl/lvgl.h"
 
 
-#define USE_LVGL_PC_SIMULATION  0
+#define USE_LVGL_PC_SIMULATION  1
 
 
 #if USE_LVGL_PC_SIMULATION
@@ -21,7 +21,7 @@ extern "C" {
 #define v_printf printf
 
 
-#define lvgl_BATNUM 64
+#define lvgl_BATNUM 60
 
 #else
 #include "./task/rtos_ProBtnTask.h"

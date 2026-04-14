@@ -301,7 +301,7 @@ void StartNeedDeleteTask(void *pvParameters)
 
 #include "./pro_com/usart485verify.h"
 
-extern uint8_t update_flag;
+extern uint8_t update_lvgl_flag;
  void T_pull_data_Task(void* parameter)
 {	
 
@@ -311,7 +311,7 @@ extern uint8_t update_flag;
 		
 		SYSTEM_INFO("T_pull_data_Task  \r\n");
 Usart485ComTask();
-		update_flag=1;
+		update_lvgl_flag=1;
 //		SYSTEM_INFO("T_pull_data_Task 485  \r\n");
     vTaskDelay(pdMS_TO_TICKS(800));   /* ÑÓÊ±1000¸öms */
   }

@@ -65,7 +65,10 @@ void lv_init_all(void){
 extern lv_obj_t * scroll_view ;
 extern STR_GET_VOL_Data_t GV_get_vol_real_data;
 
-extern uint8_t update_flag;
+extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
+
+extern uint8_t update_lvgl_flag;
+extern uint8_t update_lvgl_02_flag;
 bool ui_initialized = false; // 新增标志位
 
 //void update_lvgl_data(void){
@@ -90,17 +93,30 @@ void update_lvgl_data(void){
         // 直接调用高效的更新函数
         ui_S_page01_update_values(GV_get_vol_real_data.Bat_Vol, 
                                   GV_get_vol_real_data.Bat_WorkStatus);
+			ui_S_page01_update_error_values(GV_get_vol_real_data.ErrorStatus);
     }
 }
 
+void update_lvgl_02data(void){
+    // 检查 UI 是否已经加载到当前屏幕，防止在后台页面刷新报错
+    if(lv_screen_active() == ui_S_page01_screen) {
+        // 直接调用高效的更新函数
+ui_S_page01_update_initial_setting_values(GV_send_setting_return_data.IsAutoRun,GV_send_setting_return_data.StopVoltage,
+			GV_send_setting_return_data.VoltageDifference,GV_send_setting_return_data.AlarmHighVoltage);
+    }
+}
 
 
 // ui_manager.c
 void sensor_update_timer_cb(lv_timer_t * timer) {
     // 检查是否有新数据（或者直接强制刷新）
-if (ui_initialized && update_flag) { 
+if (ui_initialized && update_lvgl_flag) { 
         update_lvgl_data();
-        update_flag = 0;
+        update_lvgl_flag = 0;
+    }
+if (ui_initialized && update_lvgl_02_flag) { 
+        update_lvgl_02data();
+        update_lvgl_02_flag = 0;
     }
 }
 
