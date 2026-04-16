@@ -63,7 +63,7 @@ void lv_init_all(void){
 #include "./global/GV_variable.h" 
 
 extern lv_obj_t * scroll_view ;
-extern STR_GET_VOL_Data_t GV_get_vol_real_data;
+extern STR_GET_VOL_Data_t_unpacked GV_get_vol_real_data;
 
 extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
 
@@ -95,7 +95,7 @@ void update_lvgl_data(void){
 //			SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&Bat_temp_WorkStatus,8,"   lvgl---- ");
         // 直接调用高效的更新函数
         ui_S_page01_update_values(GV_get_vol_real_data.Bat_Vol, 
-                                  Bat_temp_WorkStatus);
+                                  GV_get_vol_real_data.Bat_WorkStatus);
 			ui_S_page01_update_error_values(GV_get_vol_real_data.ErrorStatus);
     }
 }

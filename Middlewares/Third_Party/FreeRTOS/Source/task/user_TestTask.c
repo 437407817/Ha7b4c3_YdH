@@ -51,7 +51,7 @@
 
 
 //Bat_Vol
-extern STR_GET_VOL_Data_t GV_get_vol_real_data;
+extern STR_GET_VOL_Data_t_unpacked GV_get_vol_real_data;
 extern STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
  STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata3;
  extern uint8_t update_lvgl_flag;

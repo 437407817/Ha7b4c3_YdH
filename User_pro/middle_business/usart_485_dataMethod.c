@@ -31,7 +31,7 @@
 
 extern STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
 
-extern STR_GET_VOL_Data_t GV_get_vol_real_data;
+extern STR_GET_VOL_Data_t_unpacked GV_get_vol_real_data;
 
 extern STR_SEND_SETTING_DATA_t GV_send_setting_return_Bigdata;
 extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
@@ -80,11 +80,11 @@ EndianSwap_BatWorkStatus(&GV_get_vol_485_232_Bigdata);
 
 EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BATNUM*2);
 
-	memmove(&GV_get_vol_real_data,&GV_get_vol_485_232_Bigdata,sizeof(GV_get_vol_real_data));
+	memmove(&GV_get_vol_real_data.Bat_WorkStatus,&GV_get_vol_485_232_Bigdata.Bat_WorkStatus,sizeof(GV_get_vol_485_232_Bigdata)-2);
+	GV_get_vol_real_data.ErrorStatus=GV_get_vol_485_232_Bigdata.ErrorStatus;
 	
-	
-	memcpy(&Bat_temp_WorkStatus, &GV_get_vol_real_data.Bat_WorkStatus,8);
-	SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&Bat_temp_WorkStatus,8,"   lvgl----");
+//	memcpy(&Bat_temp_WorkStatus, &GV_get_vol_real_data.Bat_WorkStatus,8);
+//	SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&Bat_temp_WorkStatus,8,"   lvgl----");
 	
 //	display_64_values(scroll_view, GV_get_vol_real_data.Bat_Vol, GV_get_vol_real_data.Bat_WorkStatus, 64);
 	// Õ∑≈–≈∫≈¡ø

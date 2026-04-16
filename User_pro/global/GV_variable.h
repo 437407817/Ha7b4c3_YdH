@@ -784,6 +784,17 @@
 #pragma pack(pop)
 
 
+	typedef struct GET_VOL_Data_ITEM_unpacked
+{
+    uint8_t      ErrorStatus;
+    uint8_t      Reserver;
+    uint64_t     Bat_WorkStatus;
+    uint16_t     Bat_Vol[64];
+} STR_GET_VOL_Data_t_unpacked;
+
+
+
+
 typedef struct SEND_RUNSTATE_ITEM
 {
 	

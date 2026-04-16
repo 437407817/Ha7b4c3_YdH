@@ -7,9 +7,13 @@
 
 
 
-STR_GET_VOL_Data_t GV_get_vol_real_data;
+//STR_GET_VOL_Data_t GV_get_vol_real_data;
 
 STR_GET_VOL_Data_t GV_get_vol_485_232_Bigdata;
+
+STR_GET_VOL_Data_t_unpacked GV_get_vol_real_data;
+
+
 
 STR_SEND_RUN_DATA_t GV_send_run_state_data;
 
