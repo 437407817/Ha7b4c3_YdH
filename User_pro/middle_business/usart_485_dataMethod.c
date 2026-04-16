@@ -61,7 +61,7 @@ void EndianSwap_BatWorkStatus(STR_GET_VOL_Data_t* pData)
 }
 
 
-
+uint64_t Bat_temp_WorkStatus;
 
 void Getdata485_voldata_process(uint8_t num,uint8_t** p_data){
 
@@ -81,13 +81,16 @@ EndianSwap_BatWorkStatus(&GV_get_vol_485_232_Bigdata);
 EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BATNUM*2);
 
 	memmove(&GV_get_vol_real_data,&GV_get_vol_485_232_Bigdata,sizeof(GV_get_vol_real_data));
-
+	
+	
+	memcpy(&Bat_temp_WorkStatus, &GV_get_vol_real_data.Bat_WorkStatus,8);
+	SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&Bat_temp_WorkStatus,8,"   lvgl----");
 	
 //	display_64_values(scroll_view, GV_get_vol_real_data.Bat_Vol, GV_get_vol_real_data.Bat_WorkStatus, 64);
 	// Õ∑≈–≈∫≈¡ø
 	
 //	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(PRINT_HEX,(uint8_t *)&GV_get_vol_real_data,num,"485 GET REAL DATA = ");
-	SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&GV_get_vol_real_data,num,"485 GET REAL DATA = ");
+	SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&GV_get_vol_real_data,num,"485 GET REAL DATA 1= ");
 	
 //	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(1,(uint8_t *)&GV_get_vol_real_data,num,"485 GET REAL DATA = ");
 //	SYSTEM_DEBUG("---------------%x---",*(*p_data+1));
@@ -101,8 +104,11 @@ memmove(&GV_send_setting_return_Bigdata,*p_data,num);
 	
 		memmove(&GV_send_setting_return_data,&GV_send_setting_return_Bigdata,sizeof(GV_send_setting_return_data));
 	
+
+	
+	
 	update_lvgl_02_flag=1;
-SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&GV_send_setting_return_data,num,"485 GET REAL DATA = ");
+SYSTEM_DEBUG_ARRAY_MESSAGE((uint8_t *)&GV_send_setting_return_data,num,"485 GET REAL DATA 2= ");
 }
 
 
