@@ -39,6 +39,30 @@ extern STR_SEND_SETTING_DATA_t GV_send_setting_return_data;
 extern uint8_t update_lvgl_02_flag;
 
 
+//CM7 内核不支持对非对齐地址做 64 位读写
+void EndianSwap_BatWorkStatus(STR_GET_VOL_Data_t* pData)
+{
+    if (pData == NULL) return;
+
+    // 用 uint8_t* 指向 Bat_WorkStatus，逐字节操作（CM7 允许任意地址）
+    uint8_t* p = (uint8_t*)&pData->Bat_WorkStatus;
+
+    // 字节 0 <-> 7
+    uint8_t temp0 = p[0]; p[0] = p[7]; p[7] = temp0;
+
+    // 字节 1 <-> 6
+    uint8_t temp1 = p[1]; p[1] = p[6]; p[6] = temp1;
+
+    // 字节 2 <-> 5
+    uint8_t temp2 = p[2]; p[2] = p[5]; p[5] = temp2;
+
+    // 字节 3 <-> 4
+    uint8_t temp3 = p[3]; p[3] = p[4]; p[4] = temp3;
+}
+
+
+
+
 void Getdata485_voldata_process(uint8_t num,uint8_t** p_data){
 
 //VpChange16HL((uint16_t*)*p_data,num);
@@ -51,12 +75,13 @@ void Getdata485_voldata_process(uint8_t num,uint8_t** p_data){
 
 	
 	
-EndianSwap_VpChange64HL_CM7((uint64_t *)&GV_get_vol_485_232_Bigdata.Bat_WorkStatus);
+EndianSwap_BatWorkStatus(&GV_get_vol_485_232_Bigdata);
+//	EndianSwap_VpChange64HL((uint64_t *)&GV_get_vol_485_232_Bigdata.Bat_WorkStatus);
 
-EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BAT_MAX_NUM*2);
-	
+EndianSwap_VpChange16HL((uint16_t *)&GV_get_vol_485_232_Bigdata.Bat_Vol,BATNUM*2);
+
 	memmove(&GV_get_vol_real_data,&GV_get_vol_485_232_Bigdata,sizeof(GV_get_vol_real_data));
-	
+
 	
 //	display_64_values(scroll_view, GV_get_vol_real_data.Bat_Vol, GV_get_vol_real_data.Bat_WorkStatus, 64);
 	//释放信号量

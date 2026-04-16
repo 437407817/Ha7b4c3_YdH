@@ -74,6 +74,43 @@ void EndianSwap_VpChange64HL_CM7(uint64_t* pt) {
 }
 
 
+#include <stdint.h>
+
+// 64位数据 字节反转：1<->8，2<->7，3<->6，4<->5
+void EndianSwap_VpChange64HL_common(uint64_t* pt)
+{
+    // 空指针保护
+    if (pt == NULL)
+    {
+        return;
+    }
+
+    // 取出64位数据
+    uint64_t value = *pt;
+
+    // 拆分出 8 个字节（从高位到低位：Byte7 ~ Byte0）
+    uint8_t b0 = (value >>  0) & 0xFF;  // 第8字节
+    uint8_t b1 = (value >>  8) & 0xFF;  // 第7字节
+    uint8_t b2 = (value >> 16) & 0xFF;  // 第6字节
+    uint8_t b3 = (value >> 24) & 0xFF;  // 第5字节
+    uint8_t b4 = (value >> 32) & 0xFF;  // 第4字节
+    uint8_t b5 = (value >> 40) & 0xFF;  // 第3字节
+    uint8_t b6 = (value >> 48) & 0xFF;  // 第2字节
+    uint8_t b7 = (value >> 56) & 0xFF;  // 第1字节
+
+    // 按照要求重新组合：1<->8，2<->7，3<->6，4<->5
+    *pt = ((uint64_t)b0 << 56) |  // 原第8字节 → 第1字节
+          ((uint64_t)b1 << 48) |  // 原第7字节 → 第2字节
+          ((uint64_t)b2 << 40) |  // 原第6字节 → 第3字节
+          ((uint64_t)b3 << 32) |  // 原第5字节 → 第4字节
+          ((uint64_t)b4 << 24) |  // 原第4字节 → 第5字节
+          ((uint64_t)b5 << 16) |  // 原第3字节 → 第6字节
+          ((uint64_t)b6 <<  8) |  // 原第2字节 → 第7字节
+          ((uint64_t)b7 <<  0);   // 原第1字节 → 第8字节
+}
+
+
+
 
 void StructCopyAndVpReserve(uint8_t *aim_struct,uint8_t *origin_struct,uint8_t stuct_size,uint16_t *aim_struct_fromChange,uint8_t count){
 

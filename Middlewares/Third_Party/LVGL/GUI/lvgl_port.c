@@ -84,12 +84,13 @@ bool ui_initialized = false; // 新增标志位
 //         log_d("UI not ready yet..."); 
 //    }
 //}
-
+//#include <string.h>
 // lvgl_port.c
-
+//uint64_t Bat_temp_WorkStatus;
 void update_lvgl_data(void){
     // 检查 UI 是否已经加载到当前屏幕，防止在后台页面刷新报错
     if(lv_screen_active() == ui_S_page01_screen) {
+//			memcpy(&Bat_temp_WorkStatus, &GV_get_vol_real_data.Bat_WorkStatus,8);
         // 直接调用高效的更新函数
         ui_S_page01_update_values(GV_get_vol_real_data.Bat_Vol, 
                                   GV_get_vol_real_data.Bat_WorkStatus);

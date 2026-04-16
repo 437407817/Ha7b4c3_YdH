@@ -13,7 +13,7 @@ extern "C" {
 #include "lvgl/lvgl.h"
 
 
-#define USE_LVGL_PC_SIMULATION  1
+#define USE_LVGL_PC_SIMULATION  0
 
 
 #if USE_LVGL_PC_SIMULATION

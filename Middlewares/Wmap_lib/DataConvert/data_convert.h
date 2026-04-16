@@ -26,7 +26,7 @@ void EndianSwap_VpChange64HL(uint64_t* pt);
 
 void EndianSwap_VpChange64HL_CM7(uint64_t* pt);
 
-
+void EndianSwap_VpChange64HL_common(uint64_t* pt);
 void StructCopyAndVpReserve(uint8_t *aim_struct,uint8_t *origin_struct,uint8_t stuct_size,uint16_t *aim_struct_fromChange,uint8_t count);
 
 void StructOnlyVpReserve(uint8_t *aim_struct_fromChange,uint8_t count);
