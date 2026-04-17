@@ -42,7 +42,7 @@ int QueLen(que_t *que)
     return (que->head <= que->tail) ? que->len - (que->tail - que->head) : que->head - que->tail;
 }
 
-// ¼ì²é»·ĞÎ»º³åÇøÊÇ·ñÒÑÂú,full-1 not full-0
+// æ£€æŸ¥ç¯å½¢ç¼“å†²åŒºæ˜¯å¦å·²æ»¡,full-1 not full-0
 int QueIsFull(que_t *que)
 {
     return ((que->head <= que->tail) ? que->len - (que->tail - que->head) : que->head - que->tail) == que->len;

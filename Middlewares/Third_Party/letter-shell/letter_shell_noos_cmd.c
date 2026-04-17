@@ -12,7 +12,7 @@
 #include "shell.h"
 #include <string.h>
 #include <ctype.h>
- #include "./DataConvert/w_string.h"  //�ر�
+ #include "./DataConvert/w_string.h"  //±Ø±¸
  
  #include <stdbool.h>
  #define LOG_TAG "USER"

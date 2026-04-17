@@ -92,8 +92,8 @@ void MX_DMA_Init(void)
 //  HAL_NVIC_SetPriority(DMA2_Stream7_IRQn, 0, 0);
 //  HAL_NVIC_EnableIRQ(DMA2_Stream7_IRQn);
 /*
-*×¢²áµÄÊÇ´«ÊäÍê³ÉÖĞ¶Ï
-*¾ßÌå×¢²áµÄÖĞ¶Ï·şÎñº¯ÊıÔÚlv_port_disp.cÖĞ
+*æ³¨å†Œçš„æ˜¯ä¼ è¾“å®Œæˆä¸­æ–­
+*å…·ä½“æ³¨å†Œçš„ä¸­æ–­æœåŠ¡å‡½æ•°åœ¨lv_port_disp.cä¸­
 */
 //HAL_DMA_RegisterCallback(&hdma_memtomem_dma2_stream7, HAL_DMA_XFER_CPLT_CB_ID, LVGL_LCD_FSMC_DMA_pCallback);
 }

@@ -205,7 +205,7 @@ void BSP_COM_UART_INIT(void){
   com_cfg.Parity = COM_PARITY_NONE;
   com_cfg.HwFlowCtl = COM_HWCONTROL_NONE;
   
-  // 2. 传入参数调用函数
+  // 2. 浼犲叆鍙傛暟璋冪敤鍑芥暟
   BSP_COM_Init(COM1, &com_cfg);
 
 }

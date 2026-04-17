@@ -13,8 +13,40 @@
 #   '!Application/*.c':   -O0
 #   '**/*.c':             -O2 -gnu ...
 
-version: "2.0"
+version: "2.1"
 options:
     Target 1:
         files: {}
-        virtualPathFiles: {}
+        virtualPathFiles:
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_hal_msp_template.c: ""
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_hal_timebase_rtc_alarm_template.c: ""
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_hal_timebase_rtc_wakeup_template.c: ""
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_hal_timebase_tim_template.c: ""
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_ll_delayblock.c: ""
+            <virtual_root>/STM32H7xx_HAL_Driver/stm32h7xx_ll_utils.c: ""
+            <virtual_root>/BSP_COMMON_DRIVER/bsp_soft_i2c_ee.c: ""
+            <virtual_root>/BSP_COMMON_DRIVER/bsp_soft_i2c_gpio.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_dejavu_16_persian_hebrew.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_8.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_10.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_18.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_24.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_26.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_28.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_28_compressed.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_30.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_34.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_36.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_38.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_40.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_42.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_44.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_46.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_montserrat_48.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_source_han_sans_sc_14_cjk.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_source_han_sans_sc_16_cjk.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_unscii_8.c: ""
+            <virtual_root>/lvgl/src/font/lv_font_unscii_16.c: ""
+            <virtual_root>/LVGL/GUI_APP/lv_app_base.c: ""
+            <virtual_root>/LVGL/GUI_APP/lv_w_demo.c: ""
+            <virtual_root>/LVGL/GUI_APP/lv_demo_stress.c: ""

@@ -71,7 +71,7 @@ uint8_t SaveEEpromDataFun(uint8_t** TMP_data ,uint16_t sizeof_ee, uint16_t ee_st
 uint8_t I2c_Buf_Write[sizeof_ee];
 uint8_t I2c_Buf_Read[sizeof_ee];
 
-//memcpy(&I2c_Buf_Write,&TMP_EEpromSettingState.EEP_Bat_SingleBattRun,sizeof_ee);//Heap_Size       EQU     0x00000400  ����洢ʧ��
+//memcpy(&I2c_Buf_Write,&TMP_EEpromSettingState.EEP_Bat_SingleBattRun,sizeof_ee);//Heap_Size       EQU     0x00000400  ·ñÔò´æ´¢Ê§°Ü
 //			SYSTEM_DEBUG("\n ********** SaveEEpromData**********%d\n",sizeof_ee);
 	
 //	SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(2,(uint8_t *)*TMP_data,sizeof_ee,"SaveEEpromDataFun \n");
