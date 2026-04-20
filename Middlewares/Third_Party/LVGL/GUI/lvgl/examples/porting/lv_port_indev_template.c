@@ -111,7 +111,7 @@ static TouchInfo_t g_touchInfo;      // modify
 static void touchpad_init(void)
 {
     /*Your code comes here*/
-		    //´¥Ãþ³õÊ¼»¯
+		    //Â´Â¥ÃƒÃ¾Â³ÃµÃŠÂ¼Â»Â¯
     TouchDrvInit();
 	
 }

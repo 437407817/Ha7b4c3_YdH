@@ -89,7 +89,7 @@
  *====================*/
 
 /** Default display refresh, input device read and animation step period. */
-#define LV_DEF_REFR_PERIOD  33      /**< [ms] *///Êä³öÊäÈëË¢ÐÂ
+#define LV_DEF_REFR_PERIOD  33      /**< [ms] *///ÃŠÃ¤Â³Ã¶ÃŠÃ¤ÃˆÃ«Ã‹Â¢ÃÃ‚
 
 /** Default Dots Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
  * (Not so important, you can adjust it to modify default sizes and spaces.) */
@@ -368,7 +368,7 @@
 #endif
 
 /** Accelerate blends, fills, etc. with STM32 DMA2D */
-#define LV_USE_DRAW_DMA2D 0
+#define LV_USE_DRAW_DMA2D 1
 #if LV_USE_DRAW_DMA2D
     #define LV_DRAW_DMA2D_HAL_INCLUDE "stm32h7xx_hal.h"
 

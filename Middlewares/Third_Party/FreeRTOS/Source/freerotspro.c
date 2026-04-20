@@ -115,7 +115,7 @@ static void AppTaskCreate(void);/* 用于创建任务 */
 
 //void SEGGERTask(void *pvParameters);
 //QueueHandle_t Test_Queue =NULL;
- void T_pull_data_Task(void* parameter);
+ void T_pull_data(void* parameter);
 
 //void vLvglTask(void *pvParameters);  /* 任务函数 */
 /*****************************************************************
@@ -214,14 +214,14 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                 (const char*    )"vLvglTask",
                 (uint16_t       )8192, 
                 (void*          )NULL,
-                (UBaseType_t    )tskIDLE_PRIORITY+5,
+                (UBaseType_t    )tskIDLE_PRIORITY+6,
                 (TaskHandle_t*  )&tmp_handle);
 								
 								
 			 if(pdPASS == xReturn)
     vPrintStack_TaskCreationResult("vLvglTask", xReturn, 8192);						
 
-			 
+	#if 0		 
 	    xTaskCreate((TaskFunction_t )SEGGERTask,
                 (const char*    )"SEGGERTask",
                 (uint16_t       )256, 
@@ -229,7 +229,7 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                 (UBaseType_t    )tskIDLE_PRIORITY+4,
                 (TaskHandle_t*  )&tmp_handle);
 vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);				 
-			 
+#endif			 
 			xTaskCreate(btn_data_task,"btn_data_task",128,(void *)0,15,&tmp_handle);				
 			vPrintStack_TaskCreationResult("btn_data_task", xReturn, 128);					
 								
@@ -241,7 +241,7 @@ vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);
 //			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				
 //			vPrintStack_TaskCreationResult("busi_pro_task", xReturn, 128);
 
-			xTaskCreate(T_pull_data_Task,"pull_data",1024,(void *)0,14,&tmp_handle);				
+			xTaskCreate(T_pull_data,"pull_data",1024,(void *)0,tskIDLE_PRIORITY+5,&tmp_handle);				
 			vPrintStack_TaskCreationResult("pull_data", xReturn, 1024);					
 								
 								
@@ -302,17 +302,17 @@ void StartNeedDeleteTask(void *pvParameters)
 #include "./pro_com/usart485verify.h"
 
 extern uint8_t update_lvgl_flag;
- void T_pull_data_Task(void* parameter)
+ void T_pull_data(void* parameter)
 {	
 
 	
   while (1)
   {
 		
-		SYSTEM_INFO("T_pull_data_Task  \r\n");
+		SYSTEM_INFO("T_pull_data  \r\n");
 Usart485ComTask();
 		update_lvgl_flag=1;
-//		SYSTEM_INFO("T_pull_data_Task 485  \r\n");
+//		SYSTEM_INFO("T_pull_data 485  \r\n");
     vTaskDelay(pdMS_TO_TICKS(800));   /* 延时1000个ms */
   }
 }

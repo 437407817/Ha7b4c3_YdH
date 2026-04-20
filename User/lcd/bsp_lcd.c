@@ -1960,6 +1960,7 @@ void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_
   
     /* 计算行偏移和目标地址 */
     offline = LCD_GetXSize() - (pex - psx + 1);
+		DMA2D->OOR = offline;
     addr = Ltdc_Handler.LayerCfg[ActiveLayer].FBStartAdress + pixsize * (LCD_GetXSize() * psy + psx);
 
     __HAL_RCC_DMA2D_CLK_ENABLE();                             /* 使能DMA2D时钟 */
