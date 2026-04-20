@@ -102,10 +102,13 @@ void Board_MPU_Config(uint8_t	Region ,uint8_t Mode,uint32_t Address,uint32_t Siz
 
 void mpu_init(void){
 
+
   /* 配置 MPU */
   Board_MPU_Config(0, MPU_Normal_WT, SDRAM_BANK_ADDR, MPU_32MB);
   Board_MPU_Config(1, MPU_Normal_WT, 0x24000000, MPU_512KB);
-	
+//	Board_MPU_Config(MPU_REGION_NUMBER0, MPU_Normal_WT, 0xD0000000, MPU_32MB);
+
+
 //  SCB_DisableICache();  // 禁用指令Cache
 //	SCB_DisableDCache();  // 禁用数据Cache
   SCB_EnableICache();    // 使能指令 Cache

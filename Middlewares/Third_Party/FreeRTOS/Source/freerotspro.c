@@ -214,13 +214,16 @@ vPrintStack_TaskCreationResult("shell", xReturn, 256);
                 (const char*    )"vLvglTask",
                 (uint16_t       )8192, 
                 (void*          )NULL,
-                (UBaseType_t    )tskIDLE_PRIORITY+6,
+                (UBaseType_t    )6,
                 (TaskHandle_t*  )&tmp_handle);
 								
 								
 			 if(pdPASS == xReturn)
     vPrintStack_TaskCreationResult("vLvglTask", xReturn, 8192);						
 
+		xTaskCreate(vTouchTask, "TouchTask", 256, NULL, 7, &tmp_handle);	 
+		vPrintStack_TaskCreationResult("TouchTask", xReturn, 256);		 
+			 
 	#if 0		 
 	    xTaskCreate((TaskFunction_t )SEGGERTask,
                 (const char*    )"SEGGERTask",

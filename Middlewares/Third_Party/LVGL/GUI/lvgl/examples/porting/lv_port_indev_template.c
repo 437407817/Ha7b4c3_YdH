@@ -68,7 +68,7 @@ void lv_port_indev_init(void)
      * -----------------*/
 
     /*Initialize your touchpad if you have*/
-    touchpad_init();
+//    touchpad_init();
 
     /*Register a touchpad input device*/
     indev_touchpad = lv_indev_create();
@@ -106,7 +106,7 @@ void lv_port_indev_init(void)
 /*------------------
  * Touchpad
  * -----------------*/
-static TouchInfo_t g_touchInfo;      // modify
+extern TouchInfo_t g_touchInfo;      // modify
 /*Initialize your touchpad*/
 static void touchpad_init(void)
 {
@@ -137,14 +137,13 @@ static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 }
 
 /*Return true is the touchpad is pressed*/
-static bool touchpad_is_pressed(void)
-{
-    /*Your code comes here*/
-	TouchScan(&g_touchInfo);           // modify
-	if (g_touchInfo.state == DOWN)
-	{
-		return true;
-	}
+static bool touchpad_is_pressed(void) {
+    // 这里不要调用 TouchScan！
+    // g_touchInfo 在 vTouchTask 中每 10ms 更新一次
+    if (g_touchInfo.state == DOWN)
+    {
+        return true;
+    }
     return false;
 }
 

@@ -58,13 +58,39 @@ void vLvglTask(void *pvParameters)
     while(1)
     {
 			
-       uint32_t sleep_time_ms = lv_timer_handler(); /* LVGL计时器 */
-			
-			
-			
-        vTaskDelay(pdMS_TO_TICKS(sleep_time_ms));//影响刷新率FPS
+uint32_t sleep_tick = lv_timer_handler(); // 获取下次任务所需的等待时间
+        if(sleep_tick > 5) sleep_tick = 5;       // 强制最高 200Hz 刷新检查
+        vTaskDelay(pdMS_TO_TICKS(sleep_tick));
     }
 }
+
+
+#include "./touch/touch_drv.h"
+
+// 1. 定义触摸任务句柄
+TaskHandle_t TouchTask_Handle = NULL;
+TouchInfo_t g_touchInfo;
+// 2. 触摸扫描任务函数
+void vTouchTask(void *pvParameters)
+{
+    // 确保硬件已经初始化（通常已经在 main 中初始化，或者在这里初始化一次）
+    // Touch_Init(); 
+    TouchDrvInit();
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    const TickType_t xFrequency = pdMS_TO_TICKS(10); // 10ms 扫描一次
+
+    for(;;)
+    {
+        /* 核心逻辑：直接读取硬件 I2C 寄存器 */
+        /* 不要在这里加任何 printf，I2C 速度受限时 printf 会拖慢任务 */
+        TouchScan(&g_touchInfo); 
+        
+        // 按照固定频率唤醒，保证采样率稳定
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
+    }
+}
+
+
 
 
 /**

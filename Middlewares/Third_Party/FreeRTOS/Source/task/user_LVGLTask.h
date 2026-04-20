@@ -29,7 +29,7 @@
 void vLvglTask(void *pvParameters);
 
 
-
+void vTouchTask(void *pvParameters);
 
 
 

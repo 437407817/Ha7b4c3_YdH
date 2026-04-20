@@ -81,22 +81,41 @@ static void disp_flush(lv_display_t * disp, const lv_area_t * area, uint8_t * px
  
  /* lv_port_disp_template.c 修改 */
  
- #if 0
-// 使用 AXI SRAM (D1 域)，速度最快
-#define AXI_SRAM_BUF_ADDR    0x24000000 
-
-// 缩小缓冲区行数以适配内部 SRAM (例如 40 行)
-#define BUF_LINES 40 
-LV_ATTRIBUTE_MEM_ALIGN 
-static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
  
+ // 1. 定义缓冲区到 AXI SRAM
+// 1024 * 50 * 4 = 200KB，适合放入 512KB 的 AXI SRAM
+//#if defined ( __GNUC__ )
+//__attribute__((section(".RAM_D1"))) 
+//#elif defined ( __CC_ARM )
+//__attribute__((at(0x24000000))) 
+//#endif
+//static lv_color_t buf_1_1[MY_DISP_HOR_RES * 50]; 
+
+
+
+ #if 1
+// 使用 AXI SRAM (D1 域)，速度最快
+//#define AXI_SRAM_BUF_ADDR    0x24000000 
+
+//// 缩小缓冲区行数以适配内部 SRAM (例如 40 行)
+//#define BUF_LINES 40 
+//LV_ATTRIBUTE_MEM_ALIGN 
+//static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
+
+
+
+ // 设置 50 行缓冲区：1024 * 50 * 4 = 200KB，完美放入 512KB AXI SRAM
+#define BUF_LINES 50
+static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
+
+
  #else
  
  #define LCD_FRAME_BUFFERPR ((uint32_t *)EXT_SRAM_START_ADDR)  // 屏幕显存基地址（SDRAM/FMC映射地址）
  
  
  
-LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_1_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL*10] __attribute__((at(EXT_SRAM_START_ADDR + MY_DISP_HOR_RES*MY_DISP_VER_RES )));            /*A buffer for 10 rows*/		
+//LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_1_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL*10] __attribute__((at(EXT_SRAM_START_ADDR + MY_DISP_HOR_RES*MY_DISP_VER_RES )));            /*A buffer for 10 rows*/		
 #endif
 
 //LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_2_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL* 10] __attribute__((at(0XD0000000 + 600*800*8 )));            /*A buffer for 10 rows*/		
@@ -205,22 +224,54 @@ void disp_disable_update(void)
  *`px_map` contains the rendered image as raw pixel map and it should be copied to `area` on the display.
  *You can use DMA or any hardware acceleration to do this operation in the background but
  *'lv_display_flush_ready()' has to be called when it's finished.*/
+//static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
+//{
+//    if(disp_flush_enabled) {
+//        /*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
+
+////ltdc_color_fill3(area->x1, area->y1, area->x2, area->y2, (uint32_t)px_map);//3重dui
+////ltdc_color_fill(area->x1, area->y1, area->x2, area->y2, (uint16_t *)px_map);			
+//			
+////ltdc_color_fill4(area->x1, area->y1, area->x2, area->y2, (uint32_t *)px_map);
+
+//	}
+//    /*IMPORTANT!!!
+//     *Inform the graphics library that you are ready with the flushing*/
+//    lv_display_flush_ready(disp_drv);
+//}
+
+
+
+// 2. 更新 disp_flush
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
 {
     if(disp_flush_enabled) {
-        /*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
-
-//ltdc_color_fill3(area->x1, area->y1, area->x2, area->y2, (uint32_t)px_map);//3重dui
-ltdc_color_fill(area->x1, area->y1, area->x2, area->y2, (uint16_t *)px_map);			
-			
-
-
-	}
-    /*IMPORTANT!!!
-     *Inform the graphics library that you are ready with the flushing*/
+        // 关键：在 DMA2D 搬运前，必须清除 D-Cache，否则 DMA2D 拿到的是旧数据
+        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
+        
+        // 调用我们修正后的 32位 填充函数
+        ltdc_color_fill4(area->x1, area->y1, area->x2, area->y2, (uint32_t *)px_map);
+    }
     lv_display_flush_ready(disp_drv);
 }
 
+/* 在 lv_port_disp_template.c 的 disp_flush 中修改 */
+//static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
+//{
+//    uint32_t width  = (area->x2 - area->x1 + 1);
+//    uint32_t height = (area->y2 - area->y1 + 1);
+//    uint32_t size   = width * height * 4;
+
+//    /* 关键步骤：同步 CPU Cache 到内存，确保 DMA2D 搬运的是最新图像 */
+//    /* 如果不加这一行，点击按钮时，LTDC 读到的是旧内存，就会闪烁 */
+//    SCB_CleanInvalidateDCache_by_Addr((uint32_t *)px_map, size);
+
+//    /* 调用你的填充函数 */
+//    ltdc_color_fill4(area->x1, area->y1, area->x2, area->y2, (uint32_t *)px_map);
+
+//    /* 告知 LVGL 刷新完成 */
+//    lv_display_flush_ready(disp_drv);
+//}
 #else /*Enable this file at the top*/
 
 /*This dummy typedef exists purely to silence -Wpedantic.*/

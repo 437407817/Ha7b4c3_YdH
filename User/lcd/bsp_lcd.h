@@ -377,4 +377,12 @@ void LCD_init_All(void);
 //void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint8_t *color);
 void ltdc_color_fill3(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t p_address_color);
 void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_t *color);
+
+
+void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t *color);
+
+void LTDC_Priority_Config(void);
+
+
+
 #endif /* __BSP_LCD_H */

@@ -1777,6 +1777,11 @@ void LCD_init_All(void){
 
     LCD_SetTransparency(1, 255);
 	
+	
+	LTDC_Priority_Config();
+	
+	
+	
 //		/* LCD 端口初始化 */ 
 //	LCD_Init();
 //	/* LCD 第一层初始化 */ 
@@ -2010,4 +2015,56 @@ void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_
     } 
     DMA2D->IFCR |= DMA2D_FLAG_TC;                             /* 清除传输完成标志 */
 }
+
+
+
+// 修改后的函数，确保 pixsize 为 4 (ARGB8888)
+void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t *color)
+{
+    // 1. 检查这里的 pixsize。如果是 ARGB8888，pixsize 必须等于 4
+    uint32_t pixsize = 4; 
+    uint32_t width = ex - sx + 1;
+    uint32_t height = ey - sy + 1;
+    uint32_t offline = LCD_MAX_PIXEL_WIDTH - width;
+    
+    // 计算目标起始地址：FB起始地址 + (行偏移 * 总宽 + 列偏移) * 每个像素字节数
+    uint32_t addr = Ltdc_Handler.LayerCfg[ActiveLayer].FBStartAdress + pixsize * (LCD_MAX_PIXEL_WIDTH * sy + sx);
+
+    __HAL_RCC_DMA2D_CLK_ENABLE();
+    DMA2D->CR = 0x00000000UL; // 模式：存储器到存储器
+    
+    // 源设置 (LVGL 渲染缓冲区)
+    DMA2D->FGMAR = (uint32_t)color;
+    DMA2D->FGOR = 0; // 源数据是连续的，行偏移为0
+    DMA2D->FGPFCCR = DMA2D_INPUT_ARGB8888; // 这里的格式必须与 lv_conf.h 一致
+
+    // 目标设置 (SDRAM 显存)
+    DMA2D->OMAR = addr;
+    DMA2D->OOR = offline; // 目标行偏移
+    DMA2D->OPFCCR = DMA2D_OUTPUT_ARGB8888;
+
+    // 大小设置
+    DMA2D->NLR = (height) | (width << 16);
+
+    // 启动并等待完成
+    DMA2D->CR |= DMA2D_CR_START;
+    while (DMA2D->CR & DMA2D_CR_START); 
+}
+
+
+
+/* 提升 LTDC 在总线矩阵中的优先级，防止被 CPU 抢占导致闪屏 */
+void LTDC_Priority_Config(void)
+{
+    /* 开启 D2 域 SRAM1 时钟（AXI 优先级寄存器在此域） */
+    __HAL_RCC_D2SRAM1_CLK_ENABLE();
+
+    /* 设置 LTDC 为 AXI 总线最高优先级 */
+    /* 寄存器地址 0x51003000 是总线优先级配置起始地址 */
+    *((uint32_t *)(0x51003000 + 0x000)) = 0x00000001; // 设置 LTDC 访问 AXI 总线的优先级
+}
+
+
+
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
