@@ -98,15 +98,15 @@ static void disp_flush(lv_display_t * disp, const lv_area_t * area, uint8_t * px
 //#define AXI_SRAM_BUF_ADDR    0x24000000 
 
 //// 缩小缓冲区行数以适配内部 SRAM (例如 40 行)
-//#define BUF_LINES 40 
-//LV_ATTRIBUTE_MEM_ALIGN 
+//#define BUF_LINES 50 
+LV_ATTRIBUTE_MEM_ALIGN 
 //static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
 
-
+__attribute__((aligned(32))) static uint32_t buf_1_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL] __attribute__((section(".ARM.__at_0x24000000")));
 
  // 设置 50 行缓冲区：1024 * 50 * 4 = 200KB，完美放入 512KB AXI SRAM
-#define BUF_LINES 50
-static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
+//#define BUF_LINES 50
+//__attribute__((aligned(32))) static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".ARM.__at_0x24000000")));
 
 
  #else
@@ -116,6 +116,10 @@ static uint32_t buf_1_1[MY_DISP_HOR_RES * BUF_LINES] __attribute__((section(".AR
  
  
 //LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_1_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL*10] __attribute__((at(EXT_SRAM_START_ADDR + MY_DISP_HOR_RES*MY_DISP_VER_RES )));            /*A buffer for 10 rows*/		
+ LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_1_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL*10];            /*A buffer for 10 rows*/		
+
+
+
 #endif
 
 //LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_2_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL* 10] __attribute__((at(0XD0000000 + 600*800*8 )));            /*A buffer for 10 rows*/		
@@ -177,6 +181,12 @@ void lv_port_disp_init(void)
 //    LV_ATTRIBUTE_MEM_ALIGN
 //    static uint8_t buf_2_2[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];
 //    lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+
+
+
+
+
+
 
     /* Example 3
      * Two buffers screen sized buffer for double buffering.
@@ -245,10 +255,18 @@ void disp_disable_update(void)
 // 2. 更新 disp_flush
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
 {
+	while(DMA2D->CR & DMA2D_CR_START){};
+		
+//	SCB_CleanInvalidateDCache();
+	
     if(disp_flush_enabled) {
+			uint32_t size = lv_area_get_width(area) * lv_area_get_height(area) * sizeof(lv_color_t);
+			        SCB_CleanDCache_by_Addr((uint32_t *)px_map, size);
+			
         // 关键：在 DMA2D 搬运前，必须清除 D-Cache，否则 DMA2D 拿到的是旧数据
-        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
-        
+//        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
+//while(DMA2D->CR & DMA2D_CR_START){};
+//	SCB_CleanInvalidateDCache();
         // 调用我们修正后的 32位 填充函数
         ltdc_color_fill4(area->x1, area->y1, area->x2, area->y2, (uint32_t *)px_map);
     }

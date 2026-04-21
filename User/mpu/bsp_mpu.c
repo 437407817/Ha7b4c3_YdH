@@ -81,7 +81,7 @@ void Board_MPU_Config(uint8_t	Region ,uint8_t Mode,uint32_t Address,uint32_t Siz
 		
 		case MPU_Normal_WT:
 				 /* 设置内存为Normal类型,禁用共享, 直写模式*/
-				 BSP_MPU_ConfigRegion(Region,0,MPU_FULL_ACCESS,0,Address,Size,0,1,0);	
+				 BSP_MPU_ConfigRegion(Region,1,MPU_FULL_ACCESS,0,Address,Size,0,1,0);	
 				 break;		
 		
 		case MPU_Normal_NonCache:
@@ -98,21 +98,46 @@ void Board_MPU_Config(uint8_t	Region ,uint8_t Mode,uint32_t Address,uint32_t Siz
 }
 
 
+void LVGL_MPU_Config(void){
+
+MPU_Region_InitTypeDef MPU_InitStruct;
+/* 在 MPU 配置文件中修改显存所在区域 */
+MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+MPU_InitStruct.BaseAddress = 0xD0000000;           // 你的显存起始地址
+MPU_InitStruct.Size = MPU_REGION_SIZE_32MB;
+MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+
+/* 关键修改：针对 H7，建议设为透写模式，既能利用 Cache 加速读取，又能保证写入时立刻同步物理内存 */
+MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE; // 设为透写 (Write-Through)
+MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE; 
+
+HAL_MPU_ConfigRegion(&MPU_InitStruct);
+}
+
+
+#if (__DCACHE_PRESENT == 1)
+#warning "D-Cache enabled"
+#else
+#warning "D-Cache disabled"
+#endif
+
 
 
 void mpu_init(void){
 
 
   /* 配置 MPU */
-  Board_MPU_Config(0, MPU_Normal_WT, SDRAM_BANK_ADDR, MPU_32MB);
+//  Board_MPU_Config(0, MPU_Normal_WT, SDRAM_BANK_ADDR, MPU_32MB);
   Board_MPU_Config(1, MPU_Normal_WT, 0x24000000, MPU_512KB);
 //	Board_MPU_Config(MPU_REGION_NUMBER0, MPU_Normal_WT, 0xD0000000, MPU_32MB);
-
+LVGL_MPU_Config();
 
 //  SCB_DisableICache();  // 禁用指令Cache
 //	SCB_DisableDCache();  // 禁用数据Cache
   SCB_EnableICache();    // 使能指令 Cache
   SCB_EnableDCache();    // 使能数据 Cache
 
-
+//SCB_DisableDCache();
 }

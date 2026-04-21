@@ -336,7 +336,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32H743xx,</Define>
+              <Define>USE_HAL_DRIVER,STM32H743xx,__DCACHE_PRESENT=1,</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32H7xx\Include;..\..\Drivers\STM32H7xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\SeggerRTT;..\..\User;..\..\Core\Inc;..\..\Drivers\STM32H7_Driver;..\..\Middlewares\Wmap_lib;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\Middlewares\Third_Party\letter-shell\src;..\..\Middlewares\Third_Party\letter-shell\extensions\log;..\..\Middlewares\Third_Party\letter-shell\demo\stm32-freertos;..\..\Middlewares\Third_Party\easylogger\inc;..\..\Middlewares\Third_Party\LVGL\GUI;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\src;..\..\Middlewares\Third_Party\LVGL\GUI\lvgl\examples\porting;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos;..\..\Middlewares\Third_Party\LVGL\GUI_APP\demos\stress;..\..\Middlewares\Third_Party\LVGL\lv_wmap_app;..\..\Middlewares\Third_Party_user\freertosutil;..\..\Middlewares\Third_Party\sfud\inc;..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui;..\..\User_pro;..\..\Middlewares\Third_Party\SystemView\Config;..\..\Middlewares\Third_Party\SystemView\SEGGER;..\..\Middlewares\Third_Party\SystemView\SYSVIEW;..\..\Middlewares\Third_Party\SeggerRTT\Config;..\..\Middlewares\Third_Party\SystemView\Sample\FreeRTOSV10</IncludePath>
             </VariousControls>

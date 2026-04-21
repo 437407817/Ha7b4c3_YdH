@@ -381,7 +381,7 @@ void ltdc_color_fill(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint16_
 
 void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t *color);
 
-void LTDC_Priority_Config(void);
+//void LTDC_Priority_Config(void);
 
 
 

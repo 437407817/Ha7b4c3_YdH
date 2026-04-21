@@ -33,7 +33,7 @@
 #define ABS(X)  ((X) > 0 ? (X) : -(X))
 
 static LTDC_HandleTypeDef  Ltdc_Handler;
-static DMA2D_HandleTypeDef Dma2d_Handler;
+ DMA2D_HandleTypeDef Dma2d_Handler;
 
 /* Default LCD configuration with LCD Layer 1 */
 uint32_t            ActiveLayer = 0;
@@ -1778,7 +1778,7 @@ void LCD_init_All(void){
     LCD_SetTransparency(1, 255);
 	
 	
-	LTDC_Priority_Config();
+//	LTDC_Priority_Config();
 	
 	
 	
@@ -2053,16 +2053,16 @@ void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32
 
 
 
-/* 提升 LTDC 在总线矩阵中的优先级，防止被 CPU 抢占导致闪屏 */
-void LTDC_Priority_Config(void)
-{
-    /* 开启 D2 域 SRAM1 时钟（AXI 优先级寄存器在此域） */
-    __HAL_RCC_D2SRAM1_CLK_ENABLE();
+///* 提升 LTDC 在总线矩阵中的优先级，防止被 CPU 抢占导致闪屏 */
+//void LTDC_Priority_Config(void)
+//{
+//    /* 开启 D2 域 SRAM1 时钟（AXI 优先级寄存器在此域） */
+//    __HAL_RCC_D2SRAM1_CLK_ENABLE();
 
-    /* 设置 LTDC 为 AXI 总线最高优先级 */
-    /* 寄存器地址 0x51003000 是总线优先级配置起始地址 */
-    *((uint32_t *)(0x51003000 + 0x000)) = 0x00000001; // 设置 LTDC 访问 AXI 总线的优先级
-}
+//    /* 设置 LTDC 为 AXI 总线最高优先级 */
+//    /* 寄存器地址 0x51003000 是总线优先级配置起始地址 */
+//    *((uint32_t *)(0x51003000 + 0x000)) = 0x00000001; // 设置 LTDC 访问 AXI 总线的优先级
+//}
 
 
 
