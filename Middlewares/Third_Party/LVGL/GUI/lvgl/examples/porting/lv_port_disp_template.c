@@ -251,27 +251,71 @@ void disp_disable_update(void)
 //}
 
 
-
+#if 1
 // 2. 更新 disp_flush
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
 {
-	while(DMA2D->CR & DMA2D_CR_START){};
+//	while(DMA2D->CR & DMA2D_CR_START){};
 		
 //	SCB_CleanInvalidateDCache();
 	
-    if(disp_flush_enabled) {
-			uint32_t size = lv_area_get_width(area) * lv_area_get_height(area) * sizeof(lv_color_t);
-			        SCB_CleanDCache_by_Addr((uint32_t *)px_map, size);
+//    if(disp_flush_enabled) {
+//			uint32_t size = lv_area_get_width(area) * lv_area_get_height(area) * sizeof(lv_color_t);
+//			        SCB_CleanDCache_by_Addr((uint32_t *)px_map, size);
 			
         // 关键：在 DMA2D 搬运前，必须清除 D-Cache，否则 DMA2D 拿到的是旧数据
-//        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
-//while(DMA2D->CR & DMA2D_CR_START){};
-//	SCB_CleanInvalidateDCache();
+        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
+
+	
         // 调用我们修正后的 32位 填充函数
         ltdc_color_fill4(area->x1, area->y1, area->x2, area->y2, (uint32_t *)px_map);
-    }
+//	SCB_CleanDCache_by_Addr((uint32_t *)px_map, size);
+//    }
     lv_display_flush_ready(disp_drv);
 }
+
+#else
+
+#include <string.h> // 需要包含 string.h 来使用 memcpy
+extern LTDC_HandleTypeDef  Ltdc_Handler;
+
+
+static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
+{
+    uint32_t width = area->x2 - area->x1 + 1;
+    uint32_t height = area->y2 - area->y1 + 1;
+    uint32_t pixsize = 4; // 根据你的 ARGB8888 设定，像素大小为 4 字节
+
+    /* 1. 【第一道安全门：同步源端】
+     * LVGL 刚刚用 DMA2D 在物理内存画好了图，
+     * 我们必须让 CPU 清空旧 Cache，强制从物理内存读取最新的 px_map。
+     */
+    SCB_CleanInvalidateDCache();
+
+    // 计算源地址和目标地址
+    uint32_t * src = (uint32_t *)px_map;
+    uint32_t * dst = (uint32_t *)(Ltdc_Handler.LayerCfg[ActiveLayer].FBStartAdress + 
+                                  (area->y1 * LCD_MAX_PIXEL_WIDTH + area->x1) * pixsize);
+
+    /* 2. CPU 开始搬砖 (memcpy) */
+    for(uint32_t y = 0; y < height; y++) {
+        memcpy(dst, src, width * pixsize); // 拷贝当前行
+        src += width;                      // 源地址换行
+        dst += LCD_MAX_PIXEL_WIDTH;        // 屏幕目标地址跨越空白区，换到下一行
+    }
+
+    /* 3. 【第二道安全门：同步目的端 - 破除黑屏的魔法】
+     * CPU 刚才把画面全写在 D-Cache 里了。
+     * 这句话的作用是强行一脚把 Cache 里的画面“踹”进物理 SDRAM 里！
+     * 只有执行了这句，LTDC 才能看到画面，屏幕瞬间就会亮起！
+     */
+    SCB_CleanDCache();
+
+    // 4. 告诉 LVGL，这块区域已经搬运贴图完成了
+    lv_display_flush_ready(disp_drv);
+}
+#endif
+
 
 /* 在 lv_port_disp_template.c 的 disp_flush 中修改 */
 //static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)

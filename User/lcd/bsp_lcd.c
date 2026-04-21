@@ -23,7 +23,7 @@
 //#include "./fonts//font12.c"
 //#include "./fonts//font8.c"
 //#include "./flash/bsp_spi_flash.h"
-
+#include "./sys/sysio.h"
 
 
 
@@ -32,7 +32,7 @@
 
 #define ABS(X)  ((X) > 0 ? (X) : -(X))
 
-static LTDC_HandleTypeDef  Ltdc_Handler;
+LTDC_HandleTypeDef  Ltdc_Handler;
  DMA2D_HandleTypeDef Dma2d_Handler;
 
 /* Default LCD configuration with LCD Layer 1 */
@@ -352,9 +352,34 @@ void LCD_Init(void)
     /* 初始化行像素时钟极性，同输入时钟 */
     Ltdc_Handler.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
     HAL_LTDC_Init(&Ltdc_Handler);
+		
+		__HAL_LTDC_ENABLE_IT(&Ltdc_Handler, LTDC_IT_FU);
     /* 初始化字体 */
     LCD_SetFont(&LCD_DEFAULT_FONT);
 }
+
+void LTDC_IRQHandler(void)
+{
+    if(__HAL_LTDC_GET_FLAG(&Ltdc_Handler, LTDC_FLAG_FU)) {
+       SYSTEM_INFO("HAL_LTDC_ErrorCallback");
+        __HAL_LTDC_CLEAR_FLAG(&Ltdc_Handler, LTDC_FLAG_FU);
+    }
+    HAL_LTDC_IRQHandler(&Ltdc_Handler);
+}
+
+
+// 然后可以自定义错误回调
+void HAL_LTDC_ErrorCallback(LTDC_HandleTypeDef *hltdc)
+{
+    if(__HAL_LTDC_GET_FLAG(hltdc, LTDC_FLAG_FU))
+    {
+        // 发生了 FIFO 下溢！
+        // 这里可以处理错误
+			SYSTEM_INFO("HAL_LTDC_ErrorCallback");
+    }
+}
+
+
 
 /**
   * @brief  获取LCD当前有效层X轴的大小
@@ -2049,6 +2074,11 @@ void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32
     // 启动并等待完成
     DMA2D->CR |= DMA2D_CR_START;
     while (DMA2D->CR & DMA2D_CR_START); 
+		
+//		/* 👇 ====== 解决冲突的关键：清除所有 DMA2D 状态标志位 ====== 👇 */
+//    DMA2D->IFCR = 0x3FUL;
+		
+		
 }
 
 
