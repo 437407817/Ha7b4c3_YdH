@@ -38,6 +38,8 @@
 #include "./middle_business/usart_485_sendMethod.h"
 #include "./rtosprintf/frtos_printf.h"
 #include "./global/GV_variable.h" 
+#include "semphr.h"
+
 
  #define LOG_TAG "TASK"
 #include "elog.h"

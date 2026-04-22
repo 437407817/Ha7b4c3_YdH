@@ -52,8 +52,8 @@
 #endif
 
 
-#define USE_UART_DMA 0
-#define USE_UART_DMA_RX 0
+#define USE_UART_DMA 1
+#define USE_UART_DMA_RX 1
 #define USE_UART_DMA_TX 1
 
 

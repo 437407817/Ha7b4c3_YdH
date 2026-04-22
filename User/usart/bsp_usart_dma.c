@@ -35,15 +35,21 @@ STR_RCV_DMA_que_data RcvDmaQueData={0};
 // 修改缓冲区定义，增加对齐属性
 void USART_RX_DMA_SEGGERprint_OneByte(void);
 
-
+	#if USE_OS
+#include "FreeRTOS.h"	
+#include "semphr.h"
+extern SemaphoreHandle_t g_com_uart_send_sem;
+//extern SemaphoreHandle_t g_com_nextdata_send_sem;
+extern __IO uint32_t NowUse_rtos;
+	#endif
 
 str_DMA_usart_send GV_usartdmaSend = {
     .send_data = {0},  // 数组初始化为全0（字符串结束符+无效数据清0）
     .uart_tx_justSaveOver = 0,  // 初始化为未保存完成
-    .uart_tx_complete = 0,      // 初始化为未发送完成
+    .uart_tx_thisdatas_sendover = 0,      // 初始化为未发送完成
     .read_out_len = 0,          // 初始读取长度为0
     .daret = 0,                 // 按需初始化（根据实际用途设值）
-    .complete_timeout = TX_COMPLETE_TIMEOUT,   // 超时阈值3000ms（可按需调整）
+    .complete_timeout = TX_WAITTING_TIMEOUT,   // 超时阈值3000ms（可按需调整）
     .current_time = 0,          // 初始时间设0（后续用HAL_GetTick()更新）
     .last_tx_complete_time = 0  // 初始无上次触发时间
 };
@@ -140,15 +146,31 @@ void USART_RX_DMA_Config(UART_HandleTypeDef* uartHandle){
 
 
 
-
+extern SemaphoreHandle_t uart_send_res_sem;
 
 //DMA传输完成自动调用（发送）
 void HAL_USARTx_DMA_TxCpltCallback(void) {
 
 
-      GV_usartdmaSend.uart_tx_complete  = 1;  // 全部发送完成
+      GV_usartdmaSend.uart_tx_thisdatas_sendover  = 1;  // 全部发送完成
+	
 //SYSTEM_DEBUG("TX Callback \n");
 		
+	
+	#if USE_OS
+	    // 必须：判断信号量是否有效
+    if(uart_send_res_sem != NULL)
+    {
+        // 【中断上下文 专用】释放二值信号量 / 计数信号量
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        xSemaphoreGiveFromISR( uart_send_res_sem, &xHigherPriorityTaskWoken);
+
+        // 强制任务切换（必须加）
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+	#endif
+	
   
 }
 
@@ -177,13 +199,13 @@ USART_TX_DMA_Config(uartHandle);
 
 
 
- RingBuffer_Init(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_ringBufData, MAX_RING_BUFF_SIZE);//接收用环形缓冲区,
+ QueueInit(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_ringBufData, MAX_RING_BUFF_SIZE);//接收用环形缓冲区,
 		
 
 //	SCB_CleanInvalidateDCache_by_Addr((uint32_t *)RcvDmaQueData.g_rcvDataBuf, MAX_BUF_SIZE);	
-HAL_UART_Receive_DMA(uartHandle, RcvDmaQueData.g_rcvDataBuf, MAX_BUF_SIZE);             // 开启DMA接收
+HAL_UART_Receive_DMA(uartHandle, RcvDmaQueData.g_rcvDataBuf, MAX_BUF_R_SIZE);             // 开启DMA接收
 
-		memset(RcvDmaQueData.g_rcvDataBuf, 0, MAX_BUF_SIZE); // 清空内存，在__HAL_UART_CLEAR_IDLEFLAG前Received:为0，在他之后，Received:为1
+		memset(RcvDmaQueData.g_rcvDataBuf, 0, MAX_BUF_R_SIZE); // 清空内存，在__HAL_UART_CLEAR_IDLEFLAG前Received:为0，在他之后，Received:为1
 		
 // 注意：H7 清除 IDLE 标志需要写 ICR 寄存器，HAL 宏已封装
 __HAL_UART_CLEAR_IDLEFLAG(uartHandle);
@@ -269,11 +291,22 @@ fill_data_False_random((char *)Senbuff,40);
 #endif
 
 
-
+	
+	
 void Usart_SendDMA_SaveFun(char *Sendbuff,uint16_t buff_len){
 
 	GV_usartdmaSend.dbret = p_push_data_to_queue2(&q_tx_rx_queue_UsartDMAsend, (char *)Sendbuff, buff_len); // 不含'\0'
 	GV_usartdmaSend.uart_tx_justSaveOver = 1;
+	GV_usartdmaSend.uart_tx_alldatas_sendfinish = 0;
+	#if USE_OS
+	//释放信号量
+	
+	
+//				if(NowUse_rtos==1){
+//        xSemaphoreGive(g_com_uart_send_sem);
+//			}
+	#endif
+	
 	#if DEBUG_DmaUsartPrint	
 if (GV_usartdmaSend.dbret == 1) {
         SYSTEM_DEBUG("p_push_data_to_queue2 full,error\n");
@@ -286,7 +319,7 @@ if (GV_usartdmaSend.dbret == 1) {
 void Usart_SendDMA_SendFun(UART_HandleTypeDef *huart_x){
 	
 GV_usartdmaSend.current_time = HAL_GetTick();
-if (GV_usartdmaSend.uart_tx_justSaveOver==1 || GV_usartdmaSend.uart_tx_complete == 1 || 
+if (GV_usartdmaSend.uart_tx_justSaveOver==1 || GV_usartdmaSend.uart_tx_thisdatas_sendover == 1 || 
     (GV_usartdmaSend.current_time - GV_usartdmaSend.last_tx_complete_time >GV_usartdmaSend.complete_timeout)) {
 			
 				if(GV_usartdmaSend.current_time - GV_usartdmaSend.last_tx_complete_time > GV_usartdmaSend.complete_timeout){
@@ -299,20 +332,24 @@ if (GV_usartdmaSend.uart_tx_justSaveOver==1 || GV_usartdmaSend.uart_tx_complete 
 			 GV_usartdmaSend.daret = p_pop_data_from_queue2(&q_tx_rx_queue_UsartDMAsend, (char *)GV_usartdmaSend.send_data, sizeof(GV_usartdmaSend.send_data), &GV_usartdmaSend.read_out_len);
 //	SYSTEM_DEBUG("here : %d\n",GV_usartdmaSend.daret);
 		if (GV_usartdmaSend.daret == 0) {
-			GV_usartdmaSend.uart_tx_complete=0;
+			GV_usartdmaSend.uart_tx_thisdatas_sendover=0;
 //			SYSTEM_DEBUG("pop dara:====\n" );
-			HAL_UART_Transmit_DMA(huart_x,GV_usartdmaSend.send_data,sizeof(GV_usartdmaSend.send_data));
+			HAL_UART_Transmit_DMA(huart_x,GV_usartdmaSend.send_data,GV_usartdmaSend.read_out_len);
 			
+			if(GV_usartdmaSend.read_out_len==0){
+			GV_usartdmaSend.uart_tx_alldatas_sendfinish = 1;
+			
+			}
 //			SYSTEM_DEBUG("pop dara: %s , length:%d\n", GV_usartdmaSend.send_data, sizeof(GV_usartdmaSend.send_data));
 			
     } else if (GV_usartdmaSend.daret == 1) {
 #if DEBUG_DmaUsartPrint	
-        SYSTEM_DEBUG("empty data %d %d %d\n",GV_usartdmaSend.current_time, GV_usartdmaSend.last_tx_complete_time, GV_usartdmaSend.uart_tx_complete);
+        SYSTEM_DEBUG("empty data %d %d %d\n",GV_usartdmaSend.current_time, GV_usartdmaSend.last_tx_complete_time, GV_usartdmaSend.uart_tx_thisdatas_sendover);
 #endif	
 //			SYSTEM_DEBUG("empty data%d\n",GV_usartdmaSend.read_out_len);
 			GV_usartdmaSend.complete_timeout = TX_WAITTING_TIMEOUT;
 //			HAL_Delay(1000);
-			GV_usartdmaSend.uart_tx_complete=0;
+			GV_usartdmaSend.uart_tx_thisdatas_sendover=0;
     } else if (GV_usartdmaSend.daret == 2) {
 #if DEBUG_DmaUsartPrint
         SYSTEM_DEBUG("butter too small,cant receive data\n");
@@ -324,7 +361,7 @@ if (GV_usartdmaSend.uart_tx_justSaveOver==1 || GV_usartdmaSend.uart_tx_complete 
 		
 		}
 
-//		SYSTEM_DEBUG("%d = %d = %d= %d\n",GV_usartdmaSend.uart_tx_justSaveOver,GV_usartdmaSend.uart_tx_complete,
+//		SYSTEM_DEBUG("%d = %d = %d= %d\n",GV_usartdmaSend.uart_tx_justSaveOver,GV_usartdmaSend.uart_tx_thisdatas_sendover,
 //		GV_usartdmaSend.current_time - GV_usartdmaSend.last_tx_complete_time,GV_usartdmaSend.current_time);
 		
 		
@@ -395,7 +432,7 @@ void USART_RX_DMA_SEGGERprint_OneByte(void){
     uint8_t keyVal;
     uint8_t recv_data; // 临时存储读取到的数据
 //	SYSTEM_INFO("Read: %d, Write: %d\n", RcvDmaQueData.g_uartRingBuf.read_idx, RcvDmaQueData.g_uartRingBuf.write_idx);
-        while (RingBuffer_ReadByte(&RcvDmaQueData.g_uartRingBuf, &recv_data)) {
+        while (QueuePop(&RcvDmaQueData.g_uartRingBuf, &recv_data)==QUEUE_OK) {
             // 以十六进制和ASCII格式打印（根据需求选择）
             SYSTEM_INFO("Received: 0x%02X (%c)\n", recv_data, (recv_data >= 0x20 && recv_data <= 0x7E) ? recv_data : '.');
         }
@@ -406,7 +443,7 @@ void USART_RX_DMA_SEGGERprint_OneByte(void){
 void USART_RX_DMA_SEGGERprint_MultByte(void){
 	uint8_t RDataBuf[MAX_RING_BUFF_SIZE];
 	uint8_t R_data_len;
-	R_data_len = RingBuffer_ReadMulti(&RcvDmaQueData.g_uartRingBuf,RDataBuf,MAX_RING_BUFF_SIZE);
+	R_data_len = QueuePopArray(&RcvDmaQueData.g_uartRingBuf,RDataBuf,MAX_RING_BUFF_SIZE);
 	
 	if(R_data_len>0){
 		SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(1,RDataBuf,R_data_len," R DMA D : %d",R_data_len);
@@ -445,14 +482,14 @@ TEST_USART_RX_DMA_ALL();
 void HAL_USARTx_DMA_RxCpltCallback(void){
 #if 1
     // 循环模式下，缓冲区满后的数据长度 = 缓冲区大小
-RcvDmaQueData.received_data_len = MAX_BUF_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usartx_rx);
+RcvDmaQueData.received_data_len = MAX_BUF_R_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usartx_rx);
 
 		 if (RcvDmaQueData.received_data_len > 0) {
-            RingBuffer_WriteMulti(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_rcvDataBuf, RcvDmaQueData.received_data_len);
+            QueuePushArray(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_rcvDataBuf, RcvDmaQueData.received_data_len);
 			 
         }
 SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,RcvDmaQueData.g_rcvDataBuf,5,"finish %d",RcvDmaQueData.received_data_len);
-		HAL_UART_Receive_DMA(&huart_DMA_Handle, RcvDmaQueData.g_rcvDataBuf, MAX_BUF_SIZE);             // 重新开启DMA传输
+		HAL_UART_Receive_DMA(&huart_DMA_Handle, RcvDmaQueData.g_rcvDataBuf, MAX_BUF_R_SIZE);             // 重新开启DMA传输
 	#endif
 //HAL_UART_Receive_IT(&huart_shell_Handle, &RcvDmaQueData.g_rcvDataBuf, 1);
 }
@@ -465,7 +502,7 @@ SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,RcvDmaQueData.g_rcvDataBuf,5,"finish %d",RcvDm
 
 
 
-#if (!USE_OS&&!USE_LETTER_SHELL&&USE_UART_DMA)
+#if (USE_UART_DMA)
 #if (USE_UART_DMA_RX)
 
 void USARTx_DMA_IRQHandler(void)
@@ -485,7 +522,7 @@ void USARTx_DMA_IRQHandler(void)
 //SYSTEM_DEBUG("RcvDmaQueData.received_data_len %d",RcvDmaQueData.received_data_len);
 //		SCB_InvalidateDCache_by_Addr((uint32_t *)RcvDmaQueData.g_rcvDataBuf, MAX_BUF_SIZE);
 		        if (RcvDmaQueData.received_data_len > 0) {
-            RingBuffer_WriteMulti(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_rcvDataBuf, RcvDmaQueData.received_data_len);
+            QueuePushArray(&RcvDmaQueData.g_uartRingBuf, RcvDmaQueData.g_rcvDataBuf, RcvDmaQueData.received_data_len);
 							
         }
 						SYSTEM_DEBUG_ARRAY_MESSAGE_HorA(0,RcvDmaQueData.g_rcvDataBuf,5,"rec=== %d",RcvDmaQueData.received_data_len);

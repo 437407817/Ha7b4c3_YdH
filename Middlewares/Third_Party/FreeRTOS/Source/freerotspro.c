@@ -57,6 +57,7 @@
 #include <elog.h>
 #include "./task/rtos_ProBtnTask.h"
 #include "./task/user_Task_1.h"
+#include "./task/rtos_comTask.h"
 /******************************* 宏定义 ************************************/
 /*
  * 当我们在写应用程序的时候，可能需要用到一些宏定义。
@@ -239,7 +240,8 @@ vPrintStack_TaskCreationResult("SEGGERTask", xReturn, 256);
 			xTaskCreate(btn_setting_data_task,"btn_setting_data_task",128,(void *)0,15,&tmp_handle);				
 			vPrintStack_TaskCreationResult("btn_setting_data_task", xReturn, 128);							
 								
-								
+			xTaskCreate(com_send_task,"com_send_task",128,(void *)0,10,&tmp_handle);				
+			vPrintStack_TaskCreationResult("com_send_task", xReturn, 128);										
 								
 //			xTaskCreate(busi_process_task_entry,"busi_pro_task",128,(void *)0,7,&tmp_handle);				
 //			vPrintStack_TaskCreationResult("busi_pro_task", xReturn, 128);

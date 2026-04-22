@@ -1468,6 +1468,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Middlewares\Third_Party\FreeRTOS\Source\task\rtos_ProBtnTask.c</FilePath>
             </File>
+            <File>
+              <FileName>rtos_comTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\FreeRTOS\Source\task\rtos_comTask.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

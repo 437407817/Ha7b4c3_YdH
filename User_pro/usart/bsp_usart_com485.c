@@ -91,7 +91,7 @@ void USART_COM485_UartInit(void)
 
 
 		
-	
+	#if !USE_UART_DMA_RX
 		#if USE_COM485_IT_1
 		__HAL_UART_ENABLE_IT(&huart_COM485_Handle,UART_IT_IDLE);
 		__HAL_UART_ENABLE_IT(&huart_COM485_Handle, UART_IT_RXNE);		
@@ -99,7 +99,7 @@ void USART_COM485_UartInit(void)
 		__HAL_UART_ENABLE_IT(&huart_COM485_Handle,UART_IT_IDLE);
 		HAL_UART_Receive_IT(&huart_COM485_Handle, &uart485_rx_byte, 1);
 		#endif
-
+	#endif
 		
 		
 		
@@ -216,7 +216,7 @@ void reg485ComCb(void (*pFunc)(uint8_t data))
 ***********************************************************
 */
 
-#if USE_COM485_IT_1
+#if USE_COM485_IT_1 && !USE_UART_DMA_RX
 void USART_COM485_IRQHandler(void)
 {
 
@@ -293,7 +293,7 @@ void Usart_COM485_SendArray(UART_HandleTypeDef *huart, uint8_t *array, uint16_t 
     // 等待发送完成（可选，HAL_UART_Transmit 已等发送为空，再加更保险）
     while(__HAL_UART_GET_FLAG(huart, UART_FLAG_TC) == RESET);
 }
-
+#include "./usart/bsp_usart_dma.h"
 /**
  * @brief  使用 DMA 异步发送串口数组
  * @note   注意：在 H7 系列上，如果开启了 D-Cache，需处理 Cache 一致性
@@ -302,19 +302,28 @@ void Usart_COM485_SendArray_DMA(UART_HandleTypeDef *huart, uint8_t *array, uint1
 {
     // 1. 确保上一次 DMA 发送已经完成
     // 如果不检查状态直接调用，可能会返回 HAL_BUSY
-    while (huart->gState != HAL_UART_STATE_READY);
+//    while (huart->gState != HAL_UART_STATE_READY);
 
-    /* 2. 对于 STM32H7 系列（Cortex-M7 内核）：
-       如果 array 位于可缓存的内存区域（如 AXI SRAM），必须先清理缓存，
-       确保 DMA 读取的是内存中最新的数据，而不是 Cache 里的旧数据。*/
-    // SCB_CleanDCache_by_Addr((uint32_t*)array, num); 
+//    /* 2. 对于 STM32H7 系列（Cortex-M7 内核）：
+//       如果 array 位于可缓存的内存区域（如 AXI SRAM），必须先清理缓存，
+//       确保 DMA 读取的是内存中最新的数据，而不是 Cache 里的旧数据。*/
+//    // SCB_CleanDCache_by_Addr((uint32_t*)array, num); 
 
-    // 3. 开启 DMA 发送
-    if (HAL_UART_Transmit_DMA(huart, array, num) != HAL_OK)
-    {
-        // 错误处理逻辑
-        Error_Handler();
-    }
+//    // 3. 开启 DMA 发送
+//    if (HAL_UART_Transmit_DMA(huart, array, num) != HAL_OK)
+//    {
+//        // 错误处理逻辑
+//        Error_Handler();
+//    }
+		
+		if(huart==&huart_COM_DW_Handle){
+			Usart_SendDMA_SaveFun((char*)array,num);
+			Usart_SendFUN_ALL();
+			SYSTEM_INFO("485 dma save !");
+		}
+	
+		
+		
 }
 
 #if 0

@@ -204,7 +204,7 @@ int p_push_data_to_queue2(Q_QueueBuffer *qdf,  char *src_dat, uint16_t src_len) 
 
     Q_QUEUE_DATA_TYPE *write_node = p_cbWrite(qdf); // 获取可写节点
     if (write_node == NULL) {
-        return 1; // 队列满，无法写入
+        return 2; // 队列满，无法写入
     }
 
     // 复制数据到队列节点（确保不超过节点缓冲区长度）

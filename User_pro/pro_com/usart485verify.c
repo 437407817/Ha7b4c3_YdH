@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "./pro_com/usart_485_232_send.h"
+
 //#include "./middle_business/usart_485_business.h"
 #include "./DataConvert/data_verification.h"
 #include <stdlib.h>
@@ -13,6 +13,8 @@
  #include "./usart/bsp_usart_COM485.h"
  #include "./middle_business/usart_485_dataGet.h"
  #include "./pro_com/usart_485_232_send.h"
+ #include "./usart/bsp_usart_dma.h"
+ 
  
 /**
 ***********************************************************************
@@ -23,21 +25,22 @@
 #define FRAME_REC_HEAD_0           0x5A  
 #define FRAME_REC_HEAD_1           0xA5
 
-#if c485_232_CRC16
-#define PACKET_DATA_LEN_MIN    20                  //最小包长度
-#define PACKET_DATA_LEN_MAX    122                 //最大包长度
-#else
-#define PACKET_DATA_LEN_MIN    10                  //最小包长度
-#define PACKET_DATA_LEN_MAX    120                 //最大包长度
-#endif
+
 
 
 #define FUNC_DATA_IDX          3                  //功能字数组下标
 #define SLAVE_CTRL_CODE          0x82               //功能字
 
-#define MAX_BUF_SIZE           (PACKET_DATA_LEN_MAX * 8)										//环形队列总长度
-static uint8_t g_rcvDataBuf[MAX_BUF_SIZE];
-static QueueType_t g_rcvQueue;
+
+
+//static uint8_t g_rcvDataBuf[MAX_BUF_SIZE];
+//static QueueType_t g_rcvQueue;
+
+
+extern STR_RCV_DMA_que_data RcvDmaQueData;
+#define g_rcvDataBuf RcvDmaQueData.g_ringBufData
+#define g_rcvQueue RcvDmaQueData.g_uartRingBuf
+
 
 typedef struct
 {
@@ -225,5 +228,7 @@ void Usart485ComAppInit(void)
 {
 	reg485ComCb(ProcUartData);
 	reg_SlaveComCb(pull_data_from_485);
+	#if !USE_UART_DMA_RX
 QueueInit(&g_rcvQueue, g_rcvDataBuf, MAX_BUF_SIZE);
+	#endif
 }

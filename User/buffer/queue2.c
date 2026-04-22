@@ -161,6 +161,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param buf：缓冲区数组
  * @param size：缓冲区大小
  */
+// void QueueInit(QueueType_t *queue, uint8_t *buffer, uint32_t size)
  void RingBuffer_Init(RingBuffer_t *rb, uint8_t *buf, uint16_t size) {
     rb->buf = buf;
     rb->size = size;
@@ -192,6 +193,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param data：待写入数据
  * @return 写入成功返回true，缓冲区满返回false
  */
+//QueueStatus_t QueuePush(QueueType_t *queue, uint8_t data)
  bool RingBuffer_WriteByte(RingBuffer_t *rb, uint8_t data) {
     if (RingBuffer_IsFull(rb)) {
         return false; // 缓冲区满，写入失败
@@ -207,6 +209,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param data：读取到的数据（输出参数）
  * @return 读取成功返回true，缓冲区空返回false
  */
+//QueueStatus_t QueuePop(QueueType_t *queue, uint8_t *pdata)
  bool RingBuffer_ReadByte(RingBuffer_t *rb, uint8_t *data) {
     if (RingBuffer_IsEmpty(rb)) {
         return false; // 缓冲区空，读取失败
@@ -222,6 +225,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param data：待写入数据数组
  * @param len：待写入数据长度
  */
+//uint32_t QueuePushArray(QueueType_t *queue, uint8_t *pArray, uint32_t len)
  void RingBuffer_WriteMulti(RingBuffer_t *rb, const uint8_t *data, uint16_t len) {
 //    __disable_irq(); // 禁止中断，防止读写冲突
     for (uint16_t i = 0; i < len; i++) {
@@ -238,6 +242,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param rb：环形缓冲区指针
  * @return 可用数据量（字节数）
  */
+//uint32_t QueueCount(QueueType_t *queue)
  uint16_t RingBuffer_GetAvailable(RingBuffer_t *rb) {
     if (rb == NULL) return 0;
     if (rb->write_idx >= rb->read_idx) {
@@ -256,6 +261,7 @@ uint32_t QueueCount(QueueType_t *queue)
  * @param len：期望读取的字节数
  * @return 实际读取的字节数（<= len）
  */
+//uint32_t QueuePopArray(QueueType_t *queue, uint8_t *pArray, uint32_t len)
  uint16_t RingBuffer_ReadMulti(RingBuffer_t *rb, uint8_t *buf, uint16_t len) {
     if (rb == NULL || buf == NULL || len == 0) return 0;
     
