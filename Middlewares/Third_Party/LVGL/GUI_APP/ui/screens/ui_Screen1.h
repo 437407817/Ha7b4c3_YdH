@@ -20,6 +20,9 @@ extern lv_obj_t * ui_header_panel;
 extern lv_obj_t * ui_left_container;
 extern lv_obj_t * ui_back_btn;
 extern lv_obj_t * ui_title;
+
+
+
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

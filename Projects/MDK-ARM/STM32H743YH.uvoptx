@@ -3200,7 +3200,7 @@
 
   <Group>
     <GroupName>lvgl/example/porting</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -7620,6 +7620,18 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>37</GroupNumber>
+      <FileNumber>596</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\status_bar.c</PathWithFileName>
+      <FilenameWithoutPath>status_bar.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -7630,7 +7642,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>596</FileNumber>
+      <FileNumber>597</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7642,7 +7654,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>597</FileNumber>
+      <FileNumber>598</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7654,7 +7666,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>598</FileNumber>
+      <FileNumber>599</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7666,7 +7678,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>599</FileNumber>
+      <FileNumber>600</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7678,7 +7690,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>600</FileNumber>
+      <FileNumber>601</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7690,7 +7702,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>601</FileNumber>
+      <FileNumber>602</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7702,7 +7714,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>602</FileNumber>
+      <FileNumber>603</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7714,7 +7726,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>603</FileNumber>
+      <FileNumber>604</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -7726,7 +7738,7 @@
     </File>
     <File>
       <GroupNumber>38</GroupNumber>
-      <FileNumber>604</FileNumber>
+      <FileNumber>605</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

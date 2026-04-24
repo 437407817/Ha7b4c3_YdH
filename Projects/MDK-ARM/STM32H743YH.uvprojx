@@ -5307,6 +5307,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\lvgl_user_inc.h</FilePath>
             </File>
+            <File>
+              <FileName>status_bar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middlewares\Third_Party\LVGL\GUI_APP\ui\screens\status_bar.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
