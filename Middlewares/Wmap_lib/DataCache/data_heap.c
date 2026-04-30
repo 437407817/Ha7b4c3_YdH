@@ -4,7 +4,7 @@
 //#include "./usart/bsp_usart.h"
 
 #include "./sys/sysio.h"
-
+#if 0
 #if 1
 // 【MDK环境】获取堆剩余空间（需在启动文件中定义__heap_base/__heap_limit）
 #if defined (__CC_ARM)
@@ -153,7 +153,7 @@ void test_heap_change(void)
     PrintHeapUsageRate(); // Used memory should return to near initial state
 }
 
-
+#endif
 /**************************END OF FILE************************************/
 
 

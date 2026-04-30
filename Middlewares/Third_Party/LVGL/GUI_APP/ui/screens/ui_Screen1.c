@@ -24,7 +24,7 @@ static void btn_callback(lv_event_t *e)
     // 获取当前是哪个对象触发了回调函数
     lv_obj_t *btn1 = lv_event_get_target(e);
 
-    printf("btn_callback: %s\n", str);
+    v_printf("btn_callback: %s\n", str);
 
     // 获取父类
     // lv_obj_t *parent = lv_obj_get_parent(btn1);

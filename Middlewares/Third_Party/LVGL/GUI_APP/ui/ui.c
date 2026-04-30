@@ -30,10 +30,11 @@ void ui_init(void)
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
-      sys_top_bar_init();    
+       
 
     // ui_Screen1_screen_init();
     ui_S_page01_screen_init();
+    
     ui_S_page02_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     

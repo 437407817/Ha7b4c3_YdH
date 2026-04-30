@@ -12,11 +12,11 @@
 
 
 
-uint32_t get_heap_used(void);
-uint32_t get_heap_total(void);
-void PrintHeapUsageRate(void);
+//uint32_t get_heap_used(void);
+//uint32_t get_heap_total(void);
+//void PrintHeapUsageRate(void);
 
-void test_heap_change(void);
+//void test_heap_change(void);
 
 
 

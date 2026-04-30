@@ -12,6 +12,7 @@ extern "C" {
 
 #include "lvgl/lvgl.h"
 
+#define lvgl_Font noto_sans_sc_16
 
 #define USE_LVGL_PC_SIMULATION  0
 

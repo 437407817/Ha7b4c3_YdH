@@ -6,7 +6,7 @@
 #include "./sys/sysio.h"
 
 
-
+#if 0
 #if 1
 /* 1. 定义栈底/栈大小（适配MDK/GCC，从启动文件映射） */
 #if defined (__CC_ARM)  // MDK/ARMCC环境
@@ -109,7 +109,7 @@ void stack_check_usage(void)
 #endif
 /**************************END OF FILE************************************/
 
-
+#endif
 
 
 

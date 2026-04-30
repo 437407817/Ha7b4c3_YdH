@@ -19,10 +19,13 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 #include "screens/status_bar.h"
-
+#include "components/ui_translate.h"  
 #include "screens/ui_Screen1.h"
 #include "screens/ui_S_page01.h"
 #include "screens/ui_S_page02.h"
+
+
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,6 +51,8 @@ LV_FONT_DECLARE(ui_font_Min);
 LV_FONT_DECLARE(ui_font_P1_bold);
 LV_FONT_DECLARE(ui_font_P1_medium);
 LV_FONT_DECLARE(ui_font_P2_medium);
+//LV_FONT_DECLARE(noto_sans_sc_16);
+//  LV_FONT_DECLARE(lv_font_montserrat_16);
 
 // UI INIT
 void ui_init(void);

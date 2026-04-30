@@ -30,10 +30,10 @@
 
 I2C_HandleTypeDef  I2C_Handle; 
 
-static void Delay(__IO uint32_t nCount)	 //简单的延时函数
-{
-	for(; nCount != 0; nCount--);
-}
+//static void Delay(__IO uint32_t nCount)	 //简单的延时函数
+//{
+//	for(; nCount != 0; nCount--);
+//}
  /**
   * @brief  配置 PB7 为线中断口，并设置中断优先级
   * @param  无
@@ -92,7 +92,7 @@ void I2C_GTP_IRQDisable(void)
   * @param  无
   * @retval 无
   */
-static void I2C_GPIO_Config(void)
+ void I2C_GPIO_Config(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;  
    
@@ -204,7 +204,7 @@ void I2C_ResetChip(void)
   * @param  无
   * @retval 无
   */
-static void I2C_Mode_Config(void)
+ void I2C_Mode_Config(void)
 {
     /* I2C 配置 */
 

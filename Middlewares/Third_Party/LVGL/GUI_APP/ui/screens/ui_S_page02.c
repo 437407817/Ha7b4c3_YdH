@@ -42,7 +42,7 @@ void ui_S_page02_screen_init(void) {
     lv_obj_t *back_btn_label = lv_label_create(back_btn);
     lv_label_set_text(back_btn_label, "Back to Page 1");
     lv_obj_center(back_btn_label);
-    
+       ui_translate_1(ui_S_page02_screen);
     // 添加点击事件回调
     lv_obj_add_event_cb(back_btn, back_to_page1_event_cb, LV_EVENT_CLICKED, NULL);
 }

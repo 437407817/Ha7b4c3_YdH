@@ -13,7 +13,10 @@
 #define STATUSBAR_H     30
 #define CTRL_CENTER_H   260
 
-void sys_top_bar_init(void);
+
+extern lv_obj_t *g_status_bar;
+
+void sys_top_bar_init(lv_obj_t *page);
 void sys_top_bar_set_time(const char* str);
 // 绑定手势：页面 + 状态栏都要绑
 void sys_top_bar_attach_all_swipe(lv_obj_t* page);

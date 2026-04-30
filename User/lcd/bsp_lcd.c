@@ -2051,7 +2051,7 @@ void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32
     uint32_t width = ex - sx + 1;
     uint32_t height = ey - sy + 1;
     uint32_t offline = LCD_MAX_PIXEL_WIDTH - width;
-    
+    uint32_t timeout = 0;
     // 计算目标起始地址：FB起始地址 + (行偏移 * 总宽 + 列偏移) * 每个像素字节数
     uint32_t addr = Ltdc_Handler.LayerCfg[ActiveLayer].FBStartAdress + pixsize * (LCD_MAX_PIXEL_WIDTH * sy + sx);
 
@@ -2073,11 +2073,17 @@ void ltdc_color_fill4(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32
 
     // 启动并等待完成
     DMA2D->CR |= DMA2D_CR_START;
-    while (DMA2D->CR & DMA2D_CR_START); 
-		
-//		/* 👇 ====== 解决冲突的关键：清除所有 DMA2D 状态标志位 ====== 👇 */
-//    DMA2D->IFCR = 0x3FUL;
-		
+    while (DMA2D->CR & DMA2D_CR_START){}; 
+		#if 0
+    while((DMA2D->ISR & (DMA2D_FLAG_TC)) == 0)                /* 等待传输完成 */
+    {
+        timeout++;
+      
+        if (timeout > 0X1FFFFF)break;                         /* 超时退出 */
+    } 
+    
+    DMA2D->IFCR |= DMA2D_FLAG_TC;                             /* 清除传输完成标志 */
+		#endif
 		
 }
 

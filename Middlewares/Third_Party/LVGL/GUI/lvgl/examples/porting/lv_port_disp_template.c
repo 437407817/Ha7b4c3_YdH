@@ -127,16 +127,25 @@ __attribute__((aligned(32))) static uint32_t buf_1_1[MY_DISP_HOR_RES * 10 * BYTE
 //LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_2_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL] __attribute__((at(0XD0000000 + 600*800*8 )));  
 //static lv_color_t buf_1[LCD_MAX_PIXEL_WIDTH * LCD_MAX_PIXEL_HEIGHT] __attribute__((at(0XD0000000 + 600*800*8 )));
 
-
+//LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_2_1[MY_DISP_HOR_RES * BYTE_PER_PIXEL* 10] __attribute__((at(0XD0000000 + MY_DISP_HOR_RES*MY_DISP_VER_RES*8 )));     
+//LV_ATTRIBUTE_MEM_ALIGN static uint8_t buf_2_2[MY_DISP_HOR_RES * BYTE_PER_PIXEL* 10] __attribute__((at(0XD0000000 + MY_DISP_HOR_RES*MY_DISP_VER_RES*8+MY_DISP_HOR_RES * BYTE_PER_PIXEL* 10 )));
 
 // 指向外部内存的ARGB8888缓冲区指针
-static lv_color32_t *disp_buf1 = (lv_color32_t *)LV_DISP_BUF1_ADDR; // 用lv_color32_t适配ARGB8888
-static lv_color32_t *disp_buf2 = (lv_color32_t *)LV_DISP_BUF2_ADDR;
+//static lv_color32_t *disp_buf1 = (lv_color32_t *)LV_DISP_BUF1_ADDR; // 用lv_color32_t适配ARGB8888
+//static lv_color32_t *disp_buf2 = (lv_color32_t *)LV_DISP_BUF2_ADDR;
 
 /**********************
  *      MACROS
  **********************/
+ #if 0
+#define FB_ADDR0        EXT_SRAM_START_ADDR  // SDRAM 帧缓冲1
+#define FB_ADDR1        (EXT_SRAM_START_ADDR+0x00800000)  // SDRAM 帧缓冲2
 
+// 句柄
+static lv_display_t * disp;
+static lv_draw_buf_t * draw_buf1;
+static lv_draw_buf_t * draw_buf2;
+#endif
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
@@ -151,23 +160,31 @@ void lv_port_disp_init(void)
     /*------------------------------------
      * Create a display and set a flush_cb
      * -----------------------------------*/
+
+	
     lv_display_t * disp = lv_display_create(MY_DISP_HOR_RES, MY_DISP_VER_RES);
     
-
+#if 1
     /* Example 1
      * One buffer for partial rendering*/
 //    LV_ATTRIBUTE_MEM_ALIGN
 //    static uint8_t buf_1_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];            /*A buffer for 10 rows*/
 	
-	
+	    // 2. 注册显示驱动
+    
 	
 	
     lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
-	
+	#endif
 //	lv_display_set_buffers(disp, disp_buf1, disp_buf2, MY_DISP_HOR_RES * BYTE_PER_PIXEL*10, LV_DISPLAY_RENDER_MODE_PARTIAL);
 	
 
+
+
+
+
+		
     /* Example 2
 	
 	
@@ -197,7 +214,9 @@ void lv_port_disp_init(void)
 //    LV_ATTRIBUTE_MEM_ALIGN
 //    static uint8_t buf_3_2[MY_DISP_HOR_RES * MY_DISP_VER_RES * BYTE_PER_PIXEL];
 //    lv_display_set_buffers(disp, buf_3_1, buf_3_2, sizeof(buf_3_1), LV_DISPLAY_RENDER_MODE_DIRECT);
-		lv_display_set_flush_cb(disp, disp_flush);
+
+lv_display_set_flush_cb(disp, disp_flush);
+		
 	
 }
 
@@ -264,7 +283,7 @@ static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t 
 //			        SCB_CleanDCache_by_Addr((uint32_t *)px_map, size);
 			
         // 关键：在 DMA2D 搬运前，必须清除 D-Cache，否则 DMA2D 拿到的是旧数据
-        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
+//        SCB_CleanDCache_by_Addr((uint32_t *)px_map, (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 4);
 
 	
         // 调用我们修正后的 32位 填充函数
